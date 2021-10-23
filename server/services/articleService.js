@@ -48,7 +48,7 @@ module.exports = {
         return await Article.findByIdAndUpdate(_id, {
             like: like,
         }).then(result => {
-            console.log('Updated like counter')
+            console.log('Updated like counter ', result)
         })
     },
 }
