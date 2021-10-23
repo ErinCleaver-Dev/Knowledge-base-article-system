@@ -15,6 +15,20 @@ async function createIssue(userId, articleId, postContent) {
 
 //create comment
 
+async function createComment(userId, articleId, postContent, commentId = "") {
+    let userResponse;
+    if (commentId) {
+        userResponse = new UserResponse({ userResponse_type: 'Comment', post_content: postContent, article_id: articleId, user_id: userId, comment_id: commentId })
+    } else {
+        userResponse = new UserResponse({ userResponse_type: 'Comment', post_content: postContent, article_id: articleId, user_id: userId })
+    }
+
+    return await userResponse.save().then(result => {
+        console.log('an comment saved!!')
+    })
+
+}
+
 module.exports = {
     getAll,
     createIssue
