@@ -1,21 +1,22 @@
 const UserResponse = require('../models/UserResponse');
+const UserService = require('../models/UserService');
 
-async function getAll() {
-    return await UserResponse.find({}).lean();
-}
+module.exports = { 
+    create : async function (data) {
 
-//create Issue
-async function createIssue(userId, articleId, postContent) {
-    let userResponse = new UserResponse({ userResponse_type: 'Issue', post_content: postContent, article_id: articleId, user_id: userId });
-
-    return await userResponse.save().then(result => {
-        console.log('an issue saved!!')
-    })
-}
-
-//create comment
-
-module.exports = {
-    getAll,
-    createIssue
+    return await UserResponse.save().then(result => {
+        console.log("Created Post")
+    })        
+    },
+    getComments : async function (comment_id = null, article_id) {
+      if(comment_id == null)  {
+        return await UserResponse.find({article_id: article_id})
+      } else {
+          return await UserResponse.find({$and : [{article_id: article_id}, {comment_id: comment_id}]})
+      }
+    },
+    getUserName : async function (_id) {
+        return await UserService.findById(_id);
+    }
+    
 }
