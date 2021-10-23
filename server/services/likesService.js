@@ -38,14 +38,14 @@ async function deleteLike(userId, articleId) {
 }
 
 async function getLikes(articleId) {
-    return await Likes.count({$and : [{ article_id: articleId }, {liked: true }]}, (err, count) => {
-         if(err) {
-             console.log(err)
-         } else {
-             console.log(`number of likes: ${count} `)
-         }
-    })
+    if(articleId) {
+        return await Likes.count({$and : [{ article_id: articleId }, {liked: true }]})
+    } else {
+        console.log('no article found')
+    }
 }
+
+
 
 module.exports = {
     createLikes,
