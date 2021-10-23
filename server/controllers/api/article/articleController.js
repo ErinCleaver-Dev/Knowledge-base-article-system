@@ -29,5 +29,15 @@ router.post('/api/deleteArticle', (req, res, next) => {
     }
 })
 
+router.get('/api/getArticle', (req, res, next) => {
+    console.log(req.body)
+    if(req.body._id) {
+        articleService.getOneByid(req.body._id).then((result) => {
+            console.log(result)
+        }).catch(next)
+    } else {
+        return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
+    }
+})
 
 module.exports = router;
