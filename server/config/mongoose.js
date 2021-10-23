@@ -3,7 +3,8 @@ const config = require('./index')
 
 function setupMongoose(app) {
 
-    mongoose.connect(config.DB_CONNECTION).then(() => {
+
+    mongoose.connect(config.DB_CONNECTION,  {useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
         console.log('Database is connected')
     })
 
