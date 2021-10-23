@@ -32,11 +32,13 @@ module.exports = {
     getOneByid : async function (_id) {
         return await Article.findById(_id)
     },
-    findPosts : async function (search) {
-        return await Article.find({$or: [{title: search}, {keywords: search}, {post_content: search}, {catagory: search}]}).lean();
+    findArticles : async function (search) {
+
+        console.log(search)
+       return await Article.find({key_terms: search}).lean();
     },
     findByCategory : async function (catagory) {
-        return await Article.find({catagory: search}).lean();
+        return await Article.find({catagory: catagory}).lean();
 
     },
     getByUserid : async function (user) {
