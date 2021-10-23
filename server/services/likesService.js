@@ -27,14 +27,14 @@ async function createLikes(userId, articleId) {
 
 
 
-async function deleteLikes(userId, articleId) {
-    return await Likes.findOneAndDelete({ user_id: userId, article_id: articleId }, (err, doc) => {
+async function deleteLike(userId, articleId) {
+    return await Likes.findOneAndDelete({$and : [{user_id: userId}, {article_id: articleId}]}), (err, doc) => {
         if (err) {
             console.log(err);
         } else {
             console.log(doc + 'this data was deleted');
         }
-    })
+    }
 }
 
 async function getLikes(articleId) {
@@ -49,6 +49,6 @@ async function getLikes(articleId) {
 
 module.exports = {
     createLikes,
-    deleteLikes,
+    deleteLike,
     getLikes
 }
