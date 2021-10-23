@@ -1,5 +1,4 @@
 const UserResponse = require('../models/UserResponse');
-const UserService = require('../models/UserService');
 
 module.exports = {
     create: async function(data) {
@@ -15,8 +14,5 @@ module.exports = {
             return await UserResponse.find({ $and: [{ article_id: article_id }, { comment_id: comment_id }] })
         }
     },
-    getUserName: async function(_id) {
-        return await UserService.findById(_id);
-    }
-
+    
 }

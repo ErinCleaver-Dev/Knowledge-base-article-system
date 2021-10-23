@@ -16,7 +16,7 @@ async function updateLoginTries(userId) {
     let loginCount = await User.findOne({ uid: userId }).then(result => {
         return result.login_tries;
     });
-    await User.findOneAndUpdate({ uid: userId }, { login_tries: loginCount + 1 }).then(
+    return await User.findOneAndUpdate({ uid: userId }, { login_tries: loginCount + 1 }).then(
         result => {
             console.log('loginTries updated!')
         }
@@ -24,14 +24,20 @@ async function updateLoginTries(userId) {
 }
 
 async function resetLoginTries(userId) {
-    await User.findOneAndUpdate({uid : userId}, {login_tries: 0}).then (result => {
+    return await User.findOneAndUpdate({uid : userId}, {login_tries: 0}).then (result => {
         console.log("Reset login Tries")
     })
 }
+
+async function getUserName(_id) {
+    return await User.findById(_id);
+}
+
 
 module.exports = {
     getAll,
     create,
     updateLoginTries,
     resetLoginTries,
+    getUserName
 }
