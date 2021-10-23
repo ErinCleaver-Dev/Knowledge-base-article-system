@@ -8,8 +8,6 @@ async function getAll() {
     return await UserHistory.find({}).lean();
 }
 
-
-
 // viewedArticle
 async function createViewedArticle(userId, articleId) {
     User.findOneAndDelete({ history_type: 'viewedArticle', article_id: articleId, user_id: userId }, function(err, doc) {

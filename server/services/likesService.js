@@ -7,13 +7,28 @@ async function createLikes(userId, articleId) {
         article_id: articleId,
         liked: true,
     });
-    return await likes.save().then(result => {
-        console.log('a like saved!!')
+
+    let exists = true;
+
+    await Likes.findOne({$and : [{user_id: userId}, {article_id: articleId}]}).then ((result) => {
+        if(result) {
+            console.log("Article already liked.")
+        } else {
+            exists = false;
+        }
     })
+
+    if(!exists) {
+        return await likes.save().then(result => {
+            console.log('a like saved!! ', result)
+        })
+    }
 }
 
+
+
 async function deleteLikes(userId, articleId) {
-    await Likes.findOneAndDelete({ user_id: userId, article_id: articleId }, (err, doc) => {
+    return await Likes.findOneAndDelete({ user_id: userId, article_id: articleId }, (err, doc) => {
         if (err) {
             console.log(err);
         } else {
@@ -22,14 +37,18 @@ async function deleteLikes(userId, articleId) {
     })
 }
 
-async function getLikesResult(userId, articleId) {
-    return await Likes.findOne({ user_id: userId, article_id: articleId }).then(result => {
-        return result.liked;
+async function getLikes(articleId) {
+    return await Likes.count({$and : [{ article_id: articleId }, {liked: true }]}, (err, count) => {
+         if(err) {
+             console.log(err)
+         } else {
+             console.log(`number of likes: ${count} `)
+         }
     })
 }
 
 module.exports = {
     createLikes,
     deleteLikes,
-    getLikesResult
+    getLikes
 }
