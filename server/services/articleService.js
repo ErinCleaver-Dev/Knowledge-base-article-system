@@ -12,9 +12,9 @@ module.exports = {
             console.log('Added article');
         })
     },
-    edit : async function (_id ,data) {
+    update : async function (_id ,data) {
         return await Article.findByIdAndUpdate(_id, {
-            last_revised_date: data.last_revised_date,
+            last_revised_date: data.last_revised_date || Date.now(),
             title: data.title,
             category: data.category,
             key_terms: data.key_terms,
