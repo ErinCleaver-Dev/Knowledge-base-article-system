@@ -4,10 +4,9 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const config = require('./index')
-const bcrypt = require('bcrypt')
 // const auth = require('../utils/auth')
 const fs = require('fs')
-const fileUpload = require("express-fileupload");
+
 
 const path = require('path')
 

@@ -6,7 +6,6 @@ const userHistorySchema = new mongoose.Schema({
     post_content: { type: String, require: true },
     article_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Article' },
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
-    login_tries: { type: Number },
     date: { type: Date, default: Date.now() }
 })
 
