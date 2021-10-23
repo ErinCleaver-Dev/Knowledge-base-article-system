@@ -29,9 +29,14 @@ async function resetLoginTries(userId) {
     })
 }
 
+async function getUserName (_id) {
+    return await UserService.findById(_id);
+}
+
 module.exports = {
     getAll,
     create,
     updateLoginTries,
     resetLoginTries,
+    getUserName
 }
