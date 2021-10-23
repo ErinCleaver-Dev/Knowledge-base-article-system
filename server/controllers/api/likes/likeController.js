@@ -18,20 +18,5 @@ router.post('/api/deleteLike', (req, res, next) => {
     }
 })
 
-router.post('/api/updateLikeCounter', (req, res, next) => {
-    let likes = 0;  
-    let articleid = req.query.articleID
-
-    if(articleid) {
-        likesService.getLikes(articleid).then(count => {
-            articleService.updateLike(articleid, count).catch(next)
-        }).catch(next)
-       
-    } else {
-        return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
-    }
-
-})
-
 
 module.exports = router;

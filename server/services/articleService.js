@@ -44,10 +44,9 @@ module.exports = {
     getByUserid : async function (user) {
         return await Article.find({user_id: user})
     },
-    updateLike :  async function (_id ,likes) {
-        console.log("testing likes: ", likes)
+    updateLike :  async function (_id ,like) {
         return await Article.findByIdAndUpdate(_id, {
-            likes: likes,
+            like: like,
         }).then(result => {
             console.log('Updated like counter ', result)
         })
