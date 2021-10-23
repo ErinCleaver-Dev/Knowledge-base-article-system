@@ -4,13 +4,13 @@ const articleSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
     published_date: {
         type: Date,
-        require: true,
+        default: Date.now,
     },
     last_revised_date: {
         type: Date,
     }, 
     user_id: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         require: true,
     }, 
@@ -23,7 +23,7 @@ const articleSchema = new mongoose.Schema({
         require: true,
     },
     key_terms: {
-        type: String,
+        type: Array,
         require: true,
     }, 
     video: {
@@ -34,7 +34,10 @@ const articleSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    likes: { type: number, require: true}
+    likes: { 
+        type: Number, 
+        default: 0,
+    }
 })
 
 module.exports = mongoose.model('Article', articleSchema);

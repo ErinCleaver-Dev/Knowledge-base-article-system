@@ -5,6 +5,7 @@ module.exports = {
         return await Article.find({}).lean();
     },
     create : async function (data) {
+        console.log("checking for data: ", data)
         let article = new Article(data); 
 
         return await article.save().then(result => {
@@ -32,7 +33,11 @@ module.exports = {
         return await Article.findById(_id)
     },
     findPosts : async function (search) {
-        return await Article.find({$or: [{title: search}, {keywords: search}, {post_content: search}]}).lean();
+        return await Article.find({$or: [{title: search}, {keywords: search}, {post_content: search}, {catagory: search}]}).lean();
+    },
+    findByCategory : async function (catagory) {
+        return await Article.find({catagory: search}).lean();
+
     },
     getByUserid : async function (user) {
         return await Article.find({user_id: user})

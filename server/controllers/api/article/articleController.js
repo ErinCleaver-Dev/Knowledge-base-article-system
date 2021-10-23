@@ -1,12 +1,19 @@
 const {Router} = require('express')
 
 const router = Router();
-const articleServices = require('../../../services/articleService')
+const articleService = require('../../../services/articleService')
 
 router.post('/api/addArticle', (req, res, next) => {
-    articleServices.create(req.body).then(() => {
-        console.log("Created article");
+    articleService.create(req.body).then(() => {
+
     }).catch(next)
 })
 
-module.export = router;
+router.get('/api/listAllArticles', (req, res) => {
+    articleService.getAll().then((results) => {
+        console.log("list articles: ", results)
+        return;
+    })
+})
+
+module.exports = router;
