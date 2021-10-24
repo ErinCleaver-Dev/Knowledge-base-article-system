@@ -8,6 +8,7 @@ import ProfileCard from './ProfileCard'
 const NavagationBar = styled(Box) ({
     display: 'flex',
     justifyContent: 'space-between',
+    flexWrap: 'warp',
     alignItems: 'center',
     backgroundColor: '#28666E',
     padding: '20px 40px',
