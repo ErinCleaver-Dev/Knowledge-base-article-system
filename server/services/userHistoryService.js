@@ -1,33 +1,22 @@
 const UserHistory = require('../models/UserHistory');
-
-
-
-
-
-async function getAll() {
-    return await UserHistory.find({}).lean();
-}
-
 // viewedArticle
 async function createViewedArticle(userId, articleId) {
-    User.findOneAndDelete({ history_type: 'viewedArticle', article_id: articleId, user_id: userId }, function(err, doc) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("Deleted old duplicated viewedArticle : ", doc);
-        }
+    await UserHistory.findOneAndDelete({ history_type: 'viewedArticle', article_id: articleId, user_id: userId }).then(result => {
+        console.log("Deleted old duplicated viewedArticle : ", result);
+        return;
     });
     let userHistory = new UserHistory({ history_type: 'viewedArticle', article_id: articleId, user_id: userId });
     return await userHistory.save().then(result => {
         console.log('an viewedArticle saved!!')
+    }).catch(e => {
+        console.log(e)
     })
 }
-
-
 async function getViewedArticle(userId) {
     return await UserHistory.find({ user_id: userId, history_type: 'viewedArticle' })
         .populate('article_id')
         .select('article_id date')
+        .populate({ path: "article_id", populate: "user_id" })
         .then(results => {
             let viewedArticleArray = [];
             results.map(result => {
@@ -40,31 +29,27 @@ async function getViewedArticle(userId) {
             return false;
         });
 }
-
-
 // Saved Article
 async function createSavedArticle(userId, articleId) {
     let userHistory = new UserHistory({ history_type: 'savedArticle', article_id: articleId, user_id: userId });
+    console.log(userHistory)
     return await userHistory.save().then(result => {
         console.log('an savedArticle saved!!')
     })
 }
-
 async function deleteSavedArticle(userId, articleId) {
-    await UserHistory.findOneAndDelete({ history_type: 'savedArticle', article_id: articleId, user_id: userId }, (err, doc) => {
-        if (err) {
-            console.log(err);
-            return;
-        } else {
-            console.log("Deleted savedArticle : ", doc);
-        }
+    return await UserHistory.findOneAndDelete({ history_type: 'savedArticle', article_id: articleId, user_id: userId }).then((result) => {
+        console.log("Deleted savedArticle : ", result);
+        return true;
+    }).catch(e => {
+        console.log(e)
     })
 }
-
 async function getSavedArticle(userId) {
-    return await UserHistory.find({ user_id: userId, history_type: 'SavedArticle' })
+    return await UserHistory.find({ user_id: userId, history_type: 'savedArticle' })
         .populate('article_id')
         .select('article_id date')
+        .populate({ path: "article_id", populate: "user_id" })
         .then(results => {
             let savedArticleArray = [];
             results.map(result => {
@@ -77,7 +62,6 @@ async function getSavedArticle(userId) {
             return false;
         });
 }
-
 //create Feedback
 async function createFeedback(userId, postContent) {
     let userHistory = new UserHistory({ user_id: userId, history_type: 'feedback', post_content: postContent });
@@ -85,10 +69,7 @@ async function createFeedback(userId, postContent) {
         console.log('an feedback saved!!')
     })
 }
-
-
 module.exports = {
-    getAll,
     createViewedArticle,
     getViewedArticle,
     createSavedArticle,
