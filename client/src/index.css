@@ -18,5 +18,6 @@
 
 .nav {
   display: flex;
+  flex-wrap: 'warp';
   align-items: center;
 }
