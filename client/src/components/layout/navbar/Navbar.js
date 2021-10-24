@@ -24,7 +24,6 @@ const Navbar = (props) => {
             setDisplayed('none')
         }
     }
-
     
     const NavagationBar = styled(Box) ({
         display: 'flex',
@@ -57,16 +56,24 @@ const Navbar = (props) => {
         textDecoration: 'None',
         fontSize: '1.4em',
         fontWeight: 'bold',
-        paddingLeft: '60px',
+        height: '60px',
+        padding: '0 40px',
+        display: 'flex',
+        alignItems: 'center',
+        '&:hover': {
+            backgroundColor: '#213946'
+        },
         ['@media (max-width:1024px)']: {
             paddingLeft: '0'
         }
+        
 
     })
 
     const Hamburger = styled('div') ({
         display: 'flex',
         alignItems: 'center',
+
         ['@media (max-width:1024px)']: {
             display: displayed,
             flexDirection: 'column',
@@ -75,8 +82,9 @@ const Navbar = (props) => {
             position: 'absolute',
             right: 0,
             width: '100%',
-            index: '1',
-            backgroundColor: '#28666E'
+            zIndex: '1',
+            backgroundColor: '#28666E',
+            
         }
     })
 
@@ -103,7 +111,7 @@ const Navbar = (props) => {
                     ) : (
                         <>
                         <StyledNavLink to="/login" >Login</StyledNavLink>
-                        <StyledNavLink to="/Singup" >Logout</StyledNavLink>
+                        <StyledNavLink to="/Singup" >Sign up</StyledNavLink>
                         </>
                     )}
                 </Hamburger>
