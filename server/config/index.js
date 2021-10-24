@@ -4,11 +4,9 @@ const config = {
     },
     production: {},
 
-    DB_CONNECTION: /*process.env.MONGODB_URI ||*/ 'mongodb://localhost/kbadb',
+    DB_CONNECTION: /*process.env.MONGODB_URI ||*/ 'mongodb://localhost:27017/kbadb',
 
     cookie: 'x-auth-token'
 }
 
 module.exports = config
-
-        
