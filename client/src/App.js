@@ -10,7 +10,7 @@ import {
 function App() {
   return (
       <Router>
-        <Body loggedIn={true}>
+        <Body loggedIn={false}>
 
         <Switch>
           <Route exact path="/" component={Home} />
