@@ -9,14 +9,15 @@ import {
 
 function App() {
   return (
-    <Body loggedIn={true}>
       <Router>
+        <Body loggedIn={true}>
+
         <Switch>
-          <Route path="/" component={Home} />
+          <Route exact path="/" component={Home} />
 
         </Switch>
+        </Body>
       </Router>
-    </Body>
   );
 }
 
