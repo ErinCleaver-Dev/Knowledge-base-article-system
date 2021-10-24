@@ -63,8 +63,8 @@ async function getSavedArticle(userId) {
         });
 }
 //create Feedback
-async function createFeedback(userId, postContent) {
-    let userHistory = new UserHistory({ user_id: userId, history_type: 'feedback', post_content: postContent });
+async function createFeedback(userId, reason, postContent) {
+    let userHistory = new UserHistory({ user_id: userId, history_type: 'feedback', reason: reason, post_content: postContent });
     return await userHistory.save().then(result => {
         console.log('an feedback saved!!')
     })

@@ -1,4 +1,4 @@
-const {Router} = require('express')
+const { Router } = require('express')
 
 const router = Router();
 const userService = require('../../../services/userService')
@@ -7,8 +7,7 @@ const userHistoryService = require('../../../services/userHistoryService')
 
 router.post('/api/addUser', (req, res, next) => {
     console.log(req.body)
-    userService.create(req.body).then(() => {
-    }).catch(next)
+    userService.create(req.body).then(() => {}).catch(next)
 })
 
 router.get('/api/listUsers', (req, res) => {
@@ -19,7 +18,7 @@ router.get('/api/listUsers', (req, res) => {
 
 router.post('/api/creatPost', (req, res, next) => {
     console.log(req.body)
-    if(req.body) {
+    if (req.body) {
         userResponseService.create(req.body).then(() => {
 
         }).catch(next)
@@ -80,7 +79,7 @@ router.post('/api/deleteSavedArticle', (req, res) => {
     })
 })
 router.post('/api/createFeedback', (req, res) => {
-    userHistoryService.createFeedback(req.body.userId, req.body.postContent).then(result => {
+    userHistoryService.createFeedback(req.body.userId, req.body.reason, req.body.postContent).then(result => {
         console.log('feedback created successfully!')
         res.json({ message: 'feedback created successfully' })
     }).catch(e => {
