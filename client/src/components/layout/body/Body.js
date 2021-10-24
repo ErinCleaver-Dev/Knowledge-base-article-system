@@ -7,8 +7,8 @@ import { Box } from '@mui/material'
 
 
 const Main = styled(Box) ({
-    display: 'flex',
     flexWrap: 'wrap',
+    display: 'flex',
     justifyContent: 'spaceBetween',
     marginTop: 40,
     ['@media (max-width:1024px)']: { 
@@ -16,7 +16,7 @@ const Main = styled(Box) ({
     }
 })
 
-const Container = styled(Box) ({
+const BodyContainer = styled(Box) ({
     margin: "0 40px",
 })
 const Body = (props) => {
@@ -25,9 +25,9 @@ const Body = (props) => {
         <Navbar loggedIn={props.loggedIn}/>
             <Main>
                 {props.loggedIn ? (<Sidebar/>) : (null)} 
-                <Container>
+                <BodyContainer>
                     {props.children}
-                </Container>
+                </BodyContainer>
             </Main>
         </div>
     )
