@@ -1,11 +1,20 @@
 import React from 'react'
+import { styled } from '@mui/material/styles';
+import {Box, Button} from '@mui/material'
 
-const Nav = () => {
+const NavagationBar = styled(Box) ({
+    display: 'flex',
+    justifyContent: 'spaceBetween',
+    backgroundColor: '#28666E',
+    height: '100px',
+})
+
+const Navbar = () => {
     return (
-        <div>
+        <NavagationBar>
             
-        </div>
+        </NavagationBar>
     )
 }
 
-export default Nav
+export default Navbar
