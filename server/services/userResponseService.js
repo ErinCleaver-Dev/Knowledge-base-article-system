@@ -1,7 +1,7 @@
 const UserResponse = require('../models/UserResponse');
 
-module.exports = { 
-    create : async function (data) {
+module.exports = {
+    create: async function(data) {
 
       let userResponse = new UserResponse(data);
 
