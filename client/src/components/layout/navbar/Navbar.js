@@ -8,12 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 // added state for hammburder button.
 
-
-
-
-
-
-
 const Navbar = (props) => {
     const [displayed, setDisplayed] = useState('none')
 
@@ -37,7 +31,6 @@ const Navbar = (props) => {
             padding: '20px 20px',
             justifyContent: 'none',
             alignItems: 'none',
-
         }
     })
 
@@ -64,7 +57,9 @@ const Navbar = (props) => {
             backgroundColor: '#213946'
         },
         ['@media (max-width:1024px)']: {
-            paddingLeft: '0'
+            paddingLeft: '0',
+            height: '0',
+            padding: '20px 20px',
         }
         
 
