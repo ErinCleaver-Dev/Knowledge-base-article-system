@@ -105,8 +105,8 @@ const Navbar = (props) => {
                         
                     ) : (
                         <>
-                        <StyledNavLink to="/login" >Login</StyledNavLink>
-                        <StyledNavLink to="/Singup" >Sign up</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/login" >Login</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/signUp" >Sign up</StyledNavLink>
                         </>
                     )}
                 </Hamburger>

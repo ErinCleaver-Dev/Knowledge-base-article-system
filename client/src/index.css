@@ -1,31 +1,30 @@
 * {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
+
 body {
-  width: 100%;
+    width: 100%;
+    font-family: 'Acme', sans-serif;
 }
 
 .logoImage {
-  height: 50px;
+    height: 50px;
 }
 
 .nav {
-  display: flex;
-  flex-wrap: 'wrap';
-  justify-content: center;
+    display: flex;
+    flex-wrap: 'wrap';
+    justify-content: center;
 }
 
 .profileImage {
-  align-items: center;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  border: none;
-  background: gray;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    background: gray;
 }
 
-
-@media only screen and (min-width : 1025px) {
- 
-}
+@media only screen and (min-width: 1025px) {}

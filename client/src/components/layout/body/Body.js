@@ -3,7 +3,7 @@ import Navbar from '../navbar/Navbar'
 import Sidebar from '../sidebar/Sidebar'
 import { styled } from '@mui/material/styles';
 
-import { Box } from '@mui/material'
+import { Box, } from '@mui/material'
 
 
 const Main = styled(Box) ({
@@ -16,18 +16,19 @@ const Main = styled(Box) ({
     }
 })
 
-const Container = styled(Box) ({
+const BodyContainer = styled(Box)(({loggedIn})=>({
     margin: "0 40px",
-})
+    flexBasis: loggedIn,
+}))
 const Body = (props) => {
     return (
         <div>
         <Navbar loggedIn={props.loggedIn}/>
             <Main>
                 {props.loggedIn ? (<Sidebar/>) : (null)} 
-                <Container>
+                <BodyContainer loggedIn={props.loggedIn ? 'auto':'100%'}>
                     {props.children}
-                </Container>
+                </BodyContainer>
             </Main>
         </div>
     )
