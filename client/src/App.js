@@ -11,7 +11,7 @@ import {
 function App() {
   return (
       <Router>
-        <Body loggedIn={false}>
+        <Body loggedIn={true}>
 
         <Switch>
           <Route exact path="/" component={Home} />

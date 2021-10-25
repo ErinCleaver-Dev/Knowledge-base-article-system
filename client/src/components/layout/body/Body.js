@@ -9,7 +9,6 @@ import { Box, } from '@mui/material'
 const Main = styled(Box) ({
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'spaceBetween',
     marginTop: 40,
     ['@media (max-width:1024px)']: { 
         marginTop: 0,
@@ -18,7 +17,10 @@ const Main = styled(Box) ({
 
 const BodyContainer = styled(Box)(({loggedIn})=>({
     margin: "0 40px",
-    flexBasis: loggedIn,
+    display: "flex",
+    flex: 1.5,
+    flexDirection: 'column',
+    height: '100vh'
 }))
 const Body = (props) => {
     return (
