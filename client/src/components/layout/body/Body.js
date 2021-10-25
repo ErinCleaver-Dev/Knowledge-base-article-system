@@ -15,10 +15,13 @@ const Main = styled(Box) ({
         marginTop: 0,
     }
 })
-
-const BodyContainer = styled(Box) ({
+const BodyContainer = styled(Box)(({loggedIn})=>({
     margin: "0 40px",
-})
+    display: "flex",
+    flex: 1.5,
+    flexDirection: 'column',
+    height: '100vh'
+}))
 const Body = (props) => {
     return (
         <div>
