@@ -24,6 +24,7 @@ const SidebarNav =  styled(Box) ({
 
 const StyledButton = styled(Button) ({
     backgroundColor: '#033F63',
+    minWidth: '170px',
     color: 'white',
     margin: '10px',
     padding: '10px',
