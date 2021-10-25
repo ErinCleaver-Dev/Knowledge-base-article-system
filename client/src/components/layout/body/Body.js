@@ -20,7 +20,10 @@ const BodyContainer = styled(Box)(({loggedIn})=>({
     display: "flex",
     flex: 1.5,
     flexDirection: 'column',
-    height: '100vh'
+    height: '100vh',
+    ['@media (max-width:1024px)']: {
+        margin: "10px 10px",
+    }
 }))
 const Body = (props) => {
     return (
