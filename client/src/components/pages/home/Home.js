@@ -34,11 +34,10 @@ const Home = () => {
         
     })
     
-    const [article, setArticle] = useState({});
+    const [article, setArticle] = useState();
     useEffect(() => {
-        axios.get('http://localhost:5000/api/listAllArticles').then((response) => {
-            console.log(JSON.stringify(response.data));
-            setArticle(response.data);
+        axios.get('http://localhost:5000/api/topTen').then((response) => {
+            setArticle(response.data)
         }).catch(error => {
             console.log(error)
         })
@@ -69,6 +68,7 @@ const Home = () => {
 
     return (
         <>
+            {console.log(article)}
             <CatagoryBox>
                 <HomeButtons>React</HomeButtons>
                 <HomeButtons>Javascript</HomeButtons>
@@ -84,20 +84,16 @@ const Home = () => {
             <TopTen>
                 <h1 className="top10Title">Top 10 Articles</h1>
                 <Articles>
-                    <ArticleCard 
+                    {article ? (<ArticleCard 
                     id={'1'}
                     title={"How to install React"} 
                     likes={1024} 
                     date={10/25/2021}
                     Author={"Jimmy Lo"}
-                    />
-                    <ArticleCard 
-                    id={'1'}
-                    title={"How to install React"} 
-                    likes={1024} 
-                    date={10/25/2021}
-                    Author={"Jimmy Lo"}
-                    />
+                    />) : 
+                    (<>Is Loading...</>)}
+                   
+                    
                 </Articles>
             </TopTen>
         </>

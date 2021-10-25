@@ -52,5 +52,8 @@ module.exports = {
             console.log('Updated like counter ', result)
         })
     },
+    topTen : async function () {
+        return await Article.find({}).sort({likes: -1}).limit(10);
+    },
 }
 
