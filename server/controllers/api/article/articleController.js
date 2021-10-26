@@ -60,11 +60,12 @@ router.get('/api/findArticles', (req, res, next) => {
     }
 })
 
-router.get('/api/getCategories', (req, res, next) => {
+router.post('/api/getCategories', (req, res, next) => {
     console.log(req.body)
     if(req.body.category) {
         articleService.findByCategory(req.body.category).then((results) => {
             console.log("list articles: ", results)
+            res.send(results)
         })
     } else {
         return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })

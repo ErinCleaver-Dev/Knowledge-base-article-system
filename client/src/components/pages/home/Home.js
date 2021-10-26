@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
-import ArticleCard from './ArticleCard'
+import ArticleCard from '../../layout/ArticleCard/ArticleCard'
 import axios from 'axios';
 import {Link} from 'react-router-dom'
 import SearchBox from '../../layout/search_box/SearchBox'
@@ -33,10 +33,10 @@ const Home = () => {
         
     })
     
-    const [article, setArticle] = useState();
+    const [articles, setArticles] = useState();
     useEffect(() => {
         axios.get('http://localhost:5000/api/topTen').then((response) => {
-            setArticle(response.data)
+            setArticles(response.data)
         }).catch(error => {
             console.log(error)
         })
@@ -61,7 +61,7 @@ const Home = () => {
 
     return (
         <>
-            {console.log(article)}
+            {console.log(articles)}
             <CatagoryBox>
                 <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
                 <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
@@ -74,9 +74,9 @@ const Home = () => {
             <TopTen>
                 <h1 className="top10Title">Top 10 Articles</h1>
                 <Articles>
-                    {article ? (
-                    article.map(data => (
-                        <ArticleCard 
+                    {articles ? (
+                    articles.map(data => (
+                        <ArticleCard width={'48%'} 
                         key={data._id}
                         id={data._id}
                         title={data.title} 

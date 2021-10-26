@@ -10,9 +10,10 @@ const ArticleCard = (props) => {
         border: '2px solid #033F63',
         borderRadius: '5px',
         display: 'flex',
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '48%',
+        width: props.width,
         color: '#033F63',
         margin: '10px',
         padding: '5px',
@@ -27,7 +28,7 @@ const ArticleCard = (props) => {
             fontWeight: 'bold',
             paddingBottom: '5px'
         },
-        ['@media (max-width:1024px)']: { 
+        ['@media (max-width:1280px)']: { 
             flex: 'none',
             width: '100%',
             margin: '5px',
@@ -64,7 +65,7 @@ const ArticleCard = (props) => {
             </div>
             <div>
                 <p>Date published: {date}</p>
-                {userData ? (<p>Author : {userData.lastName}, {userData.firstName}</p>) : (<p>loading...</p>)}                
+                {userData ? (<p>Author : {userData.firstName} {userData.lastName}</p>) : (<p>loading...</p>)}                
             </div>
         </ArticleContainer>
     )
