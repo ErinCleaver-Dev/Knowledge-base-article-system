@@ -1,7 +1,7 @@
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,4 +14,19 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+
+//SignUp
+export const signUpFunc = async(email, password) => {
+    return await createUserWithEmailAndPassword(auth, email, password);
+}
+
+//SignOut
+export const signOutFunc = async() => {
+    return await signOut(auth).then(() => {
+        return 'signOut successfully'
+    }).catch((error) => {
+        console.log(error)
+    });
+}

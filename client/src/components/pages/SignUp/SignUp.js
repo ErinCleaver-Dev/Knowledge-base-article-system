@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box} from '@mui/material';
+import { Container, Box, Alert} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles'
 import img from '../../../images/bg.png';
@@ -8,6 +8,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {useState, useRef} from 'react';
+import {signUpFunc, signOutFunc} from '../../../firebase/firebase.config';
+import axios from 'axios';
+
 
 const SignUpContainer = styled(Container) ({
     width:'100%',
@@ -114,6 +117,7 @@ const SignUp = ({classes}) => {
 
     const [fields, setFields] = useState(originalValue);
     const checkBoxRef = useRef();
+    const [error, setError] = useState('');
 
     //validate
     const validate = (name, value) => {
@@ -155,7 +159,7 @@ const SignUp = ({classes}) => {
                     return '*Please enter at least upper character*';
                 } else if (!value.match(/[0-9]/g)) {
                     return '*Please enter at least one digit*';
-                } else if (!value.match(/[@!?-_=+*&%*/]/g)) {
+                } else if (!value.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)) {
                     return '*Please enter at least one symbol(@!?-_=+*&%*/';
                 } else {
                     return '';
@@ -187,13 +191,31 @@ const SignUp = ({classes}) => {
                 [e.target.name]: validate(e.target.name, e.target.value),
            }
            })
+        setError(false)
         };
 
-    const handleSubmit = (e) =>{
+        const checkBoxHandler = (e) =>{
+            setFields({
+                fields:{
+                    ...fields.fields,
+                    [e.target.name]: e.target.value,
+               },
+               errors:{
+                    ...fields.errors,
+                    [e.target.name]: validate(e.target.name, e.target.value),
+                    ['checkBox']: ''
+               }
+               })
+            setError(false)
+            };
+        
+
+   const handleSubmit = async(e) =>{
         e.preventDefault();
+        setError(false);
         
         let errorMessages = {};
-        console.log(checkBoxRef.current.checked)
+        // console.log(checkBoxRef.current.checked)
         if (!checkBoxRef.current.checked){
             errorMessages['checkBox'] = '*Please click the checkBox before Register*'
         }
@@ -218,15 +240,43 @@ const SignUp = ({classes}) => {
           const data = {
             ...fields.fields,
           }
+          //register in firebase
+          await signUpFunc(data.email,data.password).then(userCredential=>{
+            //   console.log(userCredential);
+            //   console.log(userCredential.user.uid)
+            const body = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                password: data.email,
+                uid: userCredential.user.uid
+            }
+            const headers ={
+                'Content-Type': 'application/json',
+            }
+            //Store user data in Mongoose
+            axios.post('http://localhost:5000/api/addUser', body, headers)
+            .catch(e=>{
+                setError('Sever Down, please bear with us!')
+            })
+            setError('Account was registered successfully, now you can login!')
 
-
-          //doing firebase and mongoose
-
+          }).catch(e=>{
+            const errorMessage = 'Error - Email has already in use!'
+            setError(errorMessage);
+          })
+            signOutFunc();
         }
+
     };
    
     return (
             <SignUpContainer>
+                {error ? (
+                <Alert variant="filled" severity={error==='Account was registered successfully, now you can login!'?"success" :"error"}>
+                {error}
+              </Alert>)
+                :null}
                 <h1 className={classes.h1}>SignUp <span className={classes.span}><Link to='/EjKBA/login'>Had an account</Link></span></h1>
                 <FormBox component='form' onSubmit={handleSubmit}>
                 <div className={classes.containerFirstLast}>
@@ -256,7 +306,7 @@ const SignUp = ({classes}) => {
                     <input className={fields.errors.rePassword? classes.inputError: classes.input} type='password' name='rePassword' value={fields.fields.rePassword} onChange={handleUserInput} placeholder='Re-Password'/>
                     <Key/>
                 </div>
-                <input ref={checkBoxRef} className={classes.checkBox} name='policy' type='checkbox'/><label>I agree <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
+                <input ref={checkBoxRef} className={classes.checkBox} name='policy' onClick={checkBoxHandler} type='checkbox'/><label>I agree <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
                 <div>
                 <button className={classes.button} type='submit'>Register</button>
                 </div>
@@ -266,3 +316,5 @@ const SignUp = ({classes}) => {
 }
 
 export default withStyles(Styles)(SignUp);
+
+
