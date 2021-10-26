@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import {Button, Box, OutlinedInput, InputAdornment} from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search';
+import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import ArticleCard from './ArticleCard'
 import axios from 'axios';
-
-
+import {Link} from 'react-router-dom'
+import SearchBox from '../../layout/search_box/SearchBox'
 
 const Home = () => {
 
@@ -58,29 +57,20 @@ const Home = () => {
         width: '100%'
     })
     
-    const SearchBox = styled(OutlinedInput) ({
-        alignSelf: 'center',
-        width: '600px',
-        ['@media (max-width:1024px)']: {
-            width: '100%'
-        }
-    })
+   
 
     return (
         <>
             {console.log(article)}
             <CatagoryBox>
-                <HomeButtons>React</HomeButtons>
-                <HomeButtons>Javascript</HomeButtons>
-                <HomeButtons>Frontend</HomeButtons>
-                <HomeButtons>Backend</HomeButtons>
-                <HomeButtons>Database</HomeButtons>
-                <HomeButtons>Deployment</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=frontend'>Frontend</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=backend'>Backend</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=database'>Database</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=deployment'>Deployment</HomeButtons>
             </CatagoryBox>
-            <SearchBox
-                id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}
-            />
+            <SearchBox />
             <TopTen>
                 <h1 className="top10Title">Top 10 Articles</h1>
                 <Articles>
