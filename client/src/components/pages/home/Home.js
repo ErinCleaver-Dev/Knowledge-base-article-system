@@ -84,16 +84,20 @@ const Home = () => {
             <TopTen>
                 <h1 className="top10Title">Top 10 Articles</h1>
                 <Articles>
-                    {article ? (<ArticleCard 
-                    id={'1'}
-                    title={"How to install React"} 
-                    likes={1024} 
-                    date={10/25/2021}
-                    Author={"Jimmy Lo"}
-                    />) : 
+                    {article ? (
+                    article.map(data => (
+                        <ArticleCard 
+                        key={data._id}
+                        id={data._id}
+                        title={data.title} 
+                        likes={data.likes} 
+                        date={data.published_date}
+                        user_id={data.user_id}
+                        />
+                    ))
+                    ) : 
                     (<>Is Loading...</>)}
                    
-                    
                 </Articles>
             </TopTen>
         </>

@@ -1,9 +1,8 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Container } from '@mui/material/'
 import { styled } from '@mui/material/styles';
 import {Link} from 'react-router-dom'
-
-
+import axios from 'axios';
 
 const ArticleCard = (props) => {
 
@@ -13,7 +12,7 @@ const ArticleCard = (props) => {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flex: 1,
+        width: '48%',
         color: '#033F63',
         margin: '10px',
         padding: '5px',
@@ -36,6 +35,23 @@ const ArticleCard = (props) => {
 
     })
 
+    console.log(props.user_id)
+    const [userData, setUserData] = useState();
+    useEffect (() => {
+    axios.post('http://localhost:5000/api/getUser', {
+        userId : props.user_id
+    }).then((response) => {
+        setUserData(response.data)
+    })
+    }, []);
+
+
+    
+
+    let date = new Date(props.date).toLocaleDateString()
+
+    console.log(userData)
+
     return (
         <ArticleContainer component={Link} to={`id:${props.id}`}>
             <div>
@@ -47,8 +63,8 @@ const ArticleCard = (props) => {
                 </p>
             </div>
             <div>
-                <p>Date published: {props.date}</p>
-                <p>Author : {props.author}</p>
+                <p>Date published: {date}</p>
+                {userData ? (<p>Author : {userData.lastName}, {userData.firstName}</p>) : (<p>loading...</p>)}                
             </div>
         </ArticleContainer>
     )
