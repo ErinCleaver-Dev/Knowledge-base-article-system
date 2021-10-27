@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import ArticleCard from '../../layout/ArticleCard/ArticleCard'
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import Config from '../../../config/index'
 import SearchBox from '../../layout/search_box/SearchBox'
+import { UserContext } from '../../../App';
 
 const Home = () => {
-
+    const  [user, setUser] = useContext(UserContext)
 
     const CatagoryBox = styled(Box) ({
         display: 'grid',
@@ -35,7 +37,7 @@ const Home = () => {
     
     const [articles, setArticles] = useState();
     useEffect(() => {
-        axios.get('http://localhost:5000/api/topTen').then((response) => {
+        axios.get(`${Config.URL}api/topTen`).then((response) => {
             setArticles(response.data)
         }).catch(error => {
             console.log(error)
@@ -61,7 +63,9 @@ const Home = () => {
 
     return (
         <>
+            <h1 className="homeTitle">Welcome to the Knowledge Base Article System!</h1>
             {console.log(articles)}
+            <SearchBox />
             <CatagoryBox>
                 <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
                 <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
@@ -70,9 +74,8 @@ const Home = () => {
                 <HomeButtons component={Link} to='/category?q=database'>Database</HomeButtons>
                 <HomeButtons component={Link} to='/category?q=deployment'>Deployment</HomeButtons>
             </CatagoryBox>
-            <SearchBox />
             <TopTen>
-                <h1 className="top10Title">Top 10 Articles</h1>
+                <h1 className="homeTitle">Top 10 Articles</h1>
                 <Articles>
                     {articles ? (
                     articles.map(data => (

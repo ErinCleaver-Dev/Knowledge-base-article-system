@@ -6,6 +6,7 @@ import React from 'react'
 
 const SearchBoxInput = styled(OutlinedInput) ({
     alignSelf: 'center',
+    marginBottom: '20px',
     width: '600px',
     ['@media (max-width:1024px)']: {
         width: '100%'

@@ -3,6 +3,7 @@ import { Container } from '@mui/material/'
 import { styled } from '@mui/material/styles';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
+import Config from '../../../config/index'
 
 const ArticleCard = (props) => {
 
@@ -39,7 +40,7 @@ const ArticleCard = (props) => {
     console.log(props.user_id)
     const [userData, setUserData] = useState();
     useEffect (() => {
-    axios.post('http://localhost:5000/api/getUser', {
+    axios.post(`${Config.URL}api/getUser`, {
         userId : props.user_id
     }).then((response) => {
         setUserData(response.data)

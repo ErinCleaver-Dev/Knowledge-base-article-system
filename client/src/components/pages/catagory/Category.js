@@ -4,6 +4,8 @@ import axios from 'axios';
 import ArticleCard from '../../layout/ArticleCard/ArticleCard'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import { styled } from '@mui/material/styles';
+import {Button, Box} from '@mui/material'
+import Config from '../../../config/index'
 
 
 const Category = (props) => {
@@ -12,35 +14,47 @@ const Category = (props) => {
     console.log(category)
 
     const [articles, setArticles] = useState();
+    const [sortby, setSortBy] = useState('data');
+    const [start, setStart] = useState(0);
     useEffect(() => {
-        axios.post('http://localhost:5000/api/getCategories', {
-        category : category
+        axios.post(`${Config.URL}api/getCategories`, {
+        category : category,
+        sort: sortby,
+        start: start,
         }).then((response) => {
             setArticles(response.data)
         })
     }, []);
+    
+    const Sort = styled(Box) ({
+        alignSelf: 'flex-end',
+        display: 'flex',
+    })
 
-   
     return (
         <>
             <BackButton/>
-            <h2 className="category_title">React</h2>
+            <h2 className="category_title">{category}</h2>
             <SearchBox />
-            {console.log(articles)}
+            <Sort>
+                Sort by
+            </Sort>
             {articles ? (
-                    articles.map(data => (
-                        <ArticleCard 
-                        width={'100%'}
-                        key={data._id}
-                        id={data._id}
-                        title={data.title} 
-                        likes={data.likes} 
-                        date={data.published_date}
-                        user_id={data.user_id}
-                        />
-                    ))
-                    ) : 
-                    (<>Is Loading...</>)}
+                articles.map(data => (
+                    <ArticleCard 
+                    width={'100%'}
+                    key={data._id}
+                    id={data._id}
+                    title={data.title} 
+                    likes={data.likes} 
+                    date={data.published_date}
+                    user_id={data.user_id}
+                    />
+                ))
+                ) : 
+                (<>Is Loading...</>)
+            }
+
         </>
     )
 }

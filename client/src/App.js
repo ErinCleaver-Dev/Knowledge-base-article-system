@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import Body from './components/layout/body/Body'
 import { styled } from '@mui/material/styles';
 import Home from './components/pages/home/Home'
@@ -8,16 +9,23 @@ import {
   Route,
 } from "react-router-dom";
 
+export const UserContext = React.createContext();
+
 function App() {
+  const [user, setUser] = useState([]);
+ 
+
   return (
       <Router>
-        <Body loggedIn={true}>
+        <UserContext.Provider value={[user, setUser]} >
+          <Body loggedIn={true}>
 
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/category" component={Category} />
-        </Switch>
-        </Body>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/category" component={Category} />
+          </Switch>
+          </Body>
+        </UserContext.Provider>
       </Router>
   );
 }

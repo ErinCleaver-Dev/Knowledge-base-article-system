@@ -25,7 +25,7 @@ body {
   background: gray;
 }
 
-.top10Title {
+.homeTitle {
     border-bottom: 2px solid #033F63;
     color: #033F63;
     width: 100%;
@@ -43,6 +43,7 @@ body {
   text-align: center;
   font-size: 2.8em;
   font-weight: bold;
+  text-transform: 'capitalize';
 }
 
 @media only screen and (min-width : 1025px) {
