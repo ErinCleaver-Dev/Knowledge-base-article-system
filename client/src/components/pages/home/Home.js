@@ -7,6 +7,12 @@ import {Link} from 'react-router-dom'
 import Config from '../../../config/index'
 import SearchBox from '../../layout/search_box/SearchBox'
 import { UserContext } from '../../../App';
+import { FaReact, FaServer } from 'react-icons/fa';
+import { SiJavascript, SiMongodb } from 'react-icons/si';
+import { MdOutlineWeb } from 'react-icons/md';
+import { AiOutlineDeploymentUnit } from 'react-icons/ai';
+
+
 
 const Home = () => {
     const  [user, setUser] = useContext(UserContext)
@@ -18,9 +24,11 @@ const Home = () => {
     
     const HomeButtons = styled(Button) ({
         backgroundColor: '#7C9885',
+        display: 'flex',
+        flexDirection: 'column',
         color: '#033F63',
         height: '150px',
-        marginLeft: '100px',
+        marginLeft: '20px',
         marginBottom: '30px',
         fontSize: '1.8em',
         fontWeight: 'bold',
@@ -67,12 +75,12 @@ const Home = () => {
             {console.log(articles)}
             <SearchBox />
             <CatagoryBox>
-                <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=frontend'>Frontend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=backend'>Backend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=database'>Database</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=deployment'>Deployment</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=react'><FaReact/> React</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=javascript'><SiJavascript/> Javascript</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=frontend'><MdOutlineWeb/> Frontend</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=backend'><FaServer/> Backend</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=database'><SiMongodb /> Database</HomeButtons>
+                <HomeButtons component={Link} to='/category?q=deployment'><AiOutlineDeploymentUnit />  Deployment</HomeButtons>
             </CatagoryBox>
             <TopTen>
                 <h1 className="homeTitle">Top 10 Articles</h1>
