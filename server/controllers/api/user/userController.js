@@ -7,9 +7,7 @@ const userHistoryService = require('../../../services/userHistoryService')
 
 router.post('/api/addUser', (req, res, next) => {
     console.log(req.body)
-    console.log(req.query)
-    console.log(req.headers)
-    userService.create(req.body).then(() => {}).catch(next)
+    userService.create(req.body).then(() => {}).catch()
 })
 
 router.get('/api/listUsers', (req, res) => {
@@ -22,6 +20,14 @@ router.get('/api/listUsers', (req, res) => {
 router.post('/api/getUser', (req, res, next) => {
     console.log("get user id from body: ", req.body.userId)
     userService.getUser(req.body.userId).then((result) => {
+        console.log("get user: ", result)
+        return res.send(result)
+    }).catch(next)
+})
+
+router.post('/api/getUserByUid', (req, res, next) => {
+    console.log("get user id from body: ", req.body.uid)
+    userService.getUserByUid(req.body.uid).then((result) => {
         console.log("get user: ", result)
         return res.send(result)
     }).catch(next)

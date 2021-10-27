@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -32,11 +32,18 @@ export const signOutFunc = async() => {
 }
 
 //sendResetPasswordEmail
-
 export const sendResetPasswordEmailFunc = async(email) => {
     return await sendPasswordResetEmail(auth, email);
 }
 
+//signInWithEmailAndPasswordFunc
 export const signInWithEmailAndPasswordFunc = async(email, password) => {
     return await signInWithEmailAndPassword(auth, email, password);
+}
+
+
+//googleSignIn
+let provider = new GoogleAuthProvider();
+export const googleLogin = async() => {
+    return await signInWithPopup(auth, provider);
 }

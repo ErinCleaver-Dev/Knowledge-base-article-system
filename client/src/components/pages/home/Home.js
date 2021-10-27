@@ -9,6 +9,7 @@ import SearchBox from '../../layout/search_box/SearchBox'
 import { UserContext } from '../../../App';
 
 const Home = () => {
+    
     const  [user, setUser] = useContext(UserContext)
 
     const CatagoryBox = styled(Box) ({
@@ -67,12 +68,12 @@ const Home = () => {
             {console.log(articles)}
             <SearchBox />
             <CatagoryBox>
-                <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=frontend'>Frontend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=backend'>Backend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=database'>Database</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=deployment'>Deployment</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=react'>React</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=javascript'>Javascript</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=frontend'>Frontend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=backend'>Backend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=database'>Database</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=deployment'>Deployment</HomeButtons>
             </CatagoryBox>
             <TopTen>
                 <h1 className="homeTitle">Top 10 Articles</h1>

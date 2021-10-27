@@ -5,13 +5,15 @@ import SendIcon from '@mui/icons-material/Send';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles'
 import img from '../../../images/bg.png';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import GoogleIcon from '@mui/icons-material/Google';
-import {useState, useRef} from 'react';
-import {signUpFunc, signOutFunc, sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc} from '../../../firebase/firebase.config';
+import {useState, useRef, useContext} from 'react';
+import { UserContext } from '../../../App';
+import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../firebase/firebase.config';
 import axios from 'axios';
+import config from '../../../config/index'
 
 
 const LoginContainer = styled(Container) ({
@@ -176,7 +178,9 @@ const Login = ({classes}) => {
     const [passwordForget, setPasswordForget] = useState(false);
     const [ErrorResetEmail, setErrorResetEmail] = useState(false);
     const forgotPasswordEmailRef = useRef();
-    const [loginError, setLoginError] = useState({emailLogin:'', });
+    const [loginError, setLoginError] = useState({emailLoginError:'',googleLoginError:'' });
+    const [user, setUser] = useContext(UserContext);
+    let history = useHistory();
 
     //validate
     const validate = (name, value) => {
@@ -216,6 +220,7 @@ const Login = ({classes}) => {
     //ForgotPasswordButton
     const handleForgotPasswordButton = (e) =>{
         setPasswordForget(true);
+        setLoginError({emailLoginError:'',googleLoginError:'' });
     }
 
     //sendPasswordResetEmailHandlerButton
@@ -244,12 +249,35 @@ const Login = ({classes}) => {
                 [e.target.name]: validate(e.target.name, e.target.value),
            }
            })
+        setLoginError({emailLoginError:'',googleLoginError:'' });
         };
 
     //googleLogin
    const googleLoginHandler = (e) =>{
-       
-   }
+       googleLogin().then(result=>{
+        let user = result.user;
+        axios.post(`${config.URL}api/getUserByUid`, {uid:result.user.uid}).then(result=>{
+            if(result){
+                setUser(user);
+                history.push('/');
+                return;
+            }else{
+                //Store user data in Mongoose
+           const body = {
+            displayName: user.displayName,
+            email: user.email,
+            uid: user.uid
+            }
+           axios.post(`${config.URL}api/addUser`, body)
+           .catch(e=>{
+               setLoginError({emailLoginError:'',googleLoginError: 'Sever Down, please bear with us!' });
+           })
+            }
+        })
+        .catch(e=>{
+            setLoginError({emailLoginError:'',googleLoginError: e.message });
+        })
+   })}
 
    //handleSubmit
    const handleSubmit = async(e) =>{
@@ -279,10 +307,11 @@ const Login = ({classes}) => {
           }
 
           //loginWithFirebase
-          signInWithEmailAndPasswordFunc(data.email, data.password).then(Credential=>{
-              Credential.user.getIdToken().then(token=>{
-                  console.log(token)
-              })
+          signInWithEmailAndPasswordFunc(data.email, data.password).then(credential=>{
+              setUser(credential.user);
+              history.push('/?message=loggedInSuccessfully');    
+          }).catch(e=>{
+              setLoginError({emailLoginError:'Error - Credential Error, please type correct Email or Password!',googleLoginError:'' })
           })
         }
 
@@ -317,8 +346,17 @@ const Login = ({classes}) => {
         :
         (
             <LoginContainer>
-                {loginError}
-                <h1 className={classes.h1}>SignUp <span className={classes.span}><Link to='/EjKBA/signUp'>Need an account</Link></span></h1>
+                {loginError.emailLoginError?
+                <Alert variant="filled" severity='error'>
+                {loginError.emailLoginError}
+                </Alert>
+                :null}
+                {loginError.googleLoginError?
+                <Alert variant="filled" severity='error'>
+                {loginError.googleLoginError}
+                </Alert>
+                :null}
+                <h1 className={classes.h1}>Login <span className={classes.span}><Link to='/EjKBA/signUp'>Need an account</Link></span></h1>
                 <FormBox component='form' onSubmit={handleSubmit}>
                 
                 <div className={classes.containerOther}>

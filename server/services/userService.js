@@ -24,14 +24,19 @@ async function updateLoginTries(userId) {
 }
 
 async function resetLoginTries(userId) {
-    return await User.findOneAndUpdate({uid : userId}, {login_tries: 0}).then (result => {
+    return await User.findOneAndUpdate({ uid: userId }, { login_tries: 0 }).then(result => {
         console.log("Reset login Tries")
     })
 }
 
-async function getUser (_id) {
+async function getUser(_id) {
     console.log(_id)
     return await User.findById(_id).lean()
+}
+
+export async function getUserByUid(uid) {
+    console.log(uid)
+    return await User.findOne({ uid: uid }).lean()
 }
 
 module.exports = {
@@ -39,5 +44,6 @@ module.exports = {
     create,
     updateLoginTries,
     resetLoginTries,
-    getUser
+    getUser,
+    getUserByUid
 }
