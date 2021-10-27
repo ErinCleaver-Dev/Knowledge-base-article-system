@@ -37,9 +37,8 @@ module.exports = {
         console.log(search)
        return await Article.find({key_terms: search}).lean();
     },
-    findByCategory : async function (catagory) {
-        return await Article.find({catagory: catagory}).lean();
-
+    findByCategory : async function (catagory, start, sort) {
+        return await Article.find({catagory: catagory}).sort([[`${sort}`, -1]]).skip(start).limit(10).lean();
     },
     getByUserid : async function (user) {
         return await Article.find({user_id: user})
@@ -51,6 +50,9 @@ module.exports = {
         }).then(result => {
             console.log('Updated like counter ', result)
         })
+    },
+    topTen : async function () {
+        return await Article.find({}).sort({likes: -1}).limit(10);
     },
 }
 
