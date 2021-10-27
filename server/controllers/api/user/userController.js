@@ -15,7 +15,16 @@ router.post('/api/addUser', (req, res, next) => {
 router.get('/api/listUsers', (req, res) => {
     userService.getAll().then((results) => {
         console.log("list users: ", results)
+        res.send(results)
     })
+})
+
+router.post('/api/getUser', (req, res, next) => {
+    console.log("get user id from body: ", req.body.userId)
+    userService.getUser(req.body.userId).then((result) => {
+        console.log("get user: ", result)
+        return res.send(result)
+    }).catch(next)
 })
 
 router.post('/api/creatPost', (req, res, next) => {

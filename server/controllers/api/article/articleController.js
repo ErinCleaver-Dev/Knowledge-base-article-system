@@ -5,15 +5,23 @@ const articleService = require('../../../services/articleService')
 
 router.post('/api/addArticle', (req, res, next) => {
     articleService.create(req.body).then(() => {
-
     }).catch(next)
 })
 
 router.get('/api/listAllArticles', (req, res) => {
-    articleService.getAll().then((results) => {
-        console.log("list articles: ", results)
+    articleService.getAll().then((data) => {
+        console.log("list articles: ", data)
+        res.send(data)
     })
 })
+
+router.get('/api/topTen', (req, res) => {
+    articleService.topTen().then((data) => {
+        console.log("list articles: ", data)
+        res.send(data)
+    })
+})
+
 
 router.post('/api/updateArticle', (req, res, next) => {
     articleService.update(req.body._id, req.body).then(() => {
@@ -34,6 +42,7 @@ router.get('/api/getArticle', (req, res, next) => {
     if(req.body._id) {
         articleService.getOneByid(req.body._id).then((result) => {
             console.log(result)
+            res.send(result)
         }).catch(next)
     } else {
         return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
@@ -51,11 +60,12 @@ router.get('/api/findArticles', (req, res, next) => {
     }
 })
 
-router.get('/api/getCategories', (req, res, next) => {
+router.post('/api/getCategories', (req, res, next) => {
     console.log(req.body)
     if(req.body.category) {
         articleService.findByCategory(req.body.category).then((results) => {
             console.log("list articles: ", results)
+            res.send(results)
         })
     } else {
         return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })
