@@ -41,7 +41,8 @@ const Navbar = (props) => {
         paddingLeft: '40px',
         ['@media (max-width:1024px)']: {
             display: 'block'
-        }
+        },
+        cursor:'pointer'
     })
 
     const StyledNavLink = styled(NavLink) ({
@@ -100,12 +101,12 @@ const Navbar = (props) => {
                     <StyledNavLink to="/" >Home</StyledNavLink>
                     {props.loggedIn ? (
                         <>
-                        <StyledNavLink to="/logout" >Logout</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logOut" >Logout</StyledNavLink>
                         </>
                         
                     ) : (
                         <>
-                        <StyledNavLink to="/EjKBA/login" >Login</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logIn" >Login</StyledNavLink>
                         <StyledNavLink to="/EjKBA/signUp" >Sign up</StyledNavLink>
                         </>
                     )}

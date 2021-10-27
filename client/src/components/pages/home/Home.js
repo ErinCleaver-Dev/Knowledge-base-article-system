@@ -12,7 +12,7 @@ const Home = () => {
     
     const  [user, setUser] = useContext(UserContext)
 
-    const CatagoryBox = styled(Box) ({
+    const CategoryBox = styled(Box) ({
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 33% [col-start])', 
     })
@@ -67,14 +67,14 @@ const Home = () => {
             <h1 className="homeTitle">Welcome to the Knowledge Base Article System!</h1>
             {console.log(articles)}
             <SearchBox />
-            <CatagoryBox>
+            <CategoryBox>
                 <HomeButtons component={Link} to='/EjKBA/category?q=react'>React</HomeButtons>
                 <HomeButtons component={Link} to='/EjKBA/category?q=javascript'>Javascript</HomeButtons>
                 <HomeButtons component={Link} to='/EjKBA/category?q=frontend'>Frontend</HomeButtons>
                 <HomeButtons component={Link} to='/EjKBA/category?q=backend'>Backend</HomeButtons>
                 <HomeButtons component={Link} to='/EjKBA/category?q=database'>Database</HomeButtons>
                 <HomeButtons component={Link} to='/EjKBA/category?q=deployment'>Deployment</HomeButtons>
-            </CatagoryBox>
+            </CategoryBox>
             <TopTen>
                 <h1 className="homeTitle">Top 10 Articles</h1>
                 <Articles>

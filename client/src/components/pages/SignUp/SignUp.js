@@ -3,13 +3,15 @@ import { Container, Box, Alert} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles'
 import img from '../../../images/bg.png';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {useState, useRef} from 'react';
+import {useState, useRef, useContext} from 'react';
 import {signUpFunc, signOutFunc} from '../../../firebase/firebase.config';
+import config from '../../../config/index';
 import axios from 'axios';
+
 
 
 const SignUpContainer = styled(Container) ({
@@ -118,6 +120,8 @@ const SignUp = ({classes}) => {
     const [fields, setFields] = useState(originalValue);
     const checkBoxRef = useRef();
     const [error, setError] = useState('');
+   
+
 
     //validate
     const validate = (name, value) => {
@@ -254,7 +258,7 @@ const SignUp = ({classes}) => {
                 'Content-Type': 'application/json',
             }
             //Store user data in Mongoose
-            axios.post('http://localhost:5000/api/addUser', body, headers)
+            axios.post(`${config.URL}api/addUser`, body, headers)
             .catch(e=>{
                 setError('Sever Down, please bear with us!')
             })
@@ -270,47 +274,51 @@ const SignUp = ({classes}) => {
     };
    
     return (
-            <SignUpContainer>
-                {error ? (
-                <Alert variant="filled" severity={error==='Account was registered successfully, now you can login!'?"success" :"error"}>
-                {error}
-              </Alert>)
-                :null}
-                <h1 className={classes.h1}>SignUp <span className={classes.span}><Link to='/EjKBA/login'>Had an account</Link></span></h1>
-                <FormBox component='form' onSubmit={handleSubmit}>
-                <div className={classes.containerFirstLast}>
-                    <div className={classes.containerSingle}>
-                    <label className={classes.label}>First Name {fields.errors.firstName? <span className={classes.spanError}>{fields.errors.firstName}</span>: null}</label>
-                    <input className={fields.errors.firstName? classes.inputError: classes.input} type='text' name="firstName" value={fields.fields.firstName} onChange={handleUserInput}  placeholder='First Name'/>
-                    <Account/>
-                    </div>
-                    <div className={classes.containerSingle}>
-                    <label className={classes.label}>Last Name {fields.errors.lastName? <span className={classes.spanError}>{fields.errors.lastName}</span>: null}</label>
-                    <input className={fields.errors.lastName? classes.inputError: classes.input} type='text'name='lastName' value={fields.fields.lastName} onChange={handleUserInput} placeholder='Last Name'/>
-                    <Account/>
-                    </div>
-                </div>
-                <div className={classes.containerOther}>
-                    <label className={classes.label}>Email {fields.errors.email? <span className={classes.spanError}>{fields.errors.email}</span>: null}</label>
-                    <input className={fields.errors.email? classes.inputError: classes.input} type='text' name='email' value={fields.fields.email} onChange={handleUserInput} placeholder='Email'/>
-                    <Mail/>
-                </div>
-                <div className={classes.containerOther}>
-                    <label className={classes.label}>Password {fields.errors.password? <span className={classes.spanError}>{fields.errors.password}</span>: null}</label>
-                    <input className={fields.errors.password? classes.inputError: classes.input} type='password' name='password' value={fields.fields.password} onChange={handleUserInput} placeholder='Password'/>
-                    <Key/>
-                </div>
-                <div className={classes.containerOther}>
-                    <label className={classes.label}>Re-Password {fields.errors.rePassword? <span className={classes.spanError}>{fields.errors.rePassword}</span>: null}</label>
-                    <input className={fields.errors.rePassword? classes.inputError: classes.input} type='password' name='rePassword' value={fields.fields.rePassword} onChange={handleUserInput} placeholder='Re-Password'/>
-                    <Key/>
-                </div>
-                <input ref={checkBoxRef} className={classes.checkBox} name='policy' onClick={checkBoxHandler} type='checkbox'/><label>I agree <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
-                <div>
-                <button className={classes.button} type='submit'>Register</button>
-                </div>
-                </FormBox>
-            </SignUpContainer>
+        <React.Fragment>
+        {!localStorage.getItem('isLoggedIn')? (
+        <SignUpContainer>
+        {error ? (
+        <Alert variant="filled" severity={error==='Account was registered successfully, now you can login!'?"success" :"error"}>
+        {error}
+      </Alert>)
+        :null}
+        <h1 className={classes.h1}>SignUp <span className={classes.span}><Link to='/EjKBA/login'>Had an account</Link></span></h1>
+        <FormBox component='form' onSubmit={handleSubmit}>
+        <div className={classes.containerFirstLast}>
+            <div className={classes.containerSingle}>
+            <label className={classes.label}>First Name {fields.errors.firstName? <span className={classes.spanError}>{fields.errors.firstName}</span>: null}</label>
+            <input className={fields.errors.firstName? classes.inputError: classes.input} type='text' name="firstName" value={fields.fields.firstName} onChange={handleUserInput}  placeholder='First Name'/>
+            <Account/>
+            </div>
+            <div className={classes.containerSingle}>
+            <label className={classes.label}>Last Name {fields.errors.lastName? <span className={classes.spanError}>{fields.errors.lastName}</span>: null}</label>
+            <input className={fields.errors.lastName? classes.inputError: classes.input} type='text'name='lastName' value={fields.fields.lastName} onChange={handleUserInput} placeholder='Last Name'/>
+            <Account/>
+            </div>
+        </div>
+        <div className={classes.containerOther}>
+            <label className={classes.label}>Email {fields.errors.email? <span className={classes.spanError}>{fields.errors.email}</span>: null}</label>
+            <input className={fields.errors.email? classes.inputError: classes.input} type='text' name='email' value={fields.fields.email} onChange={handleUserInput} placeholder='Email'/>
+            <Mail/>
+        </div>
+        <div className={classes.containerOther}>
+            <label className={classes.label}>Password {fields.errors.password? <span className={classes.spanError}>{fields.errors.password}</span>: null}</label>
+            <input className={fields.errors.password? classes.inputError: classes.input} type='password' name='password' value={fields.fields.password} onChange={handleUserInput} placeholder='Password'/>
+            <Key/>
+        </div>
+        <div className={classes.containerOther}>
+            <label className={classes.label}>Re-Password {fields.errors.rePassword? <span className={classes.spanError}>{fields.errors.rePassword}</span>: null}</label>
+            <input className={fields.errors.rePassword? classes.inputError: classes.input} type='password' name='rePassword' value={fields.fields.rePassword} onChange={handleUserInput} placeholder='Re-Password'/>
+            <Key/>
+        </div>
+        <input ref={checkBoxRef} className={classes.checkBox} name='policy' onClick={checkBoxHandler} type='checkbox'/><label>I agree <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
+        <div>
+        <button className={classes.button} type='submit'>Register</button>
+        </div>
+        </FormBox>
+    </SignUpContainer>
+    ):(<Redirect to='/'/>)}
+           </React.Fragment>
     )
 }
 

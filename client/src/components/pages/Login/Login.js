@@ -5,15 +5,15 @@ import SendIcon from '@mui/icons-material/Send';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles'
 import img from '../../../images/bg.png';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useHistory, Redirect} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import GoogleIcon from '@mui/icons-material/Google';
 import {useState, useRef, useContext} from 'react';
-import { UserContext } from '../../../App';
 import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../firebase/firebase.config';
 import axios from 'axios';
-import config from '../../../config/index'
+import config from '../../../config/index';
+
 
 
 const LoginContainer = styled(Container) ({
@@ -147,7 +147,9 @@ const Styles = {
         }
     },
     googleButton:{
-        backgroundColor:'#FF5C00', display:'block', width:'100%', fontWeight:'900', marginTop: '15px', fontSize:'0.8em', cursor:'pointer', color:'white'
+        backgroundColor:'#FF5C00', display:'block', width:'100%', fontWeight:'900', marginTop: '15px', fontSize:'0.8em', cursor:'pointer', color:'white', '&:disabled':{
+            cursor: 'wait'
+        }
     },
     twoButtons:{
         display:'flex', justifyContent:'space-between', ['@media (max-width:640px)']: { 
@@ -159,7 +161,6 @@ const Styles = {
 
 
 const Login = ({classes}) => {
-
 
     const originalValue = {
         fields:{
@@ -177,9 +178,9 @@ const Login = ({classes}) => {
     const [fields, setFields] = useState(originalValue);
     const [passwordForget, setPasswordForget] = useState(false);
     const [ErrorResetEmail, setErrorResetEmail] = useState(false);
+    const [disable, setDisabled] = useState(false);
     const forgotPasswordEmailRef = useRef();
     const [loginError, setLoginError] = useState({emailLoginError:'',googleLoginError:'' });
-    const [user, setUser] = useContext(UserContext);
     let history = useHistory();
 
     //validate
@@ -254,30 +255,46 @@ const Login = ({classes}) => {
 
     //googleLogin
    const googleLoginHandler = (e) =>{
+    setLoginError({emailLoginError:'',googleLoginError: ''});
+    setDisabled(true)
        googleLogin().then(result=>{
         let user = result.user;
-        axios.post(`${config.URL}api/getUserByUid`, {uid:result.user.uid}).then(result=>{
-            if(result){
-                setUser(user);
-                history.push('/');
+        let uid = result.user.uid;
+        axios.post(`${config.URL}api/getUserByUid`, {uid:uid}).then(result=>{
+            if(result.data){
+                //console.log(result.data)
+                //console.log('test 1')
+                window.localStorage.setItem('isLoggedIn', 'true');
+                history.push('/?message=loginSuccessfully');
                 return;
             }else{
-                //Store user data in Mongoose
+            //Store user data in Mongoose
+            //console.log('test 2')
            const body = {
             displayName: user.displayName,
             email: user.email,
             uid: user.uid
             }
-           axios.post(`${config.URL}api/addUser`, body)
+           axios.post(`${config.URL}api/addUser`, body).then(()=>{
+               setDisabled(false);
+               window.localStorage.setItem('isLoggedIn', 'true');
+               history.push('/?message=loginSuccessfully')
+           })
            .catch(e=>{
+            setDisabled(false);
                setLoginError({emailLoginError:'',googleLoginError: 'Sever Down, please bear with us!' });
            })
             }
         })
         .catch(e=>{
-            setLoginError({emailLoginError:'',googleLoginError: e.message });
+            setDisabled(false);
+            setLoginError({emailLoginError:'',googleLoginError: 'Sever Down, please bear with us!' });
         })
-   })}
+   }).catch(e=>{
+    setDisabled(false);
+    setLoginError({emailLoginError:'',googleLoginError: 'Login is not successfully, please wait and try later, thanks!' });
+   })
+}
 
    //handleSubmit
    const handleSubmit = async(e) =>{
@@ -308,18 +325,19 @@ const Login = ({classes}) => {
 
           //loginWithFirebase
           signInWithEmailAndPasswordFunc(data.email, data.password).then(credential=>{
-              setUser(credential.user);
+            window.localStorage.setItem('isLoggedIn', 'true');
               history.push('/?message=loggedInSuccessfully');    
           }).catch(e=>{
-              setLoginError({emailLoginError:'Error - Credential Error, please type correct Email or Password!',googleLoginError:'' })
+              setLoginError({emailLoginError:'Error - Credential Error, please type correct Email or Password! or try Google Login',googleLoginError:'' })
           })
         }
-
     };
    
     return (
         <React.Fragment>
-        {passwordForget?
+        {!localStorage.getItem('isLoggedIn')? (
+            <React.Fragment>
+                {passwordForget?
         (<ForgotPasswordContainer>
             {ErrorResetEmail?
             <Alert variant="filled" severity={ErrorResetEmail==='Success - Check your email to reset your password!'?'success':'error'}>
@@ -376,15 +394,20 @@ const Login = ({classes}) => {
                 </div>
                 
                 <div>
-                <button className={classes.button} type='submit'>Login</button>
+                <button className={classes.button} disabled={disable} type='submit'>Login</button>
                 </div>
                 <h1 className={classes.forgotPassword} onClick={handleForgotPasswordButton}>Forgot Password?</h1>
                 <Line textAlign="center">or</Line>
-                <button className={classes.googleButton} onClick={googleLoginHandler} type='button'>Google<Google/>Login</button>
+                <button className={classes.googleButton} disabled={disable} onClick={googleLoginHandler} type='button'>Google<Google/>Login</button>
                 
                 </FormBox>
             </LoginContainer>
             ) }
+            </React.Fragment>
+        ):(
+            <Redirect to='/'/>
+        )}
+        
             </React.Fragment>
     )
 }
