@@ -14,7 +14,7 @@ import axios from 'axios';
 
 const SignUpContainer = styled(Container) ({
     width:'100%',
-    height:'500px',
+    height:'600px',
     backgroundImage: `url(${img})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',

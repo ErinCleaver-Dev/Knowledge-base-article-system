@@ -7,6 +7,8 @@ const userHistoryService = require('../../../services/userHistoryService')
 
 router.post('/api/addUser', (req, res, next) => {
     console.log(req.body)
+    console.log(req.query)
+    console.log(req.headers)
     userService.create(req.body).then(() => {}).catch(next)
 })
 
