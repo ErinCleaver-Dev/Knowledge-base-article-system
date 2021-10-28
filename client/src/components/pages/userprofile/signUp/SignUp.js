@@ -322,6 +322,6 @@ const SignUp = ({classes}) => {
     )
 }
 
-export default withStyles(Styles)(SignUp);
+export default SignUp;
 
 
