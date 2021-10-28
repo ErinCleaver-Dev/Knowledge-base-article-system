@@ -28,6 +28,7 @@ const BodyContainer = styled(Box)({
 const Body = (props) => {
     return (
         <div>
+        
         <Navbar loggedIn={props.loggedIn}/>
             <Main>
                 {props.loggedIn ? (<Sidebar/>) : (null)} 
@@ -35,6 +36,7 @@ const Body = (props) => {
                     {props.children}
                 </BodyContainer>
             </Main>
+        
         </div>
     )
 }
