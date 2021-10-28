@@ -61,10 +61,11 @@ router.get('/api/findArticles', (req, res, next) => {
 })
 
 router.post('/api/getCategories', (req, res, next) => {
-    console.log(req.body)
     if(req.body.category) {
-        articleService.findByCategory(req.body.category).then((results) => {
+        articleService.findByCategory(req.body).then((results) => {
             console.log("list articles: ", results)
+
+            
             res.send(results)
         })
     } else {
