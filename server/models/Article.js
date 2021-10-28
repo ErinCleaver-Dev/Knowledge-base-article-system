@@ -8,24 +8,24 @@ const articleSchema = new mongoose.Schema({
     },
     last_revised_date: {
         type: Date,
-    }, 
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         require: true,
-    }, 
+    },
     title: {
         type: String,
         require: true,
     },
-    catagory: {
+    category: {
         type: String,
         require: true,
     },
     key_terms: {
         type: Array,
         require: true,
-    }, 
+    },
     video: {
         type: String,
         require: false,
@@ -34,8 +34,8 @@ const articleSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    likes: { 
-        type: Number, 
+    likes: {
+        type: Number,
         default: 0,
     }
 })

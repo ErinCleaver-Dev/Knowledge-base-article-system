@@ -37,25 +37,25 @@ const StyledButton = styled(Button) ({
 const Sidebar = () => {
     return (
         <SidebarNav>   
-            <StyledButton component={Link} to="/profile">
+            <StyledButton component={Link} to="/EjKBA/profile">
                 Profile
             </StyledButton>
-            <StyledButton component={Link} to="/create_article">
+            <StyledButton component={Link} to="/EjKBA/create_article">
                 Create Article
             </StyledButton>
-            <StyledButton component={Link} to="/users_articles">
+            <StyledButton component={Link} to="/EjKBA/users_articles">
                 User's Articles
             </StyledButton>
-            <StyledButton component={Link} to="/saved_articles">
+            <StyledButton component={Link} to="/EjKBA/saved_articles">
                 Saved Articles
             </StyledButton>
-            <StyledButton component={Link} to="/comment_history">
+            <StyledButton component={Link} to="/EjKBA/comment_history">
                 Comment History
             </StyledButton>
-            <StyledButton component={Link} to="/view_history">
+            <StyledButton component={Link} to="/EjKBA/view_history">
                 View History
             </StyledButton>
-            <StyledButton component={Link} to="/feeback_support">
+            <StyledButton component={Link} to="/EjKBA/feeback_support">
                 Feedback/Support 
             </StyledButton>
         </SidebarNav>

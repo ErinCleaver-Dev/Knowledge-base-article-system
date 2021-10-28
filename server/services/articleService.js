@@ -37,8 +37,13 @@ module.exports = {
         console.log(search)
        return await Article.find({key_terms: search}).lean();
     },
-    findByCategory : async function (catagory, start, sort) {
-        return await Article.find({catagory: catagory}).sort([[`${sort}`, -1]]).skip(start).limit(10).lean();
+    findByCategory : async function (body) {
+        let category = body['category'];
+        let sort = body['sort']
+        let start = body['start']
+        
+        console.log(`category: ${category} - start: ${start} - sort: ${sort}`)
+        return await Article.find({category: category}).sort(sort).start(start).limit(10).lean()
     },
     getByUserid : async function (user) {
         return await Article.find({user_id: user})
