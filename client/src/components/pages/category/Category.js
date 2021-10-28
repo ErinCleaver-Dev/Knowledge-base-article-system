@@ -11,18 +11,16 @@ import Config from '../../../config/index'
 const Category = (props) => {
 
     let category = props.location.search.replace('?q=', '')
-    console.log(category)
-
     const [articles, setArticles] = useState();
     const [sortby, setSortBy] = useState('data');
-    const [start, setStart] = useState(0);
+    const [start, setStart] = useState(1);
     useEffect(() => {
         axios.post(`${Config.URL}api/getCategories`, {
         category : category,
         sort: sortby,
         start: start,
         }).then((response) => {
-            setArticles(response.data)
+            setArticles(response.data.articles)
         })
     }, []);
     
