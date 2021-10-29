@@ -7,7 +7,7 @@ import {useContext, useState, useEffect} from 'react';
 import { UserContext } from '../../../../App';
 import Gravatar from 'react-gravatar';
 import GoogleIcon from '@mui/icons-material/Google';
-import {sendResetPasswordEmailFunc, linkWithGoogleFunc} from '../../../firebase/firebase.config';
+import {sendResetPasswordEmailFunc, linkWithGoogleFunc} from '../../../../firebase/firebase.config';
 import axios from 'axios';
 import config from '../../../../config';
 

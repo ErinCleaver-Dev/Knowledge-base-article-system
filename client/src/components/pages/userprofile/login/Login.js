@@ -4,13 +4,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles';
-import img from '../../../images/bg.png';
+import img from '../../../../images/bg.png';
 import {Link, useHistory, Redirect} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import GoogleIcon from '@mui/icons-material/Google';
 import {useState, useRef} from 'react';
-import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../firebase/firebase.config';
+import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../../firebase/firebase.config';
 import axios from 'axios';
 import config from '../../../../config/index';
 
