@@ -53,9 +53,6 @@ module.exports = {
             })
         }
 
-        console.log(`category: ${category} - start: ${start} - sort: ${body['sort']}`)
-        console.log("get total number of pages", pages)
-
         articles = await query2.sort(body['sort']).skip(start).limit(10).lean()
 
         return results = {

@@ -6,6 +6,7 @@ import { BackButton } from '../../layout/styledComponents/styledComponents'
 import { styled } from '@mui/material/styles';
 import {Button, Box} from '@mui/material'
 import Config from '../../../config/index'
+import Pagination from '@mui/material/Pagination';
 
 
 const Category = (props) => {
@@ -14,6 +15,8 @@ const Category = (props) => {
     const [articles, setArticles] = useState();
     const [sortby, setSortBy] = useState('data');
     const [start, setStart] = useState(1);
+    const [pages, setPages] = useState(1);
+
     useEffect(() => {
         axios.post(`${Config.URL}api/getCategories`, {
         category : category,
@@ -21,12 +24,39 @@ const Category = (props) => {
         start: start,
         }).then((response) => {
             setArticles(response.data.articles)
+            setPages(response.data.pages)
         })
     }, []);
+
+    const StyledDiv = styled('div') ({
+        color: "#033F63",
+        fontSize: '2.0em',
+    })
     
     const Sort = styled(Box) ({
         alignSelf: 'flex-end',
         display: 'flex',
+    })
+
+    const handleChange = (event, value) => {
+
+        if(pages < value) {
+            console.log('no articles found');
+
+        }
+        console.log(value)
+    }
+
+    const PaginationArticles = styled(Pagination) ({
+        alignSelf: 'center',
+        button: {
+            color: '#033F63',
+            fontSize: '1.8em',
+            fontWeight: 'bold',
+            border: 'none',
+            background: 'none',
+            
+        },
     })
 
     return (
@@ -49,9 +79,11 @@ const Category = (props) => {
                     user_id={data.user_id}
                     />
                 ))
+                
                 ) : 
                 (<>Is Loading...</>)
             }
+            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={0} />
 
         </>
     )
