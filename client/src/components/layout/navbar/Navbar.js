@@ -14,12 +14,16 @@ import config from '../../../config';
 
 const Navbar = (props) => {
     const [displayed, setDisplayed] = useState('none')
-    let [user, setUser]= useContext(UserContext);
+    const [user, setUser]= useContext(UserContext);
     const [name, setName] = useState(false);
 
 
     useEffect(()=>{
         if(user){
+            if(user.displayName){
+                setName(user.displayName);
+                return
+            }
             axios.post(`${config.URL}api/getUserByUid`, {uid:user.uid}).then(result=>{
                     if(result.data.displayName){
                         setName(result.data.displayName);

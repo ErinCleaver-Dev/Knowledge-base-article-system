@@ -7,7 +7,7 @@ import {useContext, useState, useEffect} from 'react';
 import { UserContext } from '../../../App';
 import Gravatar from 'react-gravatar';
 import GoogleIcon from '@mui/icons-material/Google';
-import {sendResetPasswordEmailFunc} from '../../../firebase/firebase.config';
+import {sendResetPasswordEmailFunc, linkWithGoogleFunc} from '../../../firebase/firebase.config';
 import axios from 'axios';
 import config from '../../../config';
 
@@ -21,23 +21,6 @@ const dateFunc = (timestamp) =>{
         ":"+date.getMinutes()+
         ":"+date.getSeconds()}`);
 }
-
-//showNameFunc
-// const showNameFunc = async(uid)=>{
-//     let name;
-//      await axios.post(`${config.URL}api/getUserByUid`, {uid:uid}).then(result=>{
-//             let data = result.data
-//             console.log(data)
-//             let firstName = data.firstName;
-//            let lastName =  data.lastName;
-//             name = firstName + ' ' + lastName;     
-//     }).catch(e=>{
-//         console.log(e);
-//     }
-//     )
-//     return  name;
-// }
-
 
 const ProfileContainer = styled(Container)({
     width:'80%',
@@ -108,6 +91,10 @@ const GoogleButton = styled(Button)({
     width:'100%',
     '&:hover':{
         backgroundColor:'#ff5722',
+    },
+    '&:disabled':{
+        color:'white',
+        opacity:'0.6',   
     }
 })
 
@@ -121,6 +108,10 @@ const ResetButton = styled(Button) ({
     padding: '15px',
     '&:hover' : {
         backgroundColor: '#06283C',
+    },
+    '&:disabled':{
+        color:'white',
+        opacity:'0.6',   
     }
 })
 
@@ -155,10 +146,11 @@ const styles = {
 }
 
 const Profile = ({classes}) =>{
-
     const [user, setUser] = useContext(UserContext);
-    //console.log(user);
     const [SendSuccessfulMessage,setSendSuccessfulMessage] = useState(false);
+    const [googleButtonDisabled, setGoogleButtonDisabled] = useState(false);
+    const [resetPasswordButtonDisabled, setResetPasswordButtonDisabled]=useState(true);
+    const [GoogleLinkMessage,setGoogleLinkMessage] = useState(false);
     const [name, setName] = useState(false);
 
 
@@ -175,16 +167,43 @@ const Profile = ({classes}) =>{
                 }).catch(e=>{
                     console.log(e)
                 }) 
+            
+            user.providerData.map(item=>{
+                if (item.providerId === 'password'){
+                    setResetPasswordButtonDisabled(false)
+                }
+            })    
+
+            user.providerData.map(item=>{
+                if (item.providerId === 'google.com'){
+                    setGoogleButtonDisabled(true)
+                }
+            })
         }
     },[user])
 
    
     const ResetPasswordEmailHandler =(e)=>{
+        setGoogleLinkMessage(false);
         sendResetPasswordEmailFunc(user.email).then(()=>{
             setSendSuccessfulMessage('Email sent, please check your email!');
         })
         .catch(e=>{
-            console.log(e)
+            setSendSuccessfulMessage('Sever down, please try later!')
+        })
+    }
+
+    const linkWithGoogleHandler = (e) =>{
+        setSendSuccessfulMessage(false);
+        linkWithGoogleFunc().then(result=>{
+            console.log(result.user)
+            setGoogleLinkMessage('Success - Your account is linked with Google!')
+        }).catch(e=>{
+            setGoogleLinkMessage(
+            `Error - Link not successfully or reason you see error messages
+            1. Your G-mail account has already linked and in use.
+            2. Do not overClick button and please wait for processing!
+            3. Something went wrong, please try later.`)
         })
     }
 
@@ -206,11 +225,16 @@ const Profile = ({classes}) =>{
 	            style={{margin: '20px auto', borderRadius:'50%', display:'block', border:'4px solid #033F63'}}
             />
             <div>
-                <GoogleButton>Link with <Google/></GoogleButton>
+                <GoogleButton component='button' type='button' onClick={linkWithGoogleHandler} disabled={googleButtonDisabled || GoogleLinkMessage==='Success - Your account is linked with Google!'}>Link with <Google/></GoogleButton>
             </div>
             {SendSuccessfulMessage? 
-            <Alert variant="filled" severity='success'>
+            <Alert variant="filled" severity={SendSuccessfulMessage==='Email sent, please check your email!'? 'success':'error'}>
                 {SendSuccessfulMessage}
+              </Alert>
+                :null}
+            {GoogleLinkMessage? 
+            <Alert variant="filled" severity={GoogleLinkMessage==='Success - Your account is linked with Google!'?'success':'error'}>
+                {GoogleLinkMessage}
               </Alert>
                 :null}
             </LeftContainer>
@@ -224,7 +248,7 @@ const Profile = ({classes}) =>{
                 <h1 className={classes.h1}>Last login At</h1>
                 <p className={classes.p}>{user? dateFunc(Number(user.metadata.lastLoginAt)):null}</p>
                 <label className={classes.label}>Reset Password</label>
-                <ResetButton component='button' type='button' onClick={ResetPasswordEmailHandler}>ResetPassEmail</ResetButton>
+                <ResetButton component='button' type='button' onClick={ResetPasswordEmailHandler} disabled={resetPasswordButtonDisabled}>ResetPassEmail</ResetButton>
                 
             </RightContainer>
         </ProfileInsideContainer>

@@ -3,13 +3,13 @@ import { Container, Box, Alert, Divider, Button} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import {styled} from '@mui/material/styles';
-import {withStyles} from '@mui/styles'
+import {withStyles} from '@mui/styles';
 import img from '../../../images/bg.png';
 import {Link, useHistory, Redirect} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import GoogleIcon from '@mui/icons-material/Google';
-import {useState, useRef, useContext} from 'react';
+import {useState, useRef} from 'react';
 import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../firebase/firebase.config';
 import axios from 'axios';
 import config from '../../../config/index';
@@ -166,12 +166,10 @@ const Login = ({classes}) => {
         fields:{
             email:'',
             password:'',
-            rePassword:''
         },
         errors:{
             email:'',
             password:'',
-            rePassword:'',
         }
     }
 
@@ -200,15 +198,6 @@ const Login = ({classes}) => {
                 if (!value) {
                     return '*Password is Required*';
                 }else {
-                    return '';
-                }
-            case 'rePassword':
-                if (!value) {
-                    return '*Renter your password is Required*';
-                } else if (value !== fields.fields.password) {
-                    return '*Please match your password*'
-    
-                } else {
                     return '';
                 }
             default:
@@ -254,13 +243,13 @@ const Login = ({classes}) => {
         };
 
     //googleLogin
-   const googleLoginHandler = (e) =>{
+   const googleLoginHandler = async(e) =>{
     setLoginError({emailLoginError:'',googleLoginError: ''});
     setDisabled(true)
-       googleLogin().then(result=>{
+       await googleLogin().then(async(result)=>{
         let user = result.user;
         let uid = result.user.uid;
-        axios.post(`${config.URL}api/getUserByUid`, {uid:uid}).then(result=>{
+        await axios.post(`${config.URL}api/getUserByUid`, {uid:uid}).then(result=>{
             if(result.data){
                 //console.log(result.data)
                 //console.log('test 1')
@@ -275,10 +264,13 @@ const Login = ({classes}) => {
             email: user.email,
             uid: user.uid
             }
-           axios.post(`${config.URL}api/addUser`, body).then(()=>{
+           axios.post(`${config.URL}api/addUser`, body).then((result)=>{
+               if(result.data.result === 'true'){
                setDisabled(false);
+               //console.log('test 3')
                window.localStorage.setItem('isLoggedIn', 'true');
-               history.push('/?message=loginSuccessfully')
+               history.push('/?message=loginSuccessfully');
+               }
            })
            .catch(e=>{
             setDisabled(false);
@@ -325,7 +317,7 @@ const Login = ({classes}) => {
 
           //loginWithFirebase
           signInWithEmailAndPasswordFunc(data.email, data.password).then(credential=>{
-            window.localStorage.setItem('isLoggedIn', 'true');
+             window.localStorage.setItem('isLoggedIn', 'true');
               history.push('/?message=loggedInSuccessfully');    
           }).catch(e=>{
               setLoginError({emailLoginError:'Error - Credential Error, please type correct Email or Password! or try Google Login',googleLoginError:'' })
@@ -387,12 +379,6 @@ const Login = ({classes}) => {
                     <input className={fields.errors.password? classes.inputError: classes.input} type='password' name='password' value={fields.fields.password} onChange={handleUserInput} placeholder='Password'/>
                     <Key/>
                 </div>
-                <div className={classes.containerOther}>
-                    <label className={classes.label}>Re-Password {fields.errors.rePassword? <span className={classes.spanError}>{fields.errors.rePassword}</span>: null}</label>
-                    <input className={fields.errors.rePassword? classes.inputError: classes.input} type='password' name='rePassword' value={fields.fields.rePassword} onChange={handleUserInput} placeholder='Re-Password'/>
-                    <Key/>
-                </div>
-                
                 <div>
                 <button className={classes.button} disabled={disable} type='submit'>Login</button>
                 </div>

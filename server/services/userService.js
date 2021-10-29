@@ -8,7 +8,9 @@ async function create(data) {
     let user = new User(data);
 
     return await user.save().then(result => {
+        console.log(result)
         console.log('an user saved!!')
+        return 'true'
     })
 }
 
