@@ -4,12 +4,12 @@ import { styled } from '@mui/material/styles';
 import {withStyles} from '@mui/styles';
 import {Redirect} from 'react-router-dom';
 import {useContext, useState, useEffect} from 'react';
-import { UserContext } from '../../../App';
+import { UserContext } from '../../../../App';
 import Gravatar from 'react-gravatar';
 import GoogleIcon from '@mui/icons-material/Google';
 import {sendResetPasswordEmailFunc, linkWithGoogleFunc} from '../../../firebase/firebase.config';
 import axios from 'axios';
-import config from '../../../config';
+import config from '../../../../config';
 
 //convert date function
 const dateFunc = (timestamp) =>{

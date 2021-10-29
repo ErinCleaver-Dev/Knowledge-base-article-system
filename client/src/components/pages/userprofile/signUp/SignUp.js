@@ -2,14 +2,14 @@ import React from 'react';
 import { Container, Box, Alert} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {withStyles} from '@mui/styles'
-import img from '../../../images/bg.png';
+import img from '../../../../images/bg.png';
 import {Link, Redirect} from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {useState, useRef, useContext} from 'react';
-import {signUpFunc, signOutFunc} from '../../../firebase/firebase.config';
-import config from '../../../config/index';
+import {signUpFunc, signOutFunc} from '../../../../firebase/firebase.config';
+import config from '../../../../config/index';
 import axios from 'axios';
 
 

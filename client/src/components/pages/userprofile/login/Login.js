@@ -12,7 +12,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import {useState, useRef} from 'react';
 import {sendResetPasswordEmailFunc, signInWithEmailAndPasswordFunc, googleLogin} from '../../../firebase/firebase.config';
 import axios from 'axios';
-import config from '../../../config/index';
+import config from '../../../../config/index';
 
 
 
