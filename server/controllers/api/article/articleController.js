@@ -49,11 +49,12 @@ router.get('/api/getArticle', (req, res, next) => {
     }
 })
 
-router.get('/api/findArticles', (req, res, next) => {
-    console.log(req.body)
+router.post('/api/findArticles', (req, res, next) => {
+    console.log(req.body.search)
     if(req.body.search) {
-        articleService.findArticles(req.body.search).then((results) => {
+        articleService.findArticles(req.body).then((results) => {
             console.log("list articles: ", results)
+            res.send(results)
         })
     } else {
         return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })
@@ -78,6 +79,7 @@ router.get('/api/getUsersArticles', (req, res, next) => {
     if(req.body.user_id) {
         articleService.getByUserid(req.body.user_id).then((results) => {
             console.log("list articles: ", results)
+            res.send(results)
         })
     } else {
         return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })

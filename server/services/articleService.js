@@ -32,10 +32,34 @@ module.exports = {
     getOneByid : async function (_id) {
         return await Article.findById(_id)
     },
-    findArticles : async function (search) {
+    findArticles : async function (body) {
+        console.log("testing find", body)
+        let search = body['search'];
+        let page = body['start'];
+        
+        
+        count = Article.find(
+            {key_terms: search}
+        );
+        let findArticles = Article.find(
+            {key_terms: search}
+        );
+        const total = await count.countDocuments();
+        let start = (page - 1 ) * 10;
+        const pages = Math.ceil(total/10);
 
-        console.log(search)
-       return await Article.find({key_terms: search}).lean();
+        if(page > pages) {
+            return res.status(404).json({ 
+                message: "No page found",
+            })
+        }
+
+        articles = await findArticles.sort(body['sort']).skip(start).limit(10).lean()
+
+        return results = {
+            pages: pages,
+            articles: articles
+        }
     },
     findByCategory : async function (body) {
         let category = body['category'];

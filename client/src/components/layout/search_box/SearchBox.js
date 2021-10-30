@@ -30,7 +30,8 @@ const SearchBox = () => {
             d.setTime(d.getTime() + (60*60*1000));
             cookie.set("search", event.target.value, {path: '/', expires: d})
             setSearch(event.target.value)
-            history.push(`/search?q=${event.target.value}`)
+            history.push(`/EjKBA/search?q=${event.target.value}`)
+            window.location.reload(); 
         }
     }
 
