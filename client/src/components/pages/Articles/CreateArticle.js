@@ -334,12 +334,12 @@ const CreateArticle = ({classes}) => {
                 ):null}
                 <select className={classes.categorySelect} style={errors.category? ({border:'3px red solid', marginTop:'10px', height:'70%'}):(null)} name='category' onChange={handleUserInputState}>
                     <option className={classes.categoryOption} value=''>Choose one category</option>
-                    <option className={classes.categoryOption} value='React'>React</option>
-                    <option className={classes.categoryOption} value='Javascript'>Javascript</option>
-                    <option className={classes.categoryOption} value='Database'>Database</option>
-                    <option className={classes.categoryOption} value='Frontend'>Frontend</option>
-                    <option className={classes.categoryOption} value='Backend'>Backend</option>
-                    <option className={classes.categoryOption} value='Deployment'>Deployment</option>
+                    <option className={classes.categoryOption} value='react'>React</option>
+                    <option className={classes.categoryOption} value='javascript'>Javascript</option>
+                    <option className={classes.categoryOption} value='database'>Database</option>
+                    <option className={classes.categoryOption} value='frontend'>Frontend</option>
+                    <option className={classes.categoryOption} value='backend'>Backend</option>
+                    <option className={classes.categoryOption} value='deployment'>Deployment</option>
                 </select>
                 </Grid>
             </ContainerGrid>
