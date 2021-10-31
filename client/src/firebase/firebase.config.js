@@ -26,9 +26,11 @@ export const signUpFunc = async(email, password) => {
 export const signOutFunc = async() => {
     return await signOut(auth).then(() => {
         localStorage.removeItem('isLoggedIn');
-        return 'signOut successfully'
+        localStorage.removeItem('tempPost');
+        localStorage.removeItem('userSecret');
+        return 'signOut successfully';
     }).catch((error) => {
-        console.log(error)
+        console.log(error);
     });
 }
 

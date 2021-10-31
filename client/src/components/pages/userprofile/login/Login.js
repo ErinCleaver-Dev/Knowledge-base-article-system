@@ -250,9 +250,10 @@ const Login = ({classes}) => {
         let user = result.user;
         let uid = result.user.uid;
         await axios.post(`${config.URL}api/getUserByUid`, {uid:uid}).then(result=>{
-            if(result.data){
-                //console.log(result.data)
+            if(result.data._id){
+                //console.log(result.data._id)
                 //console.log('test 1')
+                window.localStorage.setItem('userSecret', result.data._id)
                 window.localStorage.setItem('isLoggedIn', 'true');
                 history.push('/?message=loginSuccessfully');
                 return;
@@ -265,26 +266,26 @@ const Login = ({classes}) => {
             uid: user.uid
             }
            axios.post(`${config.URL}api/addUser`, body).then((result)=>{
-               if(result.data.result === 'true'){
-               setDisabled(false);
-               //console.log('test 3')
-               window.localStorage.setItem('isLoggedIn', 'true');
-               history.push('/?message=loginSuccessfully');
-               }
+               //console.log(result.data)
+                setDisabled(false);
+                //console.log('test 3')
+                window.localStorage.setItem('userSecret', result.data._id);
+                window.localStorage.setItem('isLoggedIn', 'true');
+                history.push('/?message=loginSuccessfully');
            })
            .catch(e=>{
             setDisabled(false);
-               setLoginError({emailLoginError:'',googleLoginError: 'Sever Down, please bear with us!' });
+               setLoginError({emailLoginError:'',googleLoginError: 'Error - Sever Down, please bear with us!' });
            })
             }
         })
         .catch(e=>{
             setDisabled(false);
-            setLoginError({emailLoginError:'',googleLoginError: 'Sever Down, please bear with us!' });
+            setLoginError({emailLoginError:'',googleLoginError: 'Error - Sever Down, please bear with us!' });
         })
    }).catch(e=>{
     setDisabled(false);
-    setLoginError({emailLoginError:'',googleLoginError: 'Login is not successfully, please wait and try later, thanks!' });
+    setLoginError({emailLoginError:'',googleLoginError: 'Error - Login is not successfully, please wait and try later, thanks!' });
    })
 }
 
@@ -316,9 +317,15 @@ const Login = ({classes}) => {
           }
 
           //loginWithFirebase
-          signInWithEmailAndPasswordFunc(data.email, data.password).then(credential=>{
-             window.localStorage.setItem('isLoggedIn', 'true');
-              history.push('/?message=loggedInSuccessfully');    
+          signInWithEmailAndPasswordFunc(data.email, data.password).then(async(credential)=>{
+            await axios.post(`${config.URL}api/getUserByUid`, {uid:credential.user.uid}).then(result=>{
+                let user = result.data._id;
+                window.localStorage.setItem('userSecret',user);
+                window.localStorage.setItem('isLoggedIn', 'true');
+                history.push('/?message=loggedInSuccessfully');    
+            }).catch(e=>{
+                setLoginError({emailLoginError:'Error - Sever Down, please bear with us!',googleLoginError:'' })
+            })
           }).catch(e=>{
               setLoginError({emailLoginError:'Error - Credential Error, please type correct Email or Password! or try Google Login',googleLoginError:'' })
           })

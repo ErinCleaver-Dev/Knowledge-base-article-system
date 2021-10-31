@@ -127,16 +127,16 @@ const Navbar = (props) => {
                 <HamburgerButton onClick={clickedHamburger}/>
 
                 <Hamburger>
-                    <StyledNavLink to="/" >Home</StyledNavLink>
+                    <StyledNavLink to="/" onClick={()=>{setDisplayed('none')}} >Home</StyledNavLink>
                     {props.loggedIn ? (
                         <>
-                        <StyledNavLink to="/EjKBA/logOut" >Logout</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logOut" onClick={()=>{setDisplayed('none')}}>Logout</StyledNavLink>
                         </>
                         
                     ) : (
                         <>
-                        <StyledNavLink to="/EjKBA/logIn" >Login</StyledNavLink>
-                        <StyledNavLink to="/EjKBA/signUp" >Sign up</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logIn" onClick={()=>{setDisplayed('none')}}>Login</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/signUp" onClick={()=>{setDisplayed('none')}}>Sign up</StyledNavLink>
                         </>
                     )}
                 </Hamburger>
