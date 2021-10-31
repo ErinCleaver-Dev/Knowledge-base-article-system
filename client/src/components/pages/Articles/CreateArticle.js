@@ -271,7 +271,7 @@ const CreateArticle = ({classes}) => {
 
     return (
         <React.Fragment>
-        {localStorage.getItem('isLoggedIn')?(
+        {localStorage.getItem('isLoggedIn') ?(
         <OuterContainer component='form' onSubmit={handleSubmit}>
             {/* {test?<div dangerouslySetInnerHTML={{ __html: test }}></div>:null} */}
             {submitError?

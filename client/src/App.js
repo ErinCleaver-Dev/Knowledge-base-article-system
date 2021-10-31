@@ -42,6 +42,7 @@ function App() {
             <Route exact path="/EjKBA/signUp" component={SignUp}/>
             <Route exact path="/EjKBA/logIn" component={Login}/>
             <Route exact path="/EjKBA/profile" component={Profile}/>
+            <Route exact path="/EjKBA/create_article" component={CreateArticle}/>
             <Route exact path="/EjKBA/logOut" render={()=>{
               signOutFunc();
               return(
