@@ -9,17 +9,18 @@ import Config from '../../../config/index'
 import Pagination from '@mui/material/Pagination';
 
 
-const Category = (props) => {
+const Search = (props) => {
 
-    let category = props.location.search.replace('?q=', '')
+    let search = props.location.search.replace('?q=', '')
     const [articles, setArticles] = useState();
     const [sortby, setSortBy] = useState('data');
     const [start, setStart] = useState(1);
     const [pages, setPages] = useState(1);
 
     useEffect(() => {
-        axios.post(`${Config.URL}api/getCategories`, {
-        category : category,
+        console.log("testing axois")
+        axios.post(`${Config.URL}api/findArticles`, {
+        search : search,
         sort: sortby,
         start: start,
         }).then((response) => {
@@ -62,7 +63,7 @@ const Category = (props) => {
     return (
         <>
             <BackButton/>
-            <h2 className="category_title">{category}</h2>
+            <h2 className="category_title">Search</h2>
             <SearchBox />
             <Sort>
                 Sort by
@@ -89,4 +90,4 @@ const Category = (props) => {
     )
 }
 
-export default Category
+export default Search

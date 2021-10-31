@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Body from './components/layout/body/Body'
 import Home from './components/pages/home/Home'
 import Category from './components/pages/category/Category'
+import Search from './components/pages/search/Search'
 import SignUp from './components/pages/userprofile/signUp/SignUp';
 import Login from './components/pages/userprofile/login/Login';
 import Profile from './components/pages/userprofile/profile/Profile';
@@ -50,7 +51,7 @@ function App() {
               )
             }}/>
             <Route exact path="/EjKBA/category" component={Category} />
-            <Route exact path="/EjKBA/create_article" component={CreateArticle}/>
+            <Route exact path="/EjKBA/search" component={Search}/>
           </Switch>
           </Body>
         </UserContext.Provider>
