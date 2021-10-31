@@ -14,12 +14,16 @@ import config from '../../../config';
 
 const Navbar = (props) => {
     const [displayed, setDisplayed] = useState('none')
-    let [user, setUser]= useContext(UserContext);
+    const [user, setUser]= useContext(UserContext);
     const [name, setName] = useState(false);
 
 
     useEffect(()=>{
         if(user){
+            if(user.displayName){
+                setName(user.displayName);
+                return
+            }
             axios.post(`${config.URL}api/getUserByUid`, {uid:user.uid}).then(result=>{
                     if(result.data.displayName){
                         setName(result.data.displayName);
@@ -123,16 +127,16 @@ const Navbar = (props) => {
                 <HamburgerButton onClick={clickedHamburger}/>
 
                 <Hamburger>
-                    <StyledNavLink to="/" >Home</StyledNavLink>
+                    <StyledNavLink to="/" onClick={()=>{setDisplayed('none')}} >Home</StyledNavLink>
                     {props.loggedIn ? (
                         <>
-                        <StyledNavLink to="/EjKBA/logOut" >Logout</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logOut" onClick={()=>{setDisplayed('none')}}>Logout</StyledNavLink>
                         </>
                         
                     ) : (
                         <>
-                        <StyledNavLink to="/EjKBA/logIn" >Login</StyledNavLink>
-                        <StyledNavLink to="/EjKBA/signUp" >Sign up</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logIn" onClick={()=>{setDisplayed('none')}}>Login</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/signUp" onClick={()=>{setDisplayed('none')}}>Sign up</StyledNavLink>
                         </>
                     )}
                 </Hamburger>

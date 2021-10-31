@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithPopup } from 'firebase/auth';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -26,9 +26,11 @@ export const signUpFunc = async(email, password) => {
 export const signOutFunc = async() => {
     return await signOut(auth).then(() => {
         localStorage.removeItem('isLoggedIn');
-        return 'signOut successfully'
+        localStorage.removeItem('tempPost');
+        localStorage.removeItem('userSecret');
+        return 'signOut successfully';
     }).catch((error) => {
-        console.log(error)
+        console.log(error);
     });
 }
 
@@ -47,4 +49,9 @@ export const signInWithEmailAndPasswordFunc = async(email, password) => {
 let provider = new GoogleAuthProvider();
 export const googleLogin = async() => {
     return await signInWithPopup(auth, provider);
+}
+
+//linkWithGoogle
+export const linkWithGoogleFunc = async() => {
+    return await linkWithPopup(auth.currentUser, provider);
 }

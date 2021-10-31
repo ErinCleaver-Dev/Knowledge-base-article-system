@@ -20,7 +20,7 @@ const BodyContainer = styled(Box)({
     display: "flex",
     flex: 1.5,
     flexDirection: 'column',
-    height: '100vh',
+    paddingBottom: '30px',
     ['@media (max-width:1024px)']: {
         margin: "10px 10px",
     }
