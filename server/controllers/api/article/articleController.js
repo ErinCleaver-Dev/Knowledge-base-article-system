@@ -29,7 +29,7 @@ router.get('/api/topTen', (req, res) => {
 // for edit page to update article
 router.post('/api/updateArticle', (req, res, next) => {
     articleService.update(req.body.article_id, req.body).then(() => {
-        res.send({result: true});
+        res.send({ result: true });
         console.log("updated article")
     })
 })
@@ -54,11 +54,12 @@ router.get('/api/getArticle', (req, res, next) => {
     }
 })
 
-router.get('/api/findArticles', (req, res, next) => {
-    console.log(req.body)
+router.post('/api/findArticles', (req, res, next) => {
+    console.log(req.body.search)
     if (req.body.search) {
-        articleService.findArticles(req.body.search).then((results) => {
+        articleService.findArticles(req.body).then((results) => {
             console.log("list articles: ", results)
+            res.send(results)
         })
     } else {
         return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })
@@ -66,10 +67,10 @@ router.get('/api/findArticles', (req, res, next) => {
 })
 
 router.post('/api/getCategories', (req, res, next) => {
-    console.log(req.body)
     if (req.body.category) {
-        articleService.findByCategory(req.body.category).then((results) => {
+        articleService.findByCategory(req.body).then((results) => {
             console.log("list articles: ", results)
+
             res.send(results)
         })
     } else {
@@ -84,7 +85,7 @@ router.post('/api/getUsersArticles', (req, res, next) => {
         articleService.getByUserId(req.body.user_id).then((results) => {
             console.log("list articles: ", results)
             res.json(results);
-        }).catch(e=>{
+        }).catch(e => {
             console.log(e);
             res.send('');
         })
@@ -94,12 +95,12 @@ router.post('/api/getUsersArticles', (req, res, next) => {
 })
 
 //Get user's specific article from user_id and article_id
-router.post('/api/getUserSpecificArticle', (req,res,next)=>{
+router.post('/api/getUserSpecificArticle', (req, res, next) => {
     console.log(req.body);
-    articleService.getByUserIdAndArticleId(req.body.user_id, req.body.article_id).then((result)=>{
+    articleService.getByUserIdAndArticleId(req.body.user_id, req.body.article_id).then((result) => {
         console.log(result);
         res.json(result);
-    }).catch(e=>{
+    }).catch(e => {
         console.log(e);
         res.send('')
     })

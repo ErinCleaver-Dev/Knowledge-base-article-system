@@ -7,6 +7,12 @@ import {Link} from 'react-router-dom'
 import Config from '../../../config/index'
 import SearchBox from '../../layout/search_box/SearchBox'
 import { UserContext } from '../../../App';
+import { FaReact, FaServer } from 'react-icons/fa';
+import { SiJavascript, SiMongodb } from 'react-icons/si';
+import { MdOutlineWeb } from 'react-icons/md';
+import { AiOutlineDeploymentUnit } from 'react-icons/ai';
+
+
 
 const Home = () => {
     
@@ -19,9 +25,11 @@ const Home = () => {
     
     const HomeButtons = styled(Button) ({
         backgroundColor: '#7C9885',
+        display: 'flex',
+        flexDirection: 'column',
         color: '#033F63',
         height: '150px',
-        marginLeft: '100px',
+        marginLeft: '20px',
         marginBottom: '30px',
         fontSize: '1.8em',
         fontWeight: 'bold',
