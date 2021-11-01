@@ -60,7 +60,6 @@ const Home = () => {
         width: '100%'
     })
     
-   
 
     return (
         <>

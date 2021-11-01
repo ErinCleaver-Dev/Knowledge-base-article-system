@@ -16,7 +16,7 @@ module.exports = {
     },
     update: async function(_id, data) {
         return await Article.findByIdAndUpdate(_id, {
-            last_revised_date: data.last_revised_date || Date.now(),
+            last_revised_date: Date.now(),
             title: data.title,
             category: data.category,
             key_terms: data.key_terms,
@@ -44,8 +44,12 @@ module.exports = {
             [`${sort}`, -1]
         ]).skip(start).limit(10).lean();
     },
-    getByUserid: async function(user) {
+    getByUserId: async function(user) {
         return await Article.find({ user_id: user })
+    },
+    // find specific article from user_id and article_id
+    getByUserIdAndArticleId: async function(user, article) {
+        return await Article.findOne({ user_id: user, _id: article });
     },
     updateLike: async function(_id, likes) {
         console.log("testing likes: ", likes)

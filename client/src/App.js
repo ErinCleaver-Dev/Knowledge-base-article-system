@@ -6,6 +6,8 @@ import SignUp from './components/pages/userprofile/signUp/SignUp';
 import Login from './components/pages/userprofile/login/Login';
 import Profile from './components/pages/userprofile/profile/Profile';
 import CreateArticle from './components/pages/Articles/CreateArticle';
+import EditArticle from './components/pages/Articles/EditArticle';
+import UserArticles from './components/pages/Articles/UserArticles';
 import {auth, signOutFunc} from './firebase/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import {Redirect} from 'react-router-dom';
@@ -51,6 +53,8 @@ function App() {
             }}/>
             <Route exact path="/EjKBA/category" component={Category} />
             <Route exact path="/EjKBA/create_article" component={CreateArticle}/>
+            <Route exact path="/EjKBA/edit_article/:user_id/:article_id" component={EditArticle}/>
+            <Route exact path="/EjKBA/user_articles" component={UserArticles}/>
           </Switch>
           </Body>
         </UserContext.Provider>
