@@ -39,7 +39,9 @@ module.exports = {
         let search = body['search'];
         let page = body['start'];
         
+        search = search.toLowerCase();
         
+        console.log(search)
         count = Article.find(
             {key_terms: search}
         );
@@ -51,9 +53,7 @@ module.exports = {
         const pages = Math.ceil(total/10);
 
         if(page > pages) {
-            return res.status(404).json({ 
-                message: "No page found",
-            })
+            return    {message: "No page found"}
         }
 
         articles = await findArticles.sort(body['sort']).skip(start).limit(10).lean()

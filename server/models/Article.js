@@ -25,6 +25,8 @@ const articleSchema = new mongoose.Schema({
     key_terms: {
         type: Array,
         require: true,
+        lowercase: true, 
+        trim: true 
     },
     video: {
         type: String,
