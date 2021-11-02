@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Config from '../../../config/index';
+import {Button} from '@mui/material'
+
 
 const UserArticlesCard = (props) => {
 
@@ -37,6 +39,27 @@ const UserArticlesCard = (props) => {
 
     })
 
+    
+const FormattedBotton = styled(Button) ({
+    background: '#033F63',
+    color: '#FFFFFF',
+    maxWidth: '150px',
+    padding: '10px',
+    marginLeft: '10px',
+    minWidth: '100px',
+    img: {
+        height: '30px'
+    },
+    span: {
+        paddingLeft: '10px',
+        fontSize: '1.2em',
+        fontWeight: 'bold'
+    },
+    '&:hover': {
+        backgroundColor: '#213946'
+    }
+})
+
     /*-------------------------------------------------------*/
     const [userData, setUserData] = useState({});
     useEffect (() => {
@@ -66,8 +89,8 @@ const UserArticlesCard = (props) => {
                 </p>
             </div>
             <div>
-                <Link to={`/EjKBA/edit_article/${props.user_id}/${props.article_id}#editArticle`}>Edit</Link>
-                <button type='button'>delete</button>
+                <FormattedBotton component={Link} to={`/EjKBA/edit_article/${props.user_id}/${props.article_id}#editArticle`}>Edit</FormattedBotton>
+                <FormattedBotton type='button'>delete</FormattedBotton>
             </div>
             <div>
                 <p>Date published: {published_date}</p>

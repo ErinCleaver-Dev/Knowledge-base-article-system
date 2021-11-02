@@ -28,6 +28,7 @@ const SearchBox = ({location}) => {
         //console('test searchBox 2')
         if(location.pathname === "/EjKBA/search" && location.search.startsWith('?q=')){
             let searchTerm = location.search.replace('?q=', '');
+            searchTerm = searchTerm.replace('%20', ' ')
             //console.log(searchTerm)
             setSearch(searchTerm);
         }
