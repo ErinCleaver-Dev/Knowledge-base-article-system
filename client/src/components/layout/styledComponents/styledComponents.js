@@ -4,8 +4,6 @@ import { styled } from '@mui/material/styles';
 import backbutton from '../../../images/back.svg'
 import {useHistory} from "react-router-dom";
 
-
-
 const FormatedBackButton = styled(Button) ({
     background: '#033F63',
     color: '#FFFFFF',
@@ -25,7 +23,6 @@ const FormatedBackButton = styled(Button) ({
 })
 export const BackButton = () => {
     const history = useHistory();  
-
 
     return (
         <FormatedBackButton onClick={() => {
