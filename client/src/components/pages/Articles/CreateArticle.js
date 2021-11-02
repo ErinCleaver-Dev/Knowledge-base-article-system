@@ -218,14 +218,14 @@ const CreateArticle = ({classes}) => {
         Object.keys(keyWords).map(key=>{
             if(keyWords[key] === ''){
             count++;
-            }else if(!keyWords[key].match(/^[a-zA-Z]+$/gm)){
-                count ++;
+            }else if(!keyWords[key].match(/^([a-z0-9A-Z])[a-z. A-Z0-9]*$/gm)){
+                count += 10;
             }else{
                 key_terms.push(_.lowerCase(keyWords[key]))
             }
         })
-        if (count === 5){
-            allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters!'}
+        if (count >= 5){
+            allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters, space and dot are allowed!'}
         }else{
             finalData = {...finalData, key_terms}
         }

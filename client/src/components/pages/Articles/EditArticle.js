@@ -257,17 +257,17 @@ const EditArticle = ({classes}) => {
             if(keyWords[key] === ''){
             count++;
             //console.log('1')
-            }else if(!keyWords[key].match(/^[a-zA-Z]+$/gm)){
+            }else if(!keyWords[key].match(/^([a-z0-9A-Z])[a-z. A-Z0-9]*$/gm)){
                 //console.log('2')
-                count ++;
+                count += 10;
             }else{
                 key_terms.push(_.lowerCase(keyWords[key]));
                 //console.log('3')
             }
         })
         
-        if (count === 5){
-            allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters!'}
+        if (count >= 5){
+            allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters, space and dot are allowed!'}
         }else{
             finalData = {...finalData, key_terms}
         }
