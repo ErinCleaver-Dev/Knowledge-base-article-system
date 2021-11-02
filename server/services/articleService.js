@@ -16,7 +16,7 @@ module.exports = {
     },
     update: async function(_id, data) {
         return await Article.findByIdAndUpdate(_id, {
-            last_revised_date: data.last_revised_date || Date.now(),
+            last_revised_date: Date.now(),
             title: data.title,
             category: data.category,
             key_terms: data.key_terms,
@@ -34,47 +34,50 @@ module.exports = {
     getOneByid: async function(_id) {
         return await Article.findById(_id)
     },
-    findArticles : async function (body) {
+    findArticles: async function(body) {
         console.log("testing find", body)
         let search = body['search'];
         let page = body['start'];
-        
-        search = search.toLowerCase();
-        
-        console.log(search)
-        count = Article.find(
-            {key_terms: search}
-        );
-        let findArticles = Article.find(
-            {key_terms: search}
-        );
-        const total = await count.countDocuments();
-        let start = (page - 1 ) * 10;
-        const pages = Math.ceil(total/10);
 
-        if(page > pages) {
-            return    {message: "No page found"}
+        //count total document
+        const total = await Article.find({ key_terms: search }).countDocuments();
+
+        //console.log(total)
+        const start = (page - 1) * 10;
+        const pages = Math.ceil(total / 10);
+
+        if (page > pages) {
+            return ({
+                message: "No page found",
+            })
         }
 
-        articles = await findArticles.sort(body['sort']).skip(start).limit(10).lean()
-
-        return results = {
-            pages: pages,
-            articles: articles
-        }
+        return await Article.find({ key_terms: search }).sort(body['sort']).skip(start).limit(10).lean().then(results => {
+            //console.log(results);
+            let data = {
+                pages: pages,
+                articles: results
+            }
+            return data;
+        }).catch(e => {
+            console.log(e);
+            return ({
+                message: "No page found"
+            })
+        })
     },
-    findByCategory : async function (body) {
+    findByCategory: async function(body) {
         let category = body['category'];
         let page = body['start'];
-        
-        let query = Article.find({category: category});
-        let query2 = Article.find({category: category});;
-        const total = await query.countDocuments();
-        let start = (page - 1 ) * 10;
-        const pages = Math.ceil(total/10);
 
-        if(page > pages) {
-            return res.status(404).json({ 
+        let query = Article.find({ category: category });
+        let query2 = Article.find({ category: category });;
+        const total = await query.countDocuments();
+        let start = (page - 1) * 10;
+        const pages = Math.ceil(total / 10);
+
+        if (page > pages) {
+            return res.status(404).json({
                 message: "No page found",
             })
         }
@@ -86,8 +89,12 @@ module.exports = {
             articles: articles
         }
     },
-    getByUserid: async function(user) {
+    getByUserId: async function(user) {
         return await Article.find({ user_id: user })
+    },
+    // find specific article from user_id and article_id
+    getByUserIdAndArticleId: async function(user, article) {
+        return await Article.findOne({ user_id: user, _id: article });
     },
     updateLike: async function(_id, likes) {
         console.log("testing likes: ", likes)

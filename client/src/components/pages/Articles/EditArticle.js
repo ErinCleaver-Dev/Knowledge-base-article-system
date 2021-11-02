@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import {Container, Grid, Alert} from '@mui/material';
 import {withStyles} from '@mui/styles';
 import {Redirect} from 'react-router-dom';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import { Editor } from "react-draft-wysiwyg";
 import '../../.././../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import _ from 'lodash';
@@ -130,21 +130,25 @@ const styles = {
         padding:'0px',
         width:'100%'
     },
-    createArticleButton:{
+    decisionArticleButton:{
         display:'block',
-        margin:'auto',
         backgroundColor: '#033F63',
+        width:'100%',
         cursor:'pointer',
         padding:'10px 30px',
         fontSize: '2em',
         color:'white',
+        '&:disabled':{
+            cursor:'wait',
+        }
     }
     
 }
 
 
 // Component
-const CreateArticle = ({classes}) => {
+const EditArticle = ({classes}) => {
+
     const initialFieldsState = {
         fields:{
             title: '',
@@ -152,15 +156,50 @@ const CreateArticle = ({classes}) => {
             category: '',  
         }
     }
-    const tempPost = localStorage.getItem('tempPost');
-    const initialEditorState = tempPost ? EditorState.createWithContent(convertFromRaw(JSON.parse(tempPost))) : EditorState.createEmpty();
+   
+    const initialEditorState = EditorState.createEmpty();
 
     const [fieldValues,setFieldValues] = useState(initialFieldsState);
     const [editorState,setEditorState] = useState(initialEditorState);
     const [keyWords,setKeyWords] = useState({first:'',second:'',third:'',forth:'',fifth:''});
     const [errors, setError] = useState({title:'', editorState:'', category:'', keyWords:''});
     const [submitError, setSubmitError] = useState(false);
+    const [loadingError, setLoadingError] = useState(false);
     let history = useHistory();
+    const [successMessage, setSuccessMessage] = useState('');
+
+
+    const {user_id, article_id} = useParams();
+    //console.log(user_id, article_id);
+    //loading Data
+    useEffect(()=>{
+        axios.post(`${config.URL}api/getUserSpecificArticle`, {user_id, article_id}).then(result=>{
+            if(result.data){
+                console.log(result.data);
+                setFieldValues({
+                    fields:{
+                        title: result.data.title,
+                        YTLink: result.data.video,
+                        category: result.data.category,
+                    }
+                });
+                // convert editorState string to Raw Object -> and then convertFromRow
+                setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(result.data.post_content))));
+                let keyTerms = result.data.key_terms;
+                setKeyWords({
+                    ...keyWords, 
+                    first: keyTerms[0]||'',
+                    second: keyTerms[1]||'',
+                    third: keyTerms[2]||'',
+                    forth: keyTerms[3]||'',
+                    fifth: keyTerms[4]||'', 
+                })
+            }
+        }).catch(e=>{
+            setLoadingError('Error - Server down, please bear with us and try again later');
+        })
+    },[])
+
 
     //handleUserInputState
     const handleUserInputState = (e)=>{
@@ -183,14 +222,12 @@ const CreateArticle = ({classes}) => {
 
     //handleEditorChange
     const handleEditorChange = (editorState) =>{
-        const tempPostStorage = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        localStorage.setItem('tempPost', tempPostStorage);
         setEditorState(editorState);
         setError({title:'', editorState:'', category:'', keyWords:''});
     }
 
-    //handleSubmit
-    const handleSubmit = (e) =>{
+    //handleSubmitChange
+    const handleSubmitChange = (e) =>{
         e.preventDefault();
 
         //this would be used to submit to server
@@ -216,14 +253,19 @@ const CreateArticle = ({classes}) => {
         let count = 0;
         let key_terms = [];
         Object.keys(keyWords).map(key=>{
+            //console.log(keyWords[key])
             if(keyWords[key] === ''){
             count++;
+            //console.log('1')
             }else if(!keyWords[key].match(/^([a-z0-9A-Z])[a-z. A-Z0-9]*$/gm)){
+                //console.log('2')
                 count += 10;
             }else{
-                key_terms.push(_.lowerCase(keyWords[key]))
+                key_terms.push(_.lowerCase(keyWords[key]));
+                //console.log('3')
             }
         })
+        
         if (count >= 5){
             allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters, space and dot are allowed!'}
         }else{
@@ -246,23 +288,24 @@ const CreateArticle = ({classes}) => {
 
         // all values are all perfect, so we can go ahead to process API
 
-        //delete localStorage for tempPost
-        localStorage.removeItem('tempPost');
-
         //add user's doc id from Mongoose
-        finalData = {...finalData, user_id: localStorage.getItem('userSecret')}
+        finalData = {...finalData, article_id:article_id};
         //console.log(finalData)
 
         //api 
-        axios.post(`${config.URL}api/addArticle`, finalData,{
+        axios.post(`${config.URL}api/updateArticle`, finalData,{
             headers:{
                 secret:'dataSent',
             }
         }).then(result=>{
-            history.push('/?message=create_article_successfully')
+            //console.log(result.data)
+            setSuccessMessage('You Successfully update your article!');
+            setTimeout(()=>{
+                history.goBack();
+            },1200)
         }).catch(e=>{
             //console.log(e)
-            setSubmitError('Error - Server down, please bear with us, and try later, thanks!')
+            setSubmitError('Error - Server down, please bear with us, and try later, thanks!');
         })
 
     }
@@ -270,12 +313,17 @@ const CreateArticle = ({classes}) => {
 
     return (
         <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ?(
-        <OuterContainer component='form' onSubmit={handleSubmit}>
+        {localStorage.getItem('isLoggedIn') && localStorage.getItem('userSecret') === user_id ?(
+        <OuterContainer component='form' onSubmit={handleSubmitChange}>
             {/* {test?<div dangerouslySetInnerHTML={{ __html: test }}></div>:null} */}
             {submitError?
                 <Alert variant="filled" severity='error'>
                 {submitError}
+                </Alert>
+                :null}
+            {loadingError?
+                <Alert variant="filled" severity='error'>
+                {loadingError}
                 </Alert>
                 :null}
             <h2 className={classes.title}>Create Article</h2>
@@ -363,7 +411,7 @@ const CreateArticle = ({classes}) => {
                 <input className={classes.titleAndYTInput} type='text' name='second' value={keyWords.second} onChange={keyWordHandlers}/>
                 </Grid>
                 <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='third' value={keyWords.three} onChange={keyWordHandlers}/>
+                <input className={classes.titleAndYTInput} type='text' name='third' value={keyWords.third} onChange={keyWordHandlers}/>
                 </Grid>
                 <Grid item xs={4} md={2.4}>
                 <input className={classes.titleAndYTInput} type='text' name='forth' value={keyWords.forth} onChange={keyWordHandlers}/>
@@ -373,9 +421,22 @@ const CreateArticle = ({classes}) => {
                 </Grid>
                 </Grid>
             </ContainerGrid>
-            <ContainerGrid container spacing={2} justifyContent={'center'}>
+            <ContainerGrid container spacing={2} justifyContent={'space-between'}>
+            {successMessage?
+                <Grid item xs={12} md={12}>
+                <Alert variant="filled" severity='success'>
+                {successMessage}
+                </Alert>
+                </Grid>
+                :null}
+                <Grid item item xs={12} md={3}></Grid>
+                <Grid container item xs={12} md={9} spacing={2} justifyContent={'space-between'}>
                 <Grid item xs={12} md={6}>
-                    <button className={classes.createArticleButton} type='submit'>Create An Article</button>
+                    <button className={classes.decisionArticleButton} disabled={successMessage?true:false} type='submit'>Submit Change</button>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <button className={classes.decisionArticleButton} type='button' onClick={()=>{history.goBack()}}>Cancel</button>
+                </Grid>
                 </Grid>
             </ContainerGrid>
 
@@ -386,4 +447,4 @@ const CreateArticle = ({classes}) => {
     )
 }
 
-export default withStyles(styles)(CreateArticle); 
+export default withStyles(styles)(EditArticle); 
