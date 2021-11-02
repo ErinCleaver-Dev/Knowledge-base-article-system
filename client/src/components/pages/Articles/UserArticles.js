@@ -20,6 +20,7 @@ const UserArticles = (props) => {
 
     return(
         <React.Fragment>
+            <h1>Created Articles</h1>
             {articles.length === 0 ? (<h1>You have not created any articles yet!</h1>):(
                 articles.map(article=>{
                     return( 

@@ -132,8 +132,8 @@ const styles = {
     },
     decisionArticleButton:{
         display:'block',
-        margin:'auto',
         backgroundColor: '#033F63',
+        width:'100%',
         cursor:'pointer',
         padding:'10px 30px',
         fontSize: '2em',
@@ -429,11 +429,14 @@ const EditArticle = ({classes}) => {
                 </Alert>
                 </Grid>
                 :null}
-                <Grid item xs={12} md={9}>
+                <Grid item item xs={12} md={3}></Grid>
+                <Grid container item xs={12} md={9} spacing={2} justifyContent={'space-between'}>
+                <Grid item xs={12} md={6}>
                     <button className={classes.decisionArticleButton} disabled={successMessage?true:false} type='submit'>Submit Change</button>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={4}>
                     <button className={classes.decisionArticleButton} type='button' onClick={()=>{history.goBack()}}>Cancel</button>
+                </Grid>
                 </Grid>
             </ContainerGrid>
 
