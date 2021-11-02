@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { styled } from '@mui/material/styles';
 import {Box, Button} from '@mui/material'
 import logo from '../../../images/logo.svg'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link, withRouter} from 'react-router-dom'
 import ProfileCard from './ProfileCard'
 import MenuIcon from '@mui/icons-material/Menu';
 import {useContext} from 'react';
@@ -115,7 +115,7 @@ const Navbar = (props) => {
 
     return (
         <NavagationBar>
-            <img className="logoImage" src={logo} />
+            <Link to='/'><img className="logoImage" src={logo}/></Link>
             <div className="nav">
                 {props.loggedIn ? (
                     <StyledNavLink to="/EjKBA/profile" >
@@ -145,4 +145,4 @@ const Navbar = (props) => {
     )
 }
 
-export default Navbar
+export default withRouter(Navbar);

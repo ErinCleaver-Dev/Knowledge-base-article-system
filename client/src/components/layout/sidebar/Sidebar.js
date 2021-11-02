@@ -43,7 +43,7 @@ const Sidebar = () => {
             <StyledButton component={Link} to="/EjKBA/create_article">
                 Create Article
             </StyledButton>
-            <StyledButton component={Link} to="/EjKBA/users_articles">
+            <StyledButton component={Link} to="/EjKBA/user_articles">
                 User's Articles
             </StyledButton>
             <StyledButton component={Link} to="/EjKBA/saved_articles">
