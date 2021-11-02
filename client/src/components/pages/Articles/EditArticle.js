@@ -411,7 +411,7 @@ const EditArticle = ({classes}) => {
                 <input className={classes.titleAndYTInput} type='text' name='second' value={keyWords.second} onChange={keyWordHandlers}/>
                 </Grid>
                 <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='third' value={keyWords.three} onChange={keyWordHandlers}/>
+                <input className={classes.titleAndYTInput} type='text' name='third' value={keyWords.third} onChange={keyWordHandlers}/>
                 </Grid>
                 <Grid item xs={4} md={2.4}>
                 <input className={classes.titleAndYTInput} type='text' name='forth' value={keyWords.forth} onChange={keyWordHandlers}/>

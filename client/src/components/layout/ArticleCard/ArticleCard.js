@@ -37,7 +37,7 @@ const ArticleCard = (props) => {
 
     })
 
-    console.log(props.user_id)
+    //console.log(props.user_id)
     const [userData, setUserData] = useState();
     useEffect (() => {
     axios.post(`${Config.URL}api/getUser`, {
@@ -52,7 +52,7 @@ const ArticleCard = (props) => {
 
     let date = new Date(props.date).toLocaleDateString()
 
-    console.log(userData)
+    //console.log(userData)
 
     return (
         <ArticleContainer component={Link} to={`id:${props.id}`}>

@@ -11,7 +11,7 @@ const UserArticles = (props) => {
 
     useEffect(() => {
         axios.post(`${Config.URL}api/getUsersArticles`, {user_id: localStorage.getItem('userSecret')}).then((response) => {
-            console.log(response.data)
+            //console.log(response.data)
             setArticles(response.data)
         }).catch(error => {
             console.log(error)

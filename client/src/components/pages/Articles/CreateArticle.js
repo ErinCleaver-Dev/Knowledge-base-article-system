@@ -152,7 +152,6 @@ const CreateArticle = ({classes}) => {
             category: '',  
         }
     }
-   
     const tempPost = localStorage.getItem('tempPost');
     const initialEditorState = tempPost ? EditorState.createWithContent(convertFromRaw(JSON.parse(tempPost))) : EditorState.createEmpty();
 

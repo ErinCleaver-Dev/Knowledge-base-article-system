@@ -7,27 +7,30 @@ import { styled } from '@mui/material/styles';
 import {Button, Box} from '@mui/material'
 import Config from '../../../config/index'
 import Pagination from '@mui/material/Pagination';
+import Cookies from 'universal-cookie';
 
 
 const Search = (props) => {
 
+    const cookie = new Cookies();
+    //console.log('test Search order 1')
     let search = props.location.search.replace('?q=', '')
-    const [articles, setArticles] = useState();
-    const [sortby, setSortBy] = useState('data');
+    const [articles, setArticles] = useState([]);
+    const [sortBy, setSortBy] = useState('date');
     const [start, setStart] = useState(1);
     const [pages, setPages] = useState(1);
 
     useEffect(() => {
-        console.log("testing axois")
+        //console.log("testing axios")
         axios.post(`${Config.URL}api/findArticles`, {
         search : search,
-        sort: sortby,
+        sort: sortBy,
         start: start,
         }).then((response) => {
             setArticles(response.data.articles)
             setPages(response.data.pages)
         })
-    }, []);
+    }, [cookie.get('search'), props.location.search]);
 
     const StyledDiv = styled('div') ({
         color: "#033F63",
@@ -45,7 +48,7 @@ const Search = (props) => {
             console.log('no articles found');
 
         }
-        console.log(value)
+        //console.log(value)
     }
 
     const PaginationArticles = styled(Pagination) ({
@@ -66,7 +69,7 @@ const Search = (props) => {
             <h2 className="category_title">Search</h2>
             <SearchBox />
             <Sort>
-                Sort by
+                Sort by date
             </Sort>
             {articles ? (
                 articles.map(data => (

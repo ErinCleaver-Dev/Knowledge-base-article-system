@@ -72,7 +72,7 @@ const Home = () => {
     return (
         <>
             <h1 className="homeTitle">Welcome to the Knowledge Base Article System!</h1>
-            {console.log(articles)}
+            {/* {console.log(articles)} */}
             <SearchBox />
             <CategoryBox>
                 <HomeButtons component={Link} to='/EjKBA/category?q=react'>React</HomeButtons>

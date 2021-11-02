@@ -54,6 +54,7 @@ router.get('/api/getArticle', (req, res, next) => {
     }
 })
 
+//for search pages to use
 router.post('/api/findArticles', (req, res, next) => {
     console.log(req.body.search)
     if (req.body.search) {
@@ -66,11 +67,11 @@ router.post('/api/findArticles', (req, res, next) => {
     }
 })
 
+//for category pages to use
 router.post('/api/getCategories', (req, res, next) => {
     if (req.body.category) {
         articleService.findByCategory(req.body).then((results) => {
             console.log("list articles: ", results)
-
             res.send(results)
         })
     } else {
