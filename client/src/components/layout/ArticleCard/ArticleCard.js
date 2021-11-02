@@ -55,7 +55,7 @@ const ArticleCard = (props) => {
     //console.log(userData)
 
     return (
-        <ArticleContainer component={Link} to={`id:${props.id}`}>
+        <ArticleContainer component={Link} to={`/EjKBA/id:${props.id}`}>
             <div>
                 <h2>
                     {props.title}

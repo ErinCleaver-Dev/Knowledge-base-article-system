@@ -90,7 +90,7 @@ module.exports = {
         }
     },
     getByUserId: async function(user) {
-        return await Article.find({ user_id: user })
+        return await Article.find({ user_id: user }).lean();
     },
     // find specific article from user_id and article_id
     getByUserIdAndArticleId: async function(user, article) {

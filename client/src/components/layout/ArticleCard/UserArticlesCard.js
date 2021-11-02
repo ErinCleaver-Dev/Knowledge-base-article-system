@@ -39,7 +39,7 @@ const UserArticlesCard = (props) => {
 
     })
 
-    
+        
 const FormattedBotton = styled(Button) ({
     background: '#033F63',
     color: '#FFFFFF',
