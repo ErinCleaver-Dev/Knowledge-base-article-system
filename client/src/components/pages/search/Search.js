@@ -15,6 +15,7 @@ const Search = (props) => {
     const cookie = new Cookies();
     //console.log('test Search order 1')
     let search = props.location.search.replace('?q=', '')
+    search = search.replace('%20', '')
     const [articles, setArticles] = useState([]);
     const [sortBy, setSortBy] = useState('date');
     const [start, setStart] = useState(1);

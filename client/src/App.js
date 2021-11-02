@@ -6,9 +6,9 @@ import Search from './components/pages/search/Search'
 import SignUp from './components/pages/userprofile/signUp/SignUp';
 import Login from './components/pages/userprofile/login/Login';
 import Profile from './components/pages/userprofile/profile/Profile';
-import CreateArticle from './components/pages/Articles/CreateArticle';
-import EditArticle from './components/pages/Articles/EditArticle';
-import UserArticles from './components/pages/Articles/UserArticles';
+import CreateArticle from './components/pages/articles/CreateArticle';
+import EditArticle from './components/pages/articles/EditArticle';
+import UserArticles from './components/pages/articles/UserArticles';
 import {auth, signOutFunc} from './firebase/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import {Redirect} from 'react-router-dom';
