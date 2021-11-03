@@ -26,8 +26,10 @@ const Search = (props) => {
         pages: 1
     });
 
+    
     useEffect(() => {
         //console.log("testing axios")
+      
         axios.post(`${Config.URL}api/findArticles`, {
             search : search,
             sort: articleData.sortby,
@@ -36,6 +38,8 @@ const Search = (props) => {
                 setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles})
                 if(!response.data.articles) {
                     setLoadding("no articles found")
+                } else {
+                    setLoadding("isLoadding")
                 }
             })
     }, [cookie.get('search'), props.location.search]);

@@ -13,14 +13,16 @@ const Category = (props) => {
 
     let category = props.location.search.replace('?q=', '')
     const [articleData, setArticleData] = useState({
-        articles: "",
+        articles: null,
         sortby: 'date',
         start: 1,
         pages: 1
     });
+    const [userData, setUserData] = useState();
     const [isLoadding, setLoadding] = useState('Is Loading')
 
     useEffect(() => {
+        
         axios.post(`${Config.URL}api/getCategories`, {
         category : category,
         sort: articleData.sortby,
@@ -34,7 +36,7 @@ const Category = (props) => {
     }, []);
 
     
-    console.log(articleData)
+    
     const StyledDiv = styled('div') ({
         color: "#033F63",
         fontSize: '2.0em',
