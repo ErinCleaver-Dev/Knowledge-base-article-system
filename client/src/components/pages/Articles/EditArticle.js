@@ -175,7 +175,7 @@ const EditArticle = ({classes}) => {
     useEffect(()=>{
         axios.post(`${config.URL}api/getUserSpecificArticle`, {user_id, article_id}).then(result=>{
             if(result.data){
-                console.log(result.data);
+                //console.log(result.data);
                 setFieldValues({
                     fields:{
                         title: result.data.title,

@@ -15,7 +15,7 @@ const Search = (props) => {
     const cookie = new Cookies();
     //console.log('test Search order 1')
     let search = props.location.search.replace('?q=', '')
-    search = search.replace('%20', '')
+    search = search.replace('%20', ' ')
     const [articles, setArticles] = useState([]);
     const [sortBy, setSortBy] = useState('date');
     const [start, setStart] = useState(1);
@@ -23,6 +23,8 @@ const Search = (props) => {
 
     useEffect(() => {
         //console.log("testing axios")
+        search = search.replace('%20', ' ');
+        console.log(search)
         axios.post(`${Config.URL}api/findArticles`, {
         search : search,
         sort: sortBy,
@@ -88,7 +90,7 @@ const Search = (props) => {
                 ) : 
                 (<>Is Loading...</>)
             }
-            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={0} />
+            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={1} />
 
         </>
     )

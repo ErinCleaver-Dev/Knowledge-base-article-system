@@ -29,6 +29,7 @@ module.exports = {
     delete: async function(_id) {
         return await Article.findByIdAndDelete(_id).then(result => {
             console.log('Article Deleted')
+            return result;
         })
     },
     getOneByid: async function(_id) {
