@@ -12,22 +12,29 @@ import Pagination from '@mui/material/Pagination';
 const Category = (props) => {
 
     let category = props.location.search.replace('?q=', '')
-    const [articles, setArticles] = useState();
-    const [sortby, setSortBy] = useState('data');
-    const [start, setStart] = useState(1);
-    const [pages, setPages] = useState(1);
+    const [articleData, setArticleData] = useState({
+        articles: "",
+        sortby: 'date',
+        start: 1,
+        pages: 1
+    });
+    const [isLoadding, setLoadding] = useState('Is Loading')
 
     useEffect(() => {
         axios.post(`${Config.URL}api/getCategories`, {
         category : category,
-        sort: sortby,
-        start: start,
+        sort: articleData.sortby,
+        start: articleData.start,
         }).then((response) => {
-            setArticles(response.data.articles)
-            setPages(response.data.pages)
+            setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles})
+            if(!response.data.articles) {
+                setLoadding("no articles found")
+            }
         })
     }, []);
 
+    
+    console.log(articleData)
     const StyledDiv = styled('div') ({
         color: "#033F63",
         fontSize: '2.0em',
@@ -40,7 +47,7 @@ const Category = (props) => {
 
     const handleChange = (event, value) => {
 
-        if(pages < value) {
+        if(articleData.pages < value) {
             console.log('no articles found');
 
         }
@@ -59,7 +66,10 @@ const Category = (props) => {
         },
     })
 
+    console.log(articleData)
+    
     return (
+        
         <>
             <BackButton/>
             <h2 className="category_title">{category}</h2>
@@ -67,8 +77,8 @@ const Category = (props) => {
             <Sort>
                 Sort by
             </Sort>
-            {articles ? (
-                articles.map(data => (
+            {articleData.articles ? (
+                articleData.articles.map(data => (
                     <ArticleCard 
                     width={'100%'}
                     key={data._id}
@@ -81,9 +91,9 @@ const Category = (props) => {
                 ))
                 
                 ) : 
-                (<>Is Loading...</>)
+                (<>{isLoadding}</>)
             }
-            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={0} />
+            <PaginationArticles count={articleData.pages} defaultPage={articleData.start} onChange={handleChange} siblingCount={0} />
 
         </>
     )

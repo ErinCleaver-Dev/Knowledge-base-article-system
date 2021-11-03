@@ -16,21 +16,28 @@ const Search = (props) => {
     //console.log('test Search order 1')
     let search = props.location.search.replace('?q=', '')
     search = search.replace('%20', '')
-    const [articles, setArticles] = useState([]);
-    const [sortBy, setSortBy] = useState('date');
-    const [start, setStart] = useState(1);
-    const [pages, setPages] = useState(1);
+    const [isLoadding, setLoadding] = useState('Is Loading')
+
+
+    const [articleData, setArticleData] = useState({
+        articles: "",
+        sortby: 'date',
+        start: 1,
+        pages: 1
+    });
 
     useEffect(() => {
         //console.log("testing axios")
         axios.post(`${Config.URL}api/findArticles`, {
-        search : search,
-        sort: sortBy,
-        start: start,
-        }).then((response) => {
-            setArticles(response.data.articles)
-            setPages(response.data.pages)
-        })
+            search : search,
+            sort: articleData.sortby,
+            start: articleData.start,
+            }).then((response) => {
+                setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles})
+                if(!response.data.articles) {
+                    setLoadding("no articles found")
+                }
+            })
     }, [cookie.get('search'), props.location.search]);
 
     const StyledDiv = styled('div') ({
@@ -45,7 +52,7 @@ const Search = (props) => {
 
     const handleChange = (event, value) => {
 
-        if(pages < value) {
+        if(articleData.pages < value) {
             console.log('no articles found');
 
         }
@@ -72,8 +79,8 @@ const Search = (props) => {
             <Sort>
                 Sort by date
             </Sort>
-            {articles ? (
-                articles.map(data => (
+            {articleData.articles ? (
+                articleData.articles.map(data => (
                     <ArticleCard 
                     width={'100%'}
                     key={data._id}
@@ -86,9 +93,9 @@ const Search = (props) => {
                 ))
                 
                 ) : 
-                (<>Is Loading...</>)
+                (<>{isLoadding}</>)
             }
-            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={0} />
+            <PaginationArticles count={articleData.pages} defaultPage={articleData.start} onChange={handleChange} siblingCount={0} />
 
         </>
     )

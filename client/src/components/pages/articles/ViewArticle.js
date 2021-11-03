@@ -83,7 +83,7 @@ const FormattedBotton = styled(Button) ({
 })
 
 const ViewArticle = (props) => {
-    const _id = props.match.params.id.replace('id:', '')
+    const _id = props.match.params.id
 
     const [article, setArticle] = useState([]);
 
@@ -108,9 +108,9 @@ const ViewArticle = (props) => {
         <>
             {article ? (
                 <>
-                    <Title>
-                        <BackButton/>
                         <h2>{article.title}</h2> 
+                        <Title>
+                        <BackButton/>
                         <p>Date published: {date.toDateString()}</p>
                         </Title>
                         {video ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >

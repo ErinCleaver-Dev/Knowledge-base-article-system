@@ -43,8 +43,10 @@ module.exports = {
         const total = await Article.find({ key_terms: search }).countDocuments();
 
         //console.log(total)
-        const start = (page - 1) * 10;
-        const pages = Math.ceil(total / 10);
+        let pagesize = 10;
+
+        const start = (page - 1) * pagesize;
+        const pages = Math.ceil(total / pagesize);
 
         if (page > pages) {
             return ({
@@ -52,7 +54,7 @@ module.exports = {
             })
         }
 
-        return await Article.find({ key_terms: search }).sort(body['sort']).skip(start).limit(10).lean().then(results => {
+        return await Article.find({ key_terms: search }).sort(body['sort']).skip(start).limit(pagesize).lean().then(results => {
             //console.log(results);
             let data = {
                 pages: pages,
@@ -73,8 +75,10 @@ module.exports = {
         let query = Article.find({ category: category });
         let query2 = Article.find({ category: category });;
         const total = await query.countDocuments();
-        let start = (page - 1) * 10;
-        const pages = Math.ceil(total / 10);
+        let pagesize = 10;
+
+        let start = (page - 1) * pagesize;
+        const pages = Math.ceil(total / pagesize);
 
         if (page > pages) {
             return res.status(404).json({
@@ -82,7 +86,7 @@ module.exports = {
             })
         }
 
-        articles = await query2.sort(body['sort']).skip(start).limit(10).lean()
+        articles = await query2.sort(body['sort']).skip(start).limit(pagesize).lean()
 
         return results = {
             pages: pages,

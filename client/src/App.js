@@ -58,7 +58,7 @@ function App() {
             <Route exact path="/EjKBA/create_article" component={CreateArticle}/>
             <Route exact path="/EjKBA/edit_article/:user_id/:article_id" component={EditArticle}/>
             <Route exact path="/EjKBA/user_articles" component={UserArticles}/>
-            <Route exact path="/EjKBA/:id" component={ViewArticle}/>
+            <Route exact path="/EJKBA/view_article/:id" component={ViewArticle}/>
 
             <Route exact path="/EjKBA/search" component={Search}/>
             
