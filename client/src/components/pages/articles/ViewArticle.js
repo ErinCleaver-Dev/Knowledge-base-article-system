@@ -4,19 +4,30 @@ import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Editor, EditorState, convertFromRaw } from "draft-js";
 
 import axios from 'axios';
 import Config from '../../../config/index'
 
 const Title = styled(Box) ({
+    fontSize: "2.8em",
+    textAlign: "center",
+    width: '100%',
+    color: '#033F63',
+    borderBottom: '1px solid #033F63',
+    paddingBottom: '20px',
+    marginBottom: '20px',
+
+})
+
+const ContentBox1 = styled(Box) ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
-    h2: {
-        fontSize: "2.8em"
-    }, 
-    
+    paddingBottom: '20px',
+    marginBottom: '30px',
+    borderBottom: '1px solid #033F63',
 })
 const Video = styled("iframe") ({
     alignSelf: 'center',
@@ -60,7 +71,10 @@ const ButtonBox = styled(Box) ({
     alignItems: 'center',
 })
 
-
+const HR = styled('div') ({
+    padding: 0,
+    borderTop: '1px solid #033F63'
+})
         
 const FormattedBotton = styled(Button) ({
     background: '#033F63',
@@ -84,7 +98,8 @@ const FormattedBotton = styled(Button) ({
 
 const ViewArticle = (props) => {
     const _id = props.match.params.id
-
+    const initialEditorState = EditorState.createEmpty();
+    const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
 
     console.log(_id)
@@ -95,12 +110,12 @@ const ViewArticle = (props) => {
             _id: _id
         }).then((response) => {
             setArticle(response.data)
+            setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(response.data.post_content))));
         })
     }, []);
 
     const date = new Date(article.published_date)
-    
-
+  
   
     let video = article.video
     console.log(article)
@@ -108,14 +123,20 @@ const ViewArticle = (props) => {
         <>
             {article ? (
                 <>
-                        <h2>{article.title}</h2> 
-                        <Title>
+                        <Title>{article.title}</Title> 
+                        <ContentBox1>
                         <BackButton/>
                         <p>Date published: {date.toDateString()}</p>
-                        </Title>
+                        </ContentBox1>
                         {video ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >
                         </Video>) : (null)}
-
+                        
+                        <Editor
+                        className={"formatedPost"}
+                        editorState={editorState}
+                        readOnly={true}
+                        />
+                        <HR/>
                         <ItemLists><h3>Catagoriy: </h3><p>javascrpt</p></ItemLists>
                         <ItemLists>
                         <h3>Keywords: </h3>
