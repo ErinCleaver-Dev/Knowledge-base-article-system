@@ -64,7 +64,7 @@ const UserArticlesCard = (props) => {
     //console.log(userData)
 
     return (
-        <ArticleContainer component={Link} to={`id:${props.id}`}>
+        <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.article_id}`}>
             <Grid container >
                 <Grid item container xs={12} md={10}>
                     <Grid item xs={12}>

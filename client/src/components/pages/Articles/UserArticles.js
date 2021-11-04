@@ -13,7 +13,6 @@ const UserArticlesContainer = styled(Container) ({
     margin: '0',
     marginTop: '10px',
     padding:'12px !important',
-    
     boxSizing:'border-box',
     paddingRight:'30px !important',
     display:'flex',
