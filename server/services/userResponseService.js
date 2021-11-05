@@ -10,10 +10,16 @@ module.exports = {
       })        
     },
     getComments : async function (article_id) {
+      console.log("Testing getComments service", article_id)
       if(article_id)  {
-        return await UserResponse.find({article_id: article_id}).then(result => {
-          console.log("Comments", result)
-        })
+        const comments = await UserResponse.find({$and: [{article_id: article_id}, {userResponse_type: {$ne: "reply"}}]})
+
+        const replys = await UserResponse.find({article_id: article_id}).where('userResponse_type').equals('reply')
+
+        return {
+          comments: comments,
+          replys: replys
+        }
       } 
     },
 }

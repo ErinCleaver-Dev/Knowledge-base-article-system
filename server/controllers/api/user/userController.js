@@ -20,7 +20,6 @@ router.get('/api/listUsers', (req, res) => {
 })
 
 router.post('/api/getUser', (req, res, next) => {
-    console.log("get user id from body: ", req.body.userId)
     userService.getUser(req.body.userId).then((result) => {
         console.log("get user: ", result)
         return res.send(result)
@@ -29,7 +28,6 @@ router.post('/api/getUser', (req, res, next) => {
 
 //for checking if there is the duplicate uid when user register account, but login with google again with same email account.
 router.post('/api/getUserByUid', (req, res, next) => {
-    console.log("get user id from body: ", req.body.uid)
     userService.getUserByUid(req.body.uid).then((result) => {
         console.log("get userByUid: ", result)
         return res.send(result)
@@ -47,13 +45,16 @@ router.post('/api/creatPost', (req, res, next) => {
     }
 })
 
-router.get('/api/getComments', (req, res, next) => {
-    userResponseService.getComments(res.query.articleID).catch(next)
+router.post('/api/getComments', (req, res, next) => {
+    console.log('testing get comments')
+    userResponseService.getComments(req.body.article_id).then(result => {
+        console.log("testing comments and reply: ", result)
+        res.send(result)
+    }).catch(next)
 })
 
 
 router.post('/api/createViewedArticles', (req, res, next) => {
-    console.log(req.body);
     userHistoryService.createViewedArticle(req.body.userId, req.body.articleId).then(() => {
         console.log('created successfully');
         res.json({ message: 'created successfully' })
