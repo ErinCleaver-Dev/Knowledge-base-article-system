@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import UserArticlesCard from '../../layout/ArticleCard/UserArticlesCard';
+import SavedArticlesCard from '../../layout/ArticleCard/SavedArticlesCard';
 import Config from '../../../config/index';
 import axios from 'axios';
 import {Container, Button, Alert} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import { useLocation, Redirect, useHistory} from 'react-router-dom';
+
 
 const UserArticlesContainer = styled(Container) ({
     border: '#28666E solid 3px',
@@ -86,7 +87,7 @@ const Span1 = styled('span')({
 
 
 // Component
-const UserArticles = (props) => {
+const SavedArticles = (props) => {
 
     const [articles, setArticles] = useState([]);
     const [sort, setSort] = useState('publish')
@@ -96,33 +97,25 @@ const UserArticles = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(1);
     const location = useLocation();
-    let deleteMessage = location.search;
+    let unSaveMessage = location.search;
     let history = useHistory();
 
     useEffect(() => {
-        axios.post(`${Config.URL}api/getUsersArticles`, {user_id: localStorage.getItem('userSecret')}).then((response) => {
-            //console.log(response.data)
-            setLoadingError(false);
+        axios.get(`${Config.URL}api/getSavedArticles?userId=${localStorage.getItem('userSecret')}`).then((response) => {
+            //console.log(response.data.getSavedArticles)
+            setLoadingError(false)
             setLoading(false)
             let articleResults;
-            if(sort === 'publish'){
-                articleResults = response.data.reverse();
+            if(sort === 'save'){
+                articleResults = response.data.getSavedArticles.reverse();
             }else{
-                let articlesWithReviseDate =[];
-                let articlesWithoutReviseDate =[];
-                response.data.map(article=>{
-                    if(article.last_revised_date){
-                        articlesWithReviseDate.push(article);
-                    }else{
-                        articlesWithoutReviseDate.push(article);
-                    }
-                })
-                articlesWithoutReviseDate = articlesWithoutReviseDate.reverse();
-                articlesWithReviseDate.sort((a, b)=>{
-                    return new Date(b.last_revised_date).getTime() - new Date(a.last_revised_date).getTime();
+                let publishSort = response.data.getSavedArticles;
+                
+                publishSort.sort((a, b)=>{
+                    return new Date(b.article.published_date).getTime() - new Date(a.article.published_date).getTime();
                 })
 
-                articleResults = [...articlesWithReviseDate,...articlesWithoutReviseDate]
+                articleResults = publishSort;
                 //console.log(articleResults)
             }
             setPages(Math.ceil(articleResults.length/10));
@@ -131,17 +124,17 @@ const UserArticles = (props) => {
             //console.log(articleResults);
             let shownArticles = [];
             for (let i = 0; i< 10; i++){
-                if(articleResults[i] == null || articleResults[i] == undefined){
-                    break;
-                }else{
-                    shownArticles.push(articleResults[i]);
-                }
-            }
+                 if(articleResults[i] == null || articleResults[i] == undefined){
+                     break;
+                 }else{
+                     shownArticles.push(articleResults[i]);
+                 }
+             }
             //console.log(shownArticles)
-            setArticles(shownArticles)
+            setArticles(response.data.getSavedArticles)
         }).catch(error => {
-            //console.log(error);
-            setLoadingError('Server down - pleas bear with us and try later. Sorry for your inconvenience.')
+            //console.log(error)
+            setLoadingError('Server down - pleas bear with us and try later. Sorry for your inconvenience.');
         })
     },[currentPage, sort])
 
@@ -149,18 +142,20 @@ const UserArticles = (props) => {
         setCurrentPage(value);
     }
 
-    const deleteHandler = (e) =>{
-        //console.log((deleteMessage.replace('?delete=','')));
-        axios.post(`${Config.URL}api/deleteArticle`, {_id: deleteMessage.replace('?delete=','')}).then(result=>{
-            //console.log(result.data, 'was deleted');
-            let filterArticle = articles.filter(article=> article._id != result.data._id);
+    const unSaveHandler = (e) =>{
+        //console.log((unSaveMessage.replace('?unSave=','')));
+        axios.post(`${Config.URL}api/deleteSavedArticle`, {userId:localStorage.getItem('userSecret'), articleId: unSaveMessage.replace('?unSave=','')}).then(async(result)=>{
+            
+            //Whenever the article delete, it would go back to first page and it would also reFetch the data from server
+            setCurrentPage(1);// if currently the page is also 1, the page won't render!
+
+            let filterArticle = articles.filter(article=> article.article._id !=  unSaveMessage.replace('?unSave=',''));
             //console.log(filterArticle);
             setArticles(filterArticle);
-            //Whenever the article delete, it would go back to first page
-            setCurrentPage(1);
-            history.push('/EjKBA/user_articles/?message=delete_successfully');
+            history.push('/EjKBA/saved_articles/?message=unSaved_article_successfully');
         }).catch(e=>{
-            setLoadingError('Server down - pleas bear with us and try later. Sorry for your inconvenience.')
+            //console.log(e);
+            setLoadingError('Server down - pleas bear with us and try later. Sorry for your inconvenience.');
         });
     }
 
@@ -173,17 +168,17 @@ const UserArticles = (props) => {
                 {loadingError}
               </Alert>
             ):(null)}
-            <h1>Created Articles</h1>
+            <h1>Saved Articles</h1>
             <p>Latest to Oldest
             <Span1> 
             <SortButton type='button' onClick={()=>{setSort('publish')}}>Date Published</SortButton>
-            <SortButton type='button' onClick={()=>{setSort('revise')}}>Date Revised</SortButton>
+            <SortButton type='button' onClick={()=>{setSort('save')}}>Date Saved</SortButton>
             </Span1>    
             </p>  
-            {deleteMessage.startsWith('?delete=')?(
+            {unSaveMessage.startsWith('?unSave=')?(
                 <MessageContainer>
-                    <h1>Would you like to delete this article?</h1>
-                    <DecisionButton type='button' onClick={deleteHandler}>Yes</DecisionButton>
+                    <h1>Would you like to unSave this article?</h1>
+                    <DecisionButton type='button' onClick={unSaveHandler}>Yes</DecisionButton>
                     <DecisionButton type='button' onClick={()=>{history.goBack()}}>Cancel</DecisionButton>
                 </MessageContainer>
             ):
@@ -191,17 +186,17 @@ const UserArticles = (props) => {
             <>
             {loading? (<h4>loading...</h4>):(
             <UserArticlesContainer>
-            {articles.length === 0 ? (<h1 style={{textAlign:'center', paddingTop:'20px', fontSize:'1.8em'}}>...You have not created any articles yet...</h1>):(
+            {articles.length === 0 ? (<h1 style={{textAlign:'center', paddingTop:'20px', fontSize:'1.8em'}}>...You have not saved any articles yet...</h1>):(
                 articles.map(article=>{
                     return( 
-                        <UserArticlesCard
-                            user_id = {localStorage.getItem('userSecret')}
-                            article_id = {article._id}
-                            key = {article._id}
-                            title={article.title} 
-                            likes={article.likes} 
-                            published_date={article.published_date}
-                            last_revised_date = {article.last_revised_date}
+                        <SavedArticlesCard
+                            userName = {article.article.user_id.firstName ? article.article.user_id.firstName + ' ' + article.article.user_id.lastName: article.article.user_id.displayName}
+                            article_id = {article.article._id}
+                            key = {article.article._id}
+                            title={article.article.title} 
+                            likes={article.article.likes} 
+                            saved_date={article.date}
+                            published_date = {article.article.published_date}
                         />
                     )
                 })
@@ -218,4 +213,4 @@ const UserArticles = (props) => {
     )
 }
 
-export default UserArticles;
+export default SavedArticles;
