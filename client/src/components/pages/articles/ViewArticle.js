@@ -5,6 +5,7 @@ import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Editor, EditorState, convertFromRaw } from "draft-js";
+import { Responses } from './resonses/Responses'
 
 import axios from 'axios';
 import Config from '../../../config/index'
@@ -161,6 +162,7 @@ const ViewArticle = (props) => {
                }
                <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
            </ButtonBox>
+           <Responses />
         </>
     )
 }
