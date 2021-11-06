@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Likes = require('../models/Likes');
+const UserHistory = require('../models/UserHistory');
+const UserResponse = require('../models/UserResponse');
 
 const articleSchema = new mongoose.Schema({
     id: mongoose.Types.ObjectId,
@@ -38,6 +41,18 @@ const articleSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     }
+})
+
+articleSchema.pre('findOneAndDelete', async function(next) {
+    //console.log(this._conditions._id)
+    let articleId = this._conditions._id
+    await Likes.deleteOne({ article_id: articleId });
+    console.log('test2')
+    await UserHistory.deleteMany({ article_id: articleId });
+    console.log('test3')
+    await UserResponse.deleteMany({ article_id: articleId });
+    console.log('test3')
+    next();
 })
 
 module.exports = mongoose.model('Article', articleSchema);
