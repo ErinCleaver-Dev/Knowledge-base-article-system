@@ -22,9 +22,9 @@ const userResponseSchema = new mongoose.Schema({
         ref: 'Article', 
         require: true 
     },
-    responseTo: { 
+    parentId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'comment' 
+        ref: 'UserResponse' 
     },
     user_id: { type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', require: true 
