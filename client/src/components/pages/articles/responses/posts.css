@@ -1,0 +1,19 @@
+.wrapper-class {
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .editor-class {
+    padding: 0;
+    border: 1px solid black;
+  }
+  .toolbar-class {
+    border: 1px solid black;
+  }
+
+  .public-DraftEditor-content {
+      width: auto;
+      position: relative;
+      padding: 0 10px;
+  }
