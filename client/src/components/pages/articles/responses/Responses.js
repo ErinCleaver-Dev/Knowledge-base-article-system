@@ -36,34 +36,10 @@ const Responses = ({article_id}) => {
     const [newPostVisable, setNewPostVisable] = useState('none')
     const [newReplyVisable, setNewReplyVisable] = useState('none')
     
-
-
-    const clickNewPost = () => {
-        if(newPostVisable) {
-            
-            setNewPostVisable('none')
-        } else {
-            setNewPostVisable('block')
-        }
-    }
-
-    const clickReply = () => {
-        if(newReplyVisable) {
-            
-            setNewReplyVisable('none')
-        } else {
-            setNewReplyVisable('block')
-        }
-    }
-
     return (
         <ResponsesBox>
             {localStorage.getItem('isLoggedIn') ? (<>
                 <NewPost/>
-                <FormatedButton
-                onClick={clickNewPost}
-                >New Post
-                </FormatedButton>
                 </>
             ) : 
             (null)
