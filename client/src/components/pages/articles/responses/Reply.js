@@ -7,7 +7,15 @@ import { Editor } from "react-draft-wysiwyg";
 
 const Reply = () => {
     const [editor, setEditorState ] = useState(EditorState.createEmpty())
-
+    const [newPost, setNewPost ] = useState(
+        {
+            userResponse_type: 'reply',
+            post_content: '',
+            article_id: props.articleId,
+            parentId: '',
+            user_id: '',
+        }
+    )
     const handleEditorChange = (editorState) =>{
         const tempPostStorage = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
         localStorage.setItem('tempPost', tempPostStorage);

@@ -33,13 +33,14 @@ const Form = styled("form") ({
 })
 
 const Responses = ({article_id}) => {
-    const [newPostVisable, setNewPostVisable] = useState('none')
-    const [newReplyVisable, setNewReplyVisable] = useState('none')
+    
+    
+
     
     return (
         <ResponsesBox>
             {localStorage.getItem('isLoggedIn') ? (<>
-                <NewPost/>
+                <NewPost article_id={article_id}/>
                 </>
             ) : 
             (null)

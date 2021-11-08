@@ -1,17 +1,44 @@
 import React, {useState} from 'react'
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { styled } from '@mui/material/styles';
+import { ValidateComment } from './postValidator'
 import './posts.css'
 import { Editor } from "react-draft-wysiwyg";
 import {RadioGroup, Radio, Button, FormControlLabel, Box, inputLabelClasses} from '@mui/material'
 
 
-const NewPost = () => {
-    const [editor, setEditorState ] = useState(EditorState.createEmpty())
+const NewPost = (props) => {
+    const [editorState, setEditorState ] = useState(EditorState.createEmpty())
+    const [error, setError] = useState('')
+    const [newPost, setNewPost ] = useState(
+        {
+            userResponse_type: '',
+            post_content: '',
+            article_id: props.articleId,
+            user_id: '',
+        }
+    )
+
+    const handleNewPost = event => {
+        console.log('clicked new post')
+        console.log('set type', newPost.post_content)
+        if(!editorState.getCurrentContent().hasText()) {
+            console.log('test for text')
+            setError('Plase enter a post.')
+            console.log(error)
+        } else if(ValidateComment(newPost.userResponse_type)) {
+            setError('Pleae select comment or issue')
+            console.log(error)
+        } else {
+            setError('')
+            console.log(newPost)
+        }
+
+    }
 
     const handleEditorChange = (editorState) =>{
-        const tempPostStorage = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        localStorage.setItem('tempPost', tempPostStorage);
+        const postedContent = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        setNewPost({...newPost, post_content: postedContent})
         setEditorState(editorState);
     }
 
@@ -19,7 +46,7 @@ const NewPost = () => {
         border: '2px solid #033F63'
     })
 
-    const FormatedGroup = styled("Div") ({
+    const FormatedGroup = styled("div") ({
         display: 'flex',
         justifyContent: 'flex-end'
     })
@@ -58,19 +85,22 @@ const NewPost = () => {
             backgroundColor: '#213946'
         }
     })
-
+    const ErrorMeassage = styled(Box) ({
+        color: "red",
+        textSize: '1.7em'
+    })
+    
+    const handleToggle = (event) => {
+        setNewPost({...newPost, userResponse_type: event.target.value})
+        console.log('set type', event.target.value)
+    }
 
     return (
         <>
  
-        <FormatedGroup row aria-label="type" onChange={(event) => {
-
-            console.log(event.target.value)
-            
-          
-        }} name="row-radio-buttons-group" defaultValue="comment">
-            <FormatedRadio value="comment" name="Comment">Comment</FormatedRadio>
-            <FormatedRadio value="issue" label="Issue">Issue</FormatedRadio>
+        <FormatedGroup row aria-label="type" value>
+            <FormatedRadio value="comment" onClick={handleToggle} name="Comment">Comment</FormatedRadio>
+            <FormatedRadio value="issue" onClick={handleToggle} label="Issue">Issue</FormatedRadio>
         </FormatedGroup>
             <Editor 
             toolbar = {{             
@@ -84,11 +114,21 @@ const NewPost = () => {
             toolbarClassName="toolbar-class"
 
             onEditorStateChange={handleEditorChange}
-            editorState={editor}
+            editorState={editorState}
             />
-            <FormatedButton
+            <FormatedButton onClick={handleNewPost}
             >New Post
             </FormatedButton>
+            {error != '' ? 
+            (
+                <ErrorMeassage>
+                {error}
+                </ErrorMeassage>
+            ) 
+                : (console.log(error))
+            }
+            
+
         </>
     )
 }
