@@ -11,7 +11,7 @@ const UserArticlesCard = (props) => {
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
         borderRadius: '5px',
-        backgroundColor:'#8FC0A9',
+        backgroundColor:'#8fc0a98f',
         color: '#033F63',
         margin: '10px',
         padding: '5px',
@@ -37,6 +37,9 @@ const UserArticlesCard = (props) => {
         ['@media (max-width:1280px)']: { 
             flex: 'none',
             width: '100%',
+        },'&:hover':{
+            transform: 'scale(1.02)',
+            transition: 'transform .2s ease-in-out'
         }
 
     })
@@ -58,7 +61,7 @@ const UserArticlesCard = (props) => {
     /*-------------------------------------------------------*/
     let last_revised_date = 'none';
     if (props.last_revised_date){
-        last_revised_date = new Date(props.last_revised_date).toLocaleDateString();
+        last_revised_date = new Date(props.last_revised_date).toLocaleString();
     }
     let published_date = new Date(props.published_date).toLocaleDateString();
 

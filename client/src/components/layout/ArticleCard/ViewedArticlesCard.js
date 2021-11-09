@@ -2,12 +2,11 @@ import React from 'react';
 import { Container, Grid } from '@mui/material/';
 import { styled } from '@mui/material/styles';
 import {Link} from 'react-router-dom';
-import {Button} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 
-const SavedArticlesCard = (props) => {
+const ViewedArticlesCard = (props) => {
 
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
@@ -50,31 +49,16 @@ const SavedArticlesCard = (props) => {
 
     })
 
-    
-    const FormattedButton = styled(Button) ({
-        background: '#033F63',
-        color: '#FFFFFF',
-        display:'block',
-        padding: '10px',
-        width:'100%',
-        textAlign:'center',
-        fontWeight: 'bold',
-        '&:hover': {
-            backgroundColor: '#213946'
-        }
-    })
-
-
     /*-------------------------------------------------------*/
    
-    let saved_date = new Date(props.saved_date).toLocaleString();
+    let viewed_date = new Date(props.viewed_date).toLocaleString();
    
     let published_date = new Date(props.published_date).toLocaleDateString();
 
     return (
         <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.article_id}`}>
             <Grid container >
-                <Grid item container xs={12} md={10}>
+                <Grid item container xs={12} md={12}>
                     <Grid item xs={12}>
                         <h2>{props.title}</h2>
                     </Grid>
@@ -92,18 +76,14 @@ const SavedArticlesCard = (props) => {
                             <p className='pp'>{published_date}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <p>Date saved:</p>
-                            <p className='pp'> {saved_date}</p> 
+                            <p>Date viewed:</p>
+                            <p className='pp'> {viewed_date}</p> 
                         </Grid>
                     </Grid>
-                </Grid>
-
-                <Grid item container xs={12} md={2} alignItems='center'>
-                        <FormattedButton component={Link} to={`/EjKBA/saved_articles?unSave=${props.article_id}`}>unSave</FormattedButton>  
                 </Grid>
             </Grid> 
         </ArticleContainer>
     )
 }
 
-export default SavedArticlesCard;
+export default ViewedArticlesCard;

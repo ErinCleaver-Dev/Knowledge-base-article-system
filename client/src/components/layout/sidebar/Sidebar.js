@@ -18,8 +18,11 @@ const SidebarNav =  styled(Box) ({
         flexWrap: 'wrap',
         justifyContent: 'center',
         borderTopRightRadius: '0',
+        alignItems:'center',
         borderBottomRightRadius: '0',
-    }
+        minHeight:'unset'
+    },
+    minHeight:'662px',
 })
 
 const StyledButton = styled(Button) ({

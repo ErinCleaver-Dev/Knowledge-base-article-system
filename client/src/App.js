@@ -10,7 +10,8 @@ import CreateArticle from './components/pages/articles/CreateArticle';
 import EditArticle from './components/pages/articles/EditArticle';
 import FeedbackAndSupp from './components/pages/userHistory/FeedbackAndSupp';
 import UserArticles from './components/pages/articles/UserArticles';
-import SavedArticles from './components/pages/userHistory/SavedArticles'
+import SavedArticles from './components/pages/userHistory/SavedArticles';
+import ViewedArticles from './components/pages/userHistory/ViewedArticles';
 import {auth, signOutFunc} from './firebase/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import {Redirect} from 'react-router-dom';
@@ -59,6 +60,7 @@ function App() {
             <Route exact path="/EjKBA/edit_article/:user_id/:article_id" component={EditArticle}/>
             <Route exact path="/EjKBA/user_articles" component={UserArticles}/>
             <Route exact path="/EjKBA/saved_articles" component={SavedArticles}/>
+            <Route exact path="/EjKBA/view_history" component={ViewedArticles}/>
             <Route exact path="/EjKBA/search" component={Search}/>
             <Route exact path="/EjKBA/feedback_support" component={FeedbackAndSupp}/>
           </Switch>

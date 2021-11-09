@@ -10,7 +10,8 @@ import { useLocation, Redirect, useHistory} from 'react-router-dom';
 
 const UserArticlesContainer = styled(Container) ({
     border: '#28666E solid 3px',
-    minHeight:'500px',
+    minHeight:'552px',
+    alignSelf:'center',
     margin: '0',
     marginTop: '10px',
     padding:'12px !important',
@@ -71,6 +72,7 @@ const SortButton = styled(Button)({
     color:'white',
     backgroundColor:'#033F63',
     fontSize:'0.6em',
+    textTransform: 'capitalize',
     marginLeft:'10px',
     fontWeight:'bold',
     '&:hover':{
@@ -93,7 +95,6 @@ const SavedArticles = (props) => {
     const [sort, setSort] = useState('publish')
     const [loading, setLoading] = useState(true);
     const [loadingError, setLoadingError] = useState('');
-    //const [sortBy, setSortBy] = useState('date');
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(1);
     const location = useLocation();
@@ -118,12 +119,12 @@ const SavedArticles = (props) => {
                 articleResults = publishSort;
                 //console.log(articleResults)
             }
-            setPages(Math.ceil(articleResults.length/10));
+            setPages(Math.ceil(articleResults.length/5));
             //removing docs depending what is the current page
-            articleResults = articleResults.slice(((currentPage - 1) * 10));
+            articleResults = articleResults.slice(((currentPage - 1) * 5));
             //console.log(articleResults);
             let shownArticles = [];
-            for (let i = 0; i< 10; i++){
+            for (let i = 0; i< 5; i++){
                  if(articleResults[i] == null || articleResults[i] == undefined){
                      break;
                  }else{
@@ -131,7 +132,7 @@ const SavedArticles = (props) => {
                  }
              }
             //console.log(shownArticles)
-            setArticles(response.data.getSavedArticles)
+            setArticles(shownArticles)
         }).catch(error => {
             //console.log(error)
             setLoadingError('Server down - pleas bear with us and try later. Sorry for your inconvenience.');

@@ -33,6 +33,9 @@ const ArticleCard = (props) => {
             flex: 'none',
             width: '100%',
             margin: '5px',
+        },'&:hover':{
+            transform: 'scale(1.02)',
+            transition: 'transform .2s ease-in-out'
         }
 
     })
