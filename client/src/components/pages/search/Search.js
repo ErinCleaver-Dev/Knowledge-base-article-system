@@ -40,11 +40,7 @@ const Search = (props) => {
             start: articleData.start,
             }).then((response) => {
                 setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles})
-                if(!response.data.articles) {
-                    setLoadding("no articles found")
-                } else {
-                    setLoadding("isLoadding")
-                }
+             
             })
     }, [cookie.get('search'), props.location.search]);
 
@@ -101,7 +97,7 @@ const Search = (props) => {
                 ))
                 
                 ) : 
-                (<>{isLoadding}</>)
+                (<>Page is loading</>)
             }
             <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={1} />
 
