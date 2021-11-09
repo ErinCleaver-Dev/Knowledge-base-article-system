@@ -33,7 +33,7 @@ module.exports = {
         })
     },
     getOneByid: async function(_id) {
-        return await Article.findById(_id)
+        return await Article.findById(_id).populate('user_id', {uid: 1});
     },
     findArticles: async function(body) {
         console.log("testing find", body)
@@ -95,7 +95,7 @@ module.exports = {
         }
     },
     getByUserId: async function(user) {
-        return await Article.find({ user_id: user }).lean();
+        return await Article.find({ user_id: user }).populate('user_id', {uid: 1});
     },
     // find specific article from user_id and article_id
     getByUserIdAndArticleId: async function(user, article) {

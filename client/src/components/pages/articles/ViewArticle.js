@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../App';
+import Responses from './responses/Responses'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Editor, EditorState, convertFromRaw } from "draft-js";
-import { Responses } from './resonses/Responses'
-
 import axios from 'axios';
 import Config from '../../../config/index'
+
 
 const Title = styled(Box) ({
     fontSize: "2.8em",
@@ -70,6 +70,8 @@ const ButtonBox = styled(Box) ({
     paddingTop: "10px",
     justifyContent: 'flex-end',
     alignItems: 'center',
+    borderBottom: "1px solid black",
+    paddingBottom: "20px",
 })
 
 const HR = styled('div') ({
@@ -103,8 +105,7 @@ const ViewArticle = (props) => {
     const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
 
-    console.log(_id)
-    const [user, setUser] = useState(UserContext);
+    const [user, setUser] = useContext(UserContext);
      useEffect(() => {
         //console.log("testing axios")
         axios.post(`${Config.URL}api/getArticle`, {
@@ -115,11 +116,12 @@ const ViewArticle = (props) => {
         })
     }, []);
 
+    
     const date = new Date(article.published_date)
   
   
     let video = article.video
-    console.log(article)
+   
     return (
         <>
             {article ? (
@@ -153,16 +155,19 @@ const ViewArticle = (props) => {
                 </>
             ) : (<h2>Loaindg article...</h2>) }
            <ButtonBox>
-               {localStorage.getItem('isLoggedIn') ? ( 
+               {article.user_id ? (<>
+                {localStorage.getItem('isLoggedIn') && article.user_id.uid == user.uid ? ( 
                     <>
                         <FormattedBotton>Delete</FormattedBotton>
                         <FormattedBotton>Edit Article</FormattedBotton>
                     </>) : 
                     (null)
                }
+               </>) : (null) }
+               
                <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
            </ButtonBox>
-           <Responses />
+           <Responses article_id ={article.article_id} uid={user.uid}/>
         </>
     )
 }
