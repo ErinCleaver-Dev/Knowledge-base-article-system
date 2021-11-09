@@ -30,8 +30,8 @@ const NewPost = (props) => {
             setError('Pleae select comment or issue')
             console.log(error)
         } else {
-            setError('')
-            console.log(newPost)
+            
+
         }
 
     }
