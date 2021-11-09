@@ -18,7 +18,7 @@ const ProfileContainer = styled('span') ({
 const ProfileCard = (props) => {
 
     const [user, setUser] = useContext(UserContext);
-
+    
     return (
         <ProfileContainer>
             <EmojiEmotionsIcon/> {props.name} <Gravatar

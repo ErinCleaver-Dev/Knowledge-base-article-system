@@ -18,8 +18,11 @@ const SidebarNav =  styled(Box) ({
         flexWrap: 'wrap',
         justifyContent: 'center',
         borderTopRightRadius: '0',
+        alignItems:'center',
         borderBottomRightRadius: '0',
-    }
+        minHeight:'unset'
+    },
+    minHeight:'662px',
 })
 
 const StyledButton = styled(Button) ({
@@ -55,7 +58,7 @@ const Sidebar = () => {
             <StyledButton component={Link} to="/EjKBA/view_history">
                 View History
             </StyledButton>
-            <StyledButton component={Link} to="/EjKBA/feeback_support">
+            <StyledButton component={Link} to="/EjKBA/feedback_support">
                 Feedback/Support 
             </StyledButton>
         </SidebarNav>

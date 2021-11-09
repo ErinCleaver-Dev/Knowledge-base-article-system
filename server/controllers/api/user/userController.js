@@ -82,6 +82,7 @@ router.post('/api/createSavedArticles', (req, res) => {
     })
 })
 router.get('/api/getSavedArticles', (req, res) => {
+    console.log(req.query)
     userHistoryService.getSavedArticle(req.query.userId).then((results) => {
         console.log(results);
         res.json({ getSavedArticles: results });

@@ -36,7 +36,11 @@ router.post('/api/updateArticle', (req, res, next) => {
 
 router.post('/api/deleteArticle', (req, res, next) => {
     if (req.body._id) {
-        articleService.delete(req.body._id)
+        articleService.delete(req.body._id).then(result => {
+            console.log(result)
+            res.json(result);
+
+        })
     } else {
         return res.status(400).json({ errors: [{ msg: 'failed to delete article' }] })
     }
