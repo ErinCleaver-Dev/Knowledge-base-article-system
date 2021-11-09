@@ -28,6 +28,7 @@ router.post('/api/getUser', (req, res, next) => {
 
 //for checking if there is the duplicate uid when user register account, but login with google again with same email account.
 router.post('/api/getUserByUid', (req, res, next) => {
+    console.log('testing req', req.body.uid)
     userService.getUserByUid(req.body.uid).then((result) => {
         console.log("get userByUid: ", result)
         return res.send(result)
@@ -37,7 +38,7 @@ router.post('/api/getUserByUid', (req, res, next) => {
 router.post('/api/creatPost', (req, res, next) => {
     console.log(req.body)
     if (req.body) {
-        userResponseService.create(req.body).then(() => {
+        userResponseService.create(req.body.post).then(() => {
 
         }).catch(next)
     } else {

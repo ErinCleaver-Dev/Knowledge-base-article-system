@@ -1,20 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { styled } from '@mui/material/styles';
 import { ValidateComment } from './postValidator'
 import './posts.css'
 import { Editor } from "react-draft-wysiwyg";
 import {RadioGroup, Radio, Button, FormControlLabel, Box, inputLabelClasses} from '@mui/material'
+import axios from 'axios';
+import Config from '../../../../config/index'
+import { UserContext } from '../../../../App';
 
 
 const NewPost = (props) => {
     const [editorState, setEditorState ] = useState(EditorState.createEmpty())
     const [error, setError] = useState('')
+    const [user, setUser] = useContext(UserContext);
+
     const [newPost, setNewPost ] = useState(
         {
             userResponse_type: '',
             post_content: '',
-            article_id: props.articleId,
+            article_id: props.article_id,
             user_id: '',
         }
     )
@@ -27,10 +32,27 @@ const NewPost = (props) => {
             setError('Plase enter a post.')
             console.log(error)
         } else if(ValidateComment(newPost.userResponse_type)) {
+            console.log(newPost.userResponse_type)
             setError('Pleae select comment or issue')
             console.log(error)
         } else {
-            
+            setError('')
+            console.log("uid", props.uid)
+            axios.post(`${Config.URL}api/getUserByUid`, {
+            uid: user.uid
+            }).then((response) => { 
+                console.log("getting user id: ", response.data._id)
+                setNewPost({...newPost, user_id: response.data._id})
+
+                console.log("checking on new post", newPost);
+                
+                axios.post(`${Config.URL}api/creatPost`, {
+                    post: newPost
+                })
+
+
+            }, []);
+
 
         }
 

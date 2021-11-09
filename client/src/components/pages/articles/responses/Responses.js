@@ -32,11 +32,7 @@ const Form = styled("form") ({
 
 })
 
-const Responses = ({article_id}) => {
-    
-    
-
-    
+const Responses = ({article_id}) => {    
     return (
         <ResponsesBox>
             {localStorage.getItem('isLoggedIn') ? (<>
