@@ -3,7 +3,7 @@ import Navbar from '../navbar/Navbar'
 import Sidebar from '../sidebar/Sidebar'
 import { styled } from '@mui/material/styles';
 
-import { Box } from '@mui/material'
+import { Box, } from '@mui/material'
 
 
 const Main = styled(Box) ({
@@ -15,19 +15,20 @@ const Main = styled(Box) ({
         marginTop: 0,
     }
 })
-const BodyContainer = styled(Box)(({loggedIn})=>({
+const BodyContainer = styled(Box)({
     margin: "0 40px",
     display: "flex",
     flex: 1.5,
     flexDirection: 'column',
-    height: '100vh',
+    paddingBottom: '30px',
     ['@media (max-width:1024px)']: {
         margin: "10px 10px",
     }
-}))
+})
 const Body = (props) => {
     return (
         <div>
+        
         <Navbar loggedIn={props.loggedIn}/>
             <Main>
                 {props.loggedIn ? (<Sidebar/>) : (null)} 
@@ -35,6 +36,7 @@ const Body = (props) => {
                     {props.children}
                 </BodyContainer>
             </Main>
+        
         </div>
     )
 }

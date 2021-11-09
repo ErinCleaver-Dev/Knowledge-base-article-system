@@ -1,28 +1,30 @@
 * {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
+
 body {
-  width: 100%;
+    width: 100%;
+    font-family: 'Acme', sans-serif;
 }
 
 .logoImage {
-  height: 50px;
+    height: 50px;
 }
 
 .nav {
-  display: flex;
-  flex-wrap: 'wrap';
-  justify-content: center;
+    display: flex;
+    flex-wrap: 'wrap';
+    justify-content: center;
 }
 
 .profileImage {
-  align-items: center;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  border: none;
-  background: gray;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    background: gray;
 }
 
 .homeTitle {
@@ -34,18 +36,27 @@ body {
     margin-bottom: 10px;
 }
 
-
 .category_title {
-  border-bottom: 2px solid #033F63;
-  color: #033F63;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-  font-size: 2.8em;
-  font-weight: bold;
-  text-transform: 'capitalize';
+    border-bottom: 2px solid #033F63;
+    color: #033F63;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 2.8em;
+    font-weight: bold;
+    text-transform: 'capitalize';
 }
 
-@media only screen and (min-width : 1025px) {
- 
+.public-DraftEditor-content {
+    margin: 0 auto;
+    width: 70%;
+    border-radius: 5px;
+    padding: 0 20px;
 }
+
+@media only screen and (max-width: 1025px) {
+    .public-DraftEditor-content {
+        width: 100%;
+    }
+}
+

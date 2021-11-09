@@ -33,11 +33,14 @@ const ArticleCard = (props) => {
             flex: 'none',
             width: '100%',
             margin: '5px',
+        },'&:hover':{
+            transform: 'scale(1.02)',
+            transition: 'transform .2s ease-in-out'
         }
 
     })
 
-    console.log(props.user_id)
+    //console.log(props.user_id)
     const [userData, setUserData] = useState();
     useEffect (() => {
     axios.post(`${Config.URL}api/getUser`, {
@@ -52,10 +55,10 @@ const ArticleCard = (props) => {
 
     let date = new Date(props.date).toLocaleDateString()
 
-    console.log(userData)
+    //console.log(userData)
 
     return (
-        <ArticleContainer component={Link} to={`id:${props.id}`}>
+        <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.id}`}>
             <div>
                 <h2>
                     {props.title}

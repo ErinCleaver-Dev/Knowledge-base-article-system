@@ -7,20 +7,29 @@ import {Link} from 'react-router-dom'
 import Config from '../../../config/index'
 import SearchBox from '../../layout/search_box/SearchBox'
 import { UserContext } from '../../../App';
+import { FaReact, FaServer } from 'react-icons/fa';
+import { SiJavascript, SiMongodb } from 'react-icons/si';
+import { MdOutlineWeb } from 'react-icons/md';
+import { AiOutlineDeploymentUnit } from 'react-icons/ai';
+
+
 
 const Home = () => {
+    
     const  [user, setUser] = useContext(UserContext)
 
-    const CatagoryBox = styled(Box) ({
+    const CategoryBox = styled(Box) ({
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 33% [col-start])', 
     })
     
     const HomeButtons = styled(Button) ({
         backgroundColor: '#7C9885',
+        display: 'flex',
+        flexDirection: 'column',
         color: '#033F63',
         height: '150px',
-        marginLeft: '100px',
+        marginLeft: '20px',
         marginBottom: '30px',
         fontSize: '1.8em',
         fontWeight: 'bold',
@@ -59,21 +68,20 @@ const Home = () => {
         width: '100%'
     })
     
-   
 
     return (
         <>
             <h1 className="homeTitle">Welcome to the Knowledge Base Article System!</h1>
-            {console.log(articles)}
+            {/* {console.log(articles)} */}
             <SearchBox />
-            <CatagoryBox>
-                <HomeButtons component={Link} to='/category?q=react'>React</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=javascript'>Javascript</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=frontend'>Frontend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=backend'>Backend</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=database'>Database</HomeButtons>
-                <HomeButtons component={Link} to='/category?q=deployment'>Deployment</HomeButtons>
-            </CatagoryBox>
+            <CategoryBox>
+                <HomeButtons component={Link} to='/EjKBA/category?q=react'>React</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=javascript'>Javascript</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=frontend'>Frontend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=backend'>Backend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=database'>Database</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=deployment'>Deployment</HomeButtons>
+            </CategoryBox>
             <TopTen>
                 <h1 className="homeTitle">Top 10 Articles</h1>
                 <Articles>

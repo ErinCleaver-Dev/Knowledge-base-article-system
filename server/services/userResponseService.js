@@ -10,10 +10,14 @@ module.exports = {
       })        
     },
     getComments : async function (article_id) {
+      console.log("Testing getComments service", article_id)
       if(article_id)  {
-        return await UserResponse.find({article_id: article_id}).then(result => {
-          console.log("Comments", result)
-        })
+        const comments = await UserResponse.find({article_id: article_id})
+        .populate('user_id', {firstName: 1, lastName: 1}).exec() 
+
+        return {
+          comments: comments,
+        }
       } 
     },
 }

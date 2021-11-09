@@ -18,7 +18,7 @@ const ProfileContainer = styled('span') ({
 const ProfileCard = (props) => {
 
     const [user, setUser] = useContext(UserContext);
-
+    
     return (
         <ProfileContainer>
             <EmojiEmotionsIcon/> {props.name} <Gravatar
@@ -29,7 +29,7 @@ const ProfileCard = (props) => {
 	            default="wavatar"
 	            style={{margin: '20px auto', borderRadius:'50%', display:'block', border:'4px solid #033F63'}}
             />
-f       </ProfileContainer>
+        </ProfileContainer>
     )
 }
 

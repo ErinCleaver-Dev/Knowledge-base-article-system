@@ -1,15 +1,44 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { styled } from '@mui/material/styles';
 import {Box, Button} from '@mui/material'
 import logo from '../../../images/logo.svg'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link, withRouter} from 'react-router-dom'
 import ProfileCard from './ProfileCard'
 import MenuIcon from '@mui/icons-material/Menu';
+import {useContext} from 'react';
+import { UserContext } from '../../../App';
+import axios from 'axios';
+import config from '../../../config';
 
 // added state for hammburder button.
 
 const Navbar = (props) => {
     const [displayed, setDisplayed] = useState('none')
+    const [user, setUser]= useContext(UserContext);
+    const [name, setName] = useState(false);
+
+
+    useEffect(()=>{
+        if(user){
+            if(user.displayName){
+                setName(user.displayName);
+                return
+            }
+            axios.post(`${config.URL}api/getUserByUid`, {uid:user.uid}).then(result=>{
+                    if(result.data.displayName){
+                        setName(result.data.displayName);
+                        return
+                    }
+                    let firstName = result.data.firstName;
+                    let lastName =  result.data.lastName;
+                    setName(firstName + " " + lastName);
+                }).catch(e=>{
+                    console.log(e)
+                }) 
+        }
+    },[user])
+
+
 
     const clickedHamburger = () => {
         if(displayed == 'none') {
@@ -41,7 +70,8 @@ const Navbar = (props) => {
         paddingLeft: '40px',
         ['@media (max-width:1024px)']: {
             display: 'block'
-        }
+        },
+        cursor:'pointer'
     })
 
     const StyledNavLink = styled(NavLink) ({
@@ -85,11 +115,11 @@ const Navbar = (props) => {
 
     return (
         <NavagationBar>
-            <img className="logoImage" src={logo} />
+            <Link to='/'><img className="logoImage" src={logo}/></Link>
             <div className="nav">
                 {props.loggedIn ? (
-                    <StyledNavLink to="/profile" >
-                        <ProfileCard name={'Hello,  Jimmy Lo'}/> 
+                    <StyledNavLink to="/EjKBA/profile" >
+                        <ProfileCard name={'Hello, ' + name}/> 
                     </StyledNavLink>
                     ) : 
                     (null)
@@ -97,16 +127,16 @@ const Navbar = (props) => {
                 <HamburgerButton onClick={clickedHamburger}/>
 
                 <Hamburger>
-                    <StyledNavLink to="/" >Home</StyledNavLink>
+                    <StyledNavLink to="/" onClick={()=>{setDisplayed('none')}} >Home</StyledNavLink>
                     {props.loggedIn ? (
                         <>
-                        <StyledNavLink to="/logout" >Logout</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logOut" onClick={()=>{setDisplayed('none')}}>Logout</StyledNavLink>
                         </>
                         
                     ) : (
                         <>
-                        <StyledNavLink to="/login" >Login</StyledNavLink>
-                        <StyledNavLink to="/Singup" >Sign up</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/logIn" onClick={()=>{setDisplayed('none')}}>Login</StyledNavLink>
+                        <StyledNavLink to="/EjKBA/signUp" onClick={()=>{setDisplayed('none')}}>Sign up</StyledNavLink>
                         </>
                     )}
                 </Hamburger>
@@ -115,4 +145,4 @@ const Navbar = (props) => {
     )
 }
 
-export default Navbar
+export default withRouter(Navbar);
