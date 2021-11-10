@@ -77,11 +77,11 @@ const NewPost = (props) => {
          
         background: '#033F63',
         color: '#FFFFFF',
-        width: '80px',
+        width: '150px',
         textAlign: 'center',
         marginLeft: '10px',
         marginBottom: '5px',
-        fontSize: '0.7em',
+        fontSize: '1.4em',
         padding: '0px 5px',
         borderRadius: '5px',
         '&:hover': {
