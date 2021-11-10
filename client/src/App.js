@@ -65,7 +65,7 @@ function App() {
             <Route exact path="/EjKBA/view_history" component={ViewedArticles}/>
             <Route exact path="/EjKBA/search" component={Search}/>
             <Route exact path="/EjKBA/feedback_support" component={FeedbackAndSupp}/>
-            <Route exact path="/EJKBA/view_article/:id" component={ViewArticle}/>
+            <Route exact path="/EjKBA/view_article/:id" component={ViewArticle}/>
           </Switch>
           </Body>
         </UserContext.Provider>
