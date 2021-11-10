@@ -41,6 +41,8 @@ const Responses = ({article_id}) => {
             ) : 
             (null)
             }
+            <div id='comments'>
+            </div>
             
         </ResponsesBox>
     )

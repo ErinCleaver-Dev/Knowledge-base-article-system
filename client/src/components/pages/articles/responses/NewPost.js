@@ -81,7 +81,7 @@ const NewPost = (props) => {
         textAlign: 'center',
         marginLeft: '10px',
         marginBottom: '5px',
-        fontSize: '1.4em',
+        fontSize: '1.2em',
         padding: '0px 5px',
         borderRadius: '5px',
         '&:hover': {

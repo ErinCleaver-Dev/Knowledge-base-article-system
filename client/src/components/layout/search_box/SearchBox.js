@@ -1,7 +1,7 @@
 import {OutlinedInput, InputAdornment} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import Cookies from 'universal-cookie';
 import { useHistory , withRouter} from 'react-router-dom';
 import _ from 'lodash';
@@ -10,7 +10,7 @@ import _ from 'lodash';
 const SearchBoxInput = styled(OutlinedInput) ({
     alignSelf: 'center',
     marginBottom: '20px',
-    width: '600px',
+    maxWidth: '1200px',
     ['@media (max-width:1024px)']: {
         width: '100%'
     }
@@ -21,11 +21,13 @@ const SearchBox = ({location}) => {
 
     const [search, setSearch] = useState(cookie.get('search')|| '')
     const history = useHistory();
+    const inputRef = useRef(null);
 
     //console.log('test searchBox 1');
     //console.log(search)
     useEffect(()=>{
         //console('test searchBox 2')
+        inputRef.current.focus();
         if(location.pathname === "/EjKBA/search" && location.search.startsWith('?q=')){
             let searchTerm = location.search.replace('?q=', '');
             searchTerm = searchTerm.replace('%20', ' ')
@@ -33,6 +35,8 @@ const SearchBox = ({location}) => {
             setSearch(searchTerm);
         }
     },[location.search])
+
+
 
     const handleKeyPress = (event) => {
         //console.log(event)
@@ -54,6 +58,8 @@ const SearchBox = ({location}) => {
         }
     }
 
+
+
     const handleInputChange = (event) =>{
         setSearch(event.target.value);
     }
@@ -63,6 +69,7 @@ const SearchBox = ({location}) => {
             <SearchBoxInput
                 id="outlined-adornment-amount"
                 onKeyUp={handleKeyPress}
+                ref={inputRef}
                 value={search}
                 onChange={handleInputChange}
                 startAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}

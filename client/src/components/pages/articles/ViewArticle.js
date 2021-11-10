@@ -140,7 +140,7 @@ const ViewArticle = (props) => {
                         readOnly={true}
                         />
                         <HR/>
-                        <ItemLists><h3>Catagoriy: </h3><p>javascrpt</p></ItemLists>
+                        <ItemLists><h3>Categories: </h3><p>javascript</p></ItemLists>
                         <ItemLists>
                         <h3>Keywords: </h3>
                         <ul>
