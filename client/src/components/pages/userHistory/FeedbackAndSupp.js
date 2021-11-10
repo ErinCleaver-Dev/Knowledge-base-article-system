@@ -15,6 +15,7 @@ const FeedBackContainer = styled(Container) ({
     boxSizing:'border-box',
     paddingRight:'30px !important',
     display:'flex',
+    alignSelf:'center',
     flexDirection:'column',
     position:'relative',
     paddingBottom:'30px !important',
