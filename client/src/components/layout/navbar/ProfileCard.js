@@ -7,7 +7,7 @@ import {UserContext} from '../../../App';
 
 
 const ProfileContainer = styled('span') ({
-    color: '#FEDC97',
+    color: 'white',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

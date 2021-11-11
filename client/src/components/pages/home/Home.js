@@ -24,10 +24,10 @@ const Home = () => {
     })
     
     const HomeButtons = styled(Button) ({
-        backgroundColor: '#7C9885',
+        backgroundColor: '#28666E',
+        color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        color: '#033F63',
         height: '150px',
         marginLeft: '20px',
         marginBottom: '30px',
