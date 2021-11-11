@@ -8,8 +8,10 @@ import NewPost from "./NewPost"
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 import _ from 'lodash';
 import styles from "styled-components"
-
+import axios from 'axios';
 import Comment from './Comment'
+import Config from '../../../../config/index'
+
 
 const FormatedButton = styled(Button) ({
     background: '#033F63',
@@ -37,65 +39,28 @@ const CommentList = styles.ul`
     margin-left: 40px;
 `
 
-const MapComments = () => {
+const MapComments = ({article_id}) => {
 
-   const [comments, setComments] = useState([{
-            _id: 1,
-            userResponse_type: 'issue',
-            post_content: 'test 1',
-            post_date: 10/21/2021,
-            user_id: 1
-        },
-        {
-            _id: 2,
-            userResponse_type: 'reply',
-            post_content: 'Reply test layer 1',
-            post_date: 10/21/2021,
-            parentId: 1,
-            user_id: 2
-        },
-        {
-            _id: 3,
-            userResponse_type: 'reply',
-            post_content: 'Reply test layer 2',
-            post_date: 10/21/2021,
-            parentId: 2,
-            user_id: 3
-        }, 
-        {
-            _id: 4,
-            userResponse_type: 'issue',
-            post_content: 'test 2',
-            post_date: 10/21/2021,
-            user_id: 2
-        },
-        {
-            _id: 5,
-            userResponse_type: 'reply',
-            post_content: 'Reply test 2 layer 1',
-            post_date: 10/21/2021,
-            parentId: 4,
-            user_id: 1
-        },
-        {
-            _id: 6,
-            userResponse_type: 'reply',
-            post_content: 'Reply test 2 layer 2',
-            post_date: 10/21/2021,
-            parentId: 5,
-            user_id: 3
-        },
-        {
-            _id: 5,
-            userResponse_type: 'reply',
-            post_content: 'Reply test 2 layer 1',
-            post_date: 10/21/2021,
-            parentId: 4,
-            user_id: 1
-        }
-        ])
+    const [comments, setComments] = useState('')
+    
 
-      
+    useEffect(() => {
+        
+        console.log('test map comments article id: ', article_id)
+        axios.post(`${Config.URL}api/getComments`, {
+            article_id: article_id
+        }).then((response) => {
+            console.log("resosonse: ", response.data)
+            _(response.data).forEach(f=>
+                {f.replys=_(response.data).filter(g=>g.parentId==f._id).value();});
+     
+            var newComments=_(response.data).filter(f=>f.parentId==null).value();        
+            setComments(newComments)
+        })
+    }, [])
+   
+    
+    if(comments != '' && article_id) {
         const CommentTree = (comments) => {
 
             let items = comments.map((comment) => {
@@ -110,19 +75,17 @@ const MapComments = () => {
             return items
           }
 
-        _(comments).forEach(f=>
-            {f.replys=_(comments).filter(g=>g.parentId==f._id).value();});
- 
-        var newComments=_(comments).filter(f=>f.parentId==null).value();
-        console.log("test", newComments);
+      
+        console.log("test", comments);
+        return (
+            <>
+                {CommentTree(comments)}
+            </>
+        )
+    }
+    return(<></>)
 
-let comment_id = "";
-
-return (
-    <>
-        {CommentTree(newComments)}
-    </>
-)}
+}
   
 
 const Responses = ({article_id}) => {    
@@ -130,13 +93,15 @@ const Responses = ({article_id}) => {
     return (
         
         <ResponsesBox>
+            {console.log(article_id)}
             {localStorage.getItem('isLoggedIn') ? (<>
                 <NewPost article_id={article_id}/>
                 </>
             ) : 
             (null)
             }
-            <MapComments/>
+            {article_id ? (<MapComments article_id={article_id}/>) : (null)} 
+            
         </ResponsesBox>
     )
 }

@@ -47,7 +47,8 @@ router.post('/api/creatPost', (req, res, next) => {
 })
 
 router.post('/api/getComments', (req, res, next) => {
-    console.log('testing get comments')
+
+    console.log('get comments service', req.body.article_id)
     userResponseService.getComments(req.body.article_id).then(result => {
         console.log("testing comments and reply: ", result)
         res.send(result)

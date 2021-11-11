@@ -11,15 +11,12 @@ module.exports = {
     },
     getComments : async function (article_id) {
       if(article_id)  {
-        const comments = await UserResponse.find({article_id: article_id})
-        .populate('user_id', {firstName: 1, lastName: 1}).exec() 
 
-        let newCommentObject = []
+        console.log("check get comments by id", article_id)
+        return await UserResponse.find({article_id: article_id})
+        .populate('user_id', {firstName: 1, lastName: 1}).exec()
+
         
-          console.log
-        return {
-          comments: comments,
-        }
       } 
     },
 }
