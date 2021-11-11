@@ -14,6 +14,8 @@ const NewPost = (props) => {
     const [editorState, setEditorState ] = useState(EditorState.createEmpty())
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
+    const [comments, setComments] = useState(null)
+
 
     const [newPost, setNewPost ] = useState(
         {
@@ -57,6 +59,8 @@ const NewPost = (props) => {
         }
 
     }
+
+
 
     const handleEditorChange = (editorState) =>{
         const postedContent = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
@@ -149,8 +153,6 @@ const NewPost = (props) => {
             ) 
                 : (console.log(error))
             }
-            
-
         </>
     )
 }

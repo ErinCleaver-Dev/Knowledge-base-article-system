@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
+import styles from "styled-components"
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import {useHistory} from 'react-router-dom';
 import { Editor } from "react-draft-wysiwyg";
@@ -32,6 +33,86 @@ const Form = styled("form") ({
 
 })
 
+const List = styles('ul')`
+    
+`
+
+
+const mapReplys = (reply, user_id, count = 3) => {
+    
+
+    console.log(reply)
+}
+
+const mapComments = () => {
+
+    setComments([
+        {
+            id: 1,
+            userResponse_type: 'issue',
+            post_content: 'test 1',
+            post_date: 10/21/2021,
+            user_id: 1
+        },
+        {
+            id: 2,
+            userResponse_type: 'reply',
+            post_content: 'Reply test layer 1',
+            post_date: 10/21/2021,
+            parentId: 1,
+            user_id: 2
+        },
+        {
+            id: 3,
+            userResponse_type: 'reply',
+            post_content: 'Reply test layer 2',
+            post_date: 10/21/2021,
+            parentId: 2,
+            user_id: 3
+        }, 
+        {
+            id: 4,
+            userResponse_type: 'issue',
+            post_content: 'test 2',
+            post_date: 10/21/2021,
+            user_id: 2
+        },
+        {
+            id: 5,
+            userResponse_type: 'reply',
+            post_content: 'Reply test 2 layer 1',
+            post_date: 10/21/2021,
+            parentId: 2,
+            user_id: 1
+        },
+        {
+            id: 6,
+            userResponse_type: 'reply',
+            post_content: 'Reply test 2 layer 2',
+            post_date: 10/21/2021,
+            parentId: 1,
+            user_id: 3
+        },
+        {
+            id: 5,
+            userResponse_type: 'reply',
+            post_content: 'Reply test 2 layer 1',
+            post_date: 10/21/2021,
+            parentId: 2,
+            user_id: 1
+        }
+    ])
+
+    let user_id = "", 
+
+    return(
+        <List>
+            {comment.map}
+           
+        </List>
+    )
+}
+
 const Responses = ({article_id}) => {    
     return (
         <ResponsesBox>
@@ -41,9 +122,8 @@ const Responses = ({article_id}) => {
             ) : 
             (null)
             }
-            <div id='comments'>
-            </div>
-            
+            {mapComments()}
+
         </ResponsesBox>
     )
 }
