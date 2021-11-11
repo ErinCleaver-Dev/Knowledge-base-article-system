@@ -10,11 +10,13 @@ module.exports = {
       })        
     },
     getComments : async function (article_id) {
-      console.log("Testing getComments service", article_id)
       if(article_id)  {
         const comments = await UserResponse.find({article_id: article_id})
         .populate('user_id', {firstName: 1, lastName: 1}).exec() 
 
+        let newCommentObject = []
+        
+          console.log
         return {
           comments: comments,
         }

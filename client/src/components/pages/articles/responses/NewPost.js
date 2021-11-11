@@ -14,7 +14,6 @@ const NewPost = (props) => {
     const [editorState, setEditorState ] = useState(EditorState.createEmpty())
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
-    const [comments, setComments] = useState(null)
 
 
     const [newPost, setNewPost ] = useState(
