@@ -135,7 +135,7 @@ const ViewArticle = (props) => {
                         </Video>) : (null)}
                         
                         <Editor
-                        className={"formatedPost"}
+                        wrapperClassName={"formatedPost"}
                         editorState={editorState}
                         readOnly={true}
                         />

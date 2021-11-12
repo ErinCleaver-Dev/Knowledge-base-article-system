@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from "styled-components"
+import { Editor, EditorState, convertFromRaw } from "draft-js";
+import htmlToDraft from 'html-to-draftjs';
 
 const ListItem = styled.li`
     border: 2px solid black;
@@ -8,12 +10,29 @@ const ListItem = styled.li`
 
 
 const Comment = ({comment}) => {
-    console.log('testing comment commpont: ', comment)
-
+    let content = ''
+    let initialEditorState = EditorState.createWithContent( convertFromRaw(JSON.parse(comment.post_content)));
+    
+    const [editorState, setEditorState] = useState(initialEditorState);
+    
     return (
-        <ListItem>
-            {comment.post_content}
-        </ListItem>
+        <>
+       
+        {comment ? (
+                <ListItem>
+                <>
+                {comment.post_content}
+                </>
+                
+                <Editor
+                        editorState={editorState}
+                        readOnly={true}
+                        />
+
+                </ListItem> 
+
+            ) : (null)}
+        </>
     )
 }
 

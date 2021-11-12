@@ -60,7 +60,6 @@ const NewPost = (props) => {
     }
 
 
-
     const handleEditorChange = (editorState) =>{
         const postedContent = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
         setNewPost({...newPost, post_content: postedContent})
