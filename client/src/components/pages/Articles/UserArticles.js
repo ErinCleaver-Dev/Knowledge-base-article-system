@@ -19,8 +19,8 @@ const UserArticlesContainer = styled(Container) ({
     display:'flex',
     flexDirection:'column',
     position:'relative',
-    paddingBottom:'55px !important'
-    
+    paddingBottom:'55px !important',
+    fontFamily: 'Acme, sans-serif',
 })
 
 const PaginationArticles = styled(Pagination) ({
@@ -70,19 +70,20 @@ const DecisionButton = styled(Button)({
 const SortButton = styled(Button)({
     color:'white',
     backgroundColor:'#033F63',
-    fontSize:'0.6em',
+    fontSize:'0.8em',
     marginLeft:'10px',
     fontWeight:'bold',
     textTransform: 'capitalize',
     '&:hover':{
         backgroundColor:'#06283C'
-    }
+    },
+    fontFamily: 'Acme, sans-serif',
 })
 
 const Span1 = styled('span')({
+    margin:'auto',
     ['@media (max-width:430px)']: { 
         display:'block',
-        marginLeft:'-10px'
      }
 })
 
@@ -174,13 +175,12 @@ const UserArticles = (props) => {
                 {loadingError}
               </Alert>
             ):(null)}
-            <h1>Created Articles</h1>
-            <p>Latest to Oldest
+            <h1 style={{fontSize:'1.8em', margin:'auto'}}>Created Articles</h1>
+            <p style={{margin:'auto'}}>Latest to Oldest</p>
             <Span1> 
             <SortButton type='button' onClick={()=>{setSort('publish')}}>Date Published</SortButton>
             <SortButton type='button' onClick={()=>{setSort('revise')}}>Date Revised</SortButton>
             </Span1>    
-            </p>  
             {deleteMessage.startsWith('?delete=')?(
                 <MessageContainer>
                     <h1>Would you like to delete this article?</h1>

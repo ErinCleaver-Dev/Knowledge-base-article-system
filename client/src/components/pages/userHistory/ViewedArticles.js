@@ -20,7 +20,8 @@ const UserArticlesContainer = styled(Container) ({
     display:'flex',
     flexDirection:'column',
     position:'relative',
-    paddingBottom:'55px !important'
+    paddingBottom:'55px !important',
+    fontFamily: 'Acme, sans-serif',
     
 })
 
@@ -43,19 +44,20 @@ const PaginationArticles = styled(Pagination) ({
 const SortButton = styled(Button)({
     color:'white',
     backgroundColor:'#033F63',
-    fontSize:'0.6em',
+    fontSize:'0.8em',
     marginLeft:'10px',
     fontWeight:'bold',
     textTransform: 'capitalize',
     '&:hover':{
         backgroundColor:'#06283C'
-    }
+    },
+    fontFamily: 'Acme, sans-serif',
 })
 
 const Span1 = styled('span')({
+    margin:'auto',
     ['@media (max-width:430px)']: { 
         display:'block',
-        marginLeft:'-10px'
      }
 })
 
@@ -122,13 +124,13 @@ const ViewedArticles = (props) => {
                 {loadingError}
               </Alert>
             ):(null)}
-            <h1>Viewed Articles</h1>
-            <p>Latest to Oldest
+            <h1 style={{fontSize:'1.8em', margin:'auto'}}>Viewed Articles</h1>
+            <p style={{margin:'auto'}}>Latest to Oldest</p> 
             <Span1> 
             <SortButton type='button' onClick={()=>{setSort('publish')}}>Date Published</SortButton>
             <SortButton type='button' onClick={()=>{setSort('view')}}>Date viewed</SortButton>
             </Span1>    
-            </p>  
+             
             {loading? (<h4>loading...</h4>):(
             <UserArticlesContainer>
             {articles.length === 0 ? (<h1 style={{textAlign:'center', paddingTop:'20px', fontSize:'1.8em'}}>...You have not viewed any articles yet...</h1>):(

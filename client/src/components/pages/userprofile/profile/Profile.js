@@ -25,13 +25,14 @@ const dateFunc = (timestamp) =>{
 const ProfileContainer = styled(Container)({
     width:'80%',
     maxWidth:'800px',
-    margin:'30px auto',
-    border: '2px solid #033F63',
+    margin:'15px 0',
+    border: '4px solid #033F63',
     paddingLeft:'0px !important',
     ['@media (max-width:1150px)']:{
         width:'100%',
         paddingLeft:'10px !important',
-    }
+    },
+    alignSelf:'center'
 })
 
 const ProfileInsideContainer = styled(ProfileContainer)({
@@ -59,9 +60,9 @@ const LeftContainer = styled(Container)({
 const RightContainer = styled(Container)({
     flexBasis:'50%',
     width:'100%',
-    backgroundColor:'#7c9885c7',
+    backgroundColor:'#28666efa',
     height:'100%',
-    border: '2px solid #033F63',
+    border: '3px solid #033F63',
     ['@media (max-width:1100px)']:{
         flexBasis:'100%',
         marginTop:'20px',
@@ -72,19 +73,22 @@ const RightContainer = styled(Container)({
 
 const Google = styled(GoogleIcon)({
     verticalAlign:'middle',
+    fontSize:'32px',
     padding:'20px 0 4px 0px',
     position: 'relative',
     color:'white',
-    bottom:'12px'
+    bottom:'16px'
 })
 
 
 const GoogleButton = styled(Button)({
-    marginTop:'40px',
-    paddingTop:'10px',
+    marginTop:'70px',
+    paddingTop:'20px',
+    fontFamily: 'Acme, sans-serif',
+    wordSpacing: '10px',
     backgroundColor:'#033F63',
     fontWeight:'bold',
-    fontSize:'20px',
+    fontSize:'28px',
     color:'white',
     display:'block',
     marginBottom:'20px',
@@ -101,11 +105,12 @@ const GoogleButton = styled(Button)({
 const ResetButton = styled(Button) ({
     backgroundColor: '#033F63',
     width:'100%',
-    fontSize:'1.3em',
+    fontSize:'26px',
+    fontFamily: 'Acme, sans-serif',
     fontWeight: 'bold',
     color: 'white',
-    margin: '22px -3px',
-    padding: '15px',
+    margin: '18px -3px',
+    padding: '21px',
     '&:hover' : {
         backgroundColor: '#06283C',
     },
@@ -123,11 +128,12 @@ const styles = {
         marginTop: '20px'
     },
     p:{
-        color: '#033F63',
+        color: 'white',
         marginTop: '10px',
         fontWeight:'bold',
         paddingLeft: '20px',
-        fontSize:'18px'
+        fontSize:'18px',
+        letterSpacing:'1px'
     },
     label:{
         color: 'black',
@@ -140,7 +146,7 @@ const styles = {
     gravatar:{
         ['@media (max-width:500px)']:{
             width:'200px',
-            height:'200px'
+            height:'200px',
         }
     }
 }
@@ -211,8 +217,8 @@ const Profile = ({classes}) =>{
         <React.Fragment>
         {localStorage.getItem('isLoggedIn')? (
         <>  
-        <h1>User Profile</h1>
-        <Container>
+        <h1 style={{fontSize:'1.8em', textAlign:'center'}}>User Profile</h1>
+       
         <ProfileContainer>
         <ProfileInsideContainer>
             <LeftContainer>
@@ -221,8 +227,8 @@ const Profile = ({classes}) =>{
 	            email={user.email}
 	            size={300}
 	            rating="pg"
-	            default="wavatar"
-	            style={{margin: '20px auto', borderRadius:'50%', display:'block', border:'4px solid #033F63'}}
+	            default="mp"
+	            style={{margin: '40px auto', borderRadius:'50%', display:'block', border:'4px solid #033F63'}}
             />
             <div>
                 <GoogleButton component='button' type='button' onClick={linkWithGoogleHandler} disabled={googleButtonDisabled || GoogleLinkMessage==='Success - Your account is linked with Google!'}>Link with <Google/></GoogleButton>
@@ -253,7 +259,7 @@ const Profile = ({classes}) =>{
             </RightContainer>
         </ProfileInsideContainer>
         </ProfileContainer>
-        </Container>
+        
         
         </>):(
             <Redirect to='/'/>

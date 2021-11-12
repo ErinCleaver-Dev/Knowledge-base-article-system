@@ -20,7 +20,11 @@ const UserArticlesCard = (props) => {
         'h2': {
             fontSize: '1.8em',
             paddingTop: '5px',
-            paddingBottom: '5px'
+            paddingBottom: '5px',
+            wordBreak: 'break-word',
+            ['@media (max-width:600px)']: { 
+                fontSize:'22px'
+            }
         },
         'p': {
             fontSize: '1.3em',
@@ -40,7 +44,8 @@ const UserArticlesCard = (props) => {
         },'&:hover':{
             transform: 'scale(1.02)',
             transition: 'transform .2s ease-in-out'
-        }
+        },
+        boxShadow:'1px 1px 5px black'
 
     })
 
@@ -55,7 +60,10 @@ const UserArticlesCard = (props) => {
         fontWeight: 'bold',
         '&:hover': {
             backgroundColor: '#213946'
-        }
+        },
+        fontFamily: 'Acme, sans-serif',
+        fontSize:'1em',
+        
     })
 
     /*-------------------------------------------------------*/

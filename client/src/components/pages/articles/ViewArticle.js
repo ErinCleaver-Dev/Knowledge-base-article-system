@@ -131,11 +131,10 @@ const ViewArticle = (props) => {
                         <BackButton/>
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
-                        {video ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >
+                        {video && video.startsWith('https://www.youtube.com') ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >
                         </Video>) : (null)}
                         
                         <Editor
-                        className={"formatedPost"}
                         editorState={editorState}
                         readOnly={true}
                         />

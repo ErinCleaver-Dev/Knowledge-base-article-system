@@ -20,7 +20,8 @@ const UserArticlesContainer = styled(Container) ({
     display:'flex',
     flexDirection:'column',
     position:'relative',
-    paddingBottom:'55px !important'
+    paddingBottom:'55px !important',
+    fontFamily: 'Acme, sans-serif',
     
 })
 
@@ -65,25 +66,27 @@ const DecisionButton = styled(Button)({
     fontWeight:'bold',
     '&:hover':{
         backgroundColor:'#df5e09',
-    }
+    },
+    fontFamily: 'Acme, sans-serif',
 })
 
 const SortButton = styled(Button)({
     color:'white',
     backgroundColor:'#033F63',
-    fontSize:'0.6em',
+    fontSize:'0.8em',
     textTransform: 'capitalize',
     marginLeft:'10px',
     fontWeight:'bold',
     '&:hover':{
         backgroundColor:'#06283C'
-    }
+    },
+    fontFamily: 'Acme, sans-serif',
 })
 
 const Span1 = styled('span')({
+    margin:'auto',
     ['@media (max-width:430px)']: { 
         display:'block',
-        marginLeft:'-10px'
      }
 })
 
@@ -169,13 +172,13 @@ const SavedArticles = (props) => {
                 {loadingError}
               </Alert>
             ):(null)}
-            <h1>Saved Articles</h1>
-            <p>Latest to Oldest
+            <h1 style={{fontSize:'1.8em', margin:'auto'}}>Saved Articles</h1>
+            <p style={{margin:'auto'}}>Latest to Oldest</p>  
             <Span1> 
             <SortButton type='button' onClick={()=>{setSort('publish')}}>Date Published</SortButton>
             <SortButton type='button' onClick={()=>{setSort('save')}}>Date Saved</SortButton>
             </Span1>    
-            </p>  
+            
             {unSaveMessage.startsWith('?unSave=')?(
                 <MessageContainer>
                     <h1>Would you like to unSave this article?</h1>

@@ -48,19 +48,22 @@ const Navbar = (props) => {
         }
     }
     
-    const NavagationBar = styled(Box) ({
+    const NavigationBar = styled(Box) ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
-        position: 'relative',
+        position:'sticky',
+        top:'0',
+        zIndex:'500',
         backgroundColor: '#28666E',
         padding: '20px 40px',
         ['@media (max-width:1024px)']: {
             padding: '20px 20px',
             justifyContent: 'none',
             alignItems: 'none',
-        }
+        },
+        
     })
 
 
@@ -71,7 +74,10 @@ const Navbar = (props) => {
         ['@media (max-width:1024px)']: {
             display: 'block'
         },
-        cursor:'pointer'
+        cursor:'pointer',
+        position:'absolute',
+        right:'10px',
+        top:'30px'
     })
 
     const StyledNavLink = styled(NavLink) ({
@@ -83,14 +89,12 @@ const Navbar = (props) => {
         padding: '0 40px',
         display: 'flex',
         alignItems: 'center',
-        '&:hover': {
-            backgroundColor: '#213946'
-        },
         ['@media (max-width:1024px)']: {
             paddingLeft: '0',
             height: '0',
             padding: '20px 20px',
-        }
+        },
+        
         
 
     })
@@ -98,35 +102,38 @@ const Navbar = (props) => {
     const Hamburger = styled('div') ({
         display: 'flex',
         alignItems: 'center',
+        transition:'0.3s ease all',
 
         ['@media (max-width:1024px)']: {
             display: displayed,
             flexDirection: 'column',
             alignItems: 'center',
-            marginTop: '70px',
+            marginTop: '45px',
             position: 'absolute',
+            top:'55px',
             right: 0,
             width: '100%',
             zIndex: '1',
             backgroundColor: '#28666E',
             
+            
         }
     })
 
     return (
-        <NavagationBar>
+        <NavigationBar>
             <Link to='/'><img className="logoImage" src={logo}/></Link>
             <div className="nav">
                 {props.loggedIn ? (
-                    <StyledNavLink to="/EjKBA/profile" >
-                        <ProfileCard name={'Hello, ' + name}/> 
+                    <StyledNavLink to="/EjKBA/profile">
+                        <ProfileCard name={name}/> 
                     </StyledNavLink>
                     ) : 
                     (null)
                 }
                 <HamburgerButton onClick={clickedHamburger}/>
 
-                <Hamburger>
+                <Hamburger onMouseLeave={()=>{setDisplayed('none')}} >
                     <StyledNavLink to="/" onClick={()=>{setDisplayed('none')}} >Home</StyledNavLink>
                     {props.loggedIn ? (
                         <>
@@ -141,8 +148,9 @@ const Navbar = (props) => {
                     )}
                 </Hamburger>
             </div>
-        </NavagationBar>
+        </NavigationBar>
     )
 }
+
 
 export default withRouter(Navbar);

@@ -82,7 +82,8 @@ const FeedBackContentGrid = styled(Grid)({
             backgroundColor:'#06283C',
         },['@media (max-width:900px)']: { 
             width:'90%'
-        }
+        },
+        fontFamily: 'Acme, sans-serif',
     }
 })
 
@@ -214,7 +215,7 @@ const FeedbackAndSupp = () => {
         {errorMessage}
       </Alert>)
         :null}
-        <h1>FeedBack Form</h1>
+        <h1 style={{fontSize:'1.8em', margin:'auto'}}>FeedBack Form</h1>
         <FeedBackContainer>
             <h1>Give us a feedback, We could have better service for you.</h1>
             <FeedBackContentGrid component='form' container xs={12} onSubmit={handleSubmit}>

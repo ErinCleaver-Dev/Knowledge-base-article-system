@@ -19,7 +19,11 @@ const FormatedBackButton = styled(Button) ({
     },
     '&:hover': {
         backgroundColor: '#213946'
-    }
+    },
+    marginTop: '40px',
+    ['@media (max-width:550px)']: { 
+        marginTop: '20px'
+      },
 })
 export const BackButton = () => {
     const history = useHistory();  
