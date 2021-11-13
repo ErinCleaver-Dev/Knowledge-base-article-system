@@ -12,8 +12,6 @@ import {signUpFunc, signOutFunc} from '../../../../firebase/firebase.config';
 import config from '../../../../config/index';
 import axios from 'axios';
 
-
-
 const SignUpContainer = styled(Container) ({
     width:'100%',
     height:'600px',
@@ -311,7 +309,7 @@ const SignUp = ({classes}) => {
             <input className={fields.errors.rePassword? classes.inputError: classes.input} type='password' name='rePassword' value={fields.fields.rePassword} onChange={handleUserInput} placeholder='Re-Password'/>
             <Key/>
         </div>
-        <input ref={checkBoxRef} className={classes.checkBox} name='policy' onClick={checkBoxHandler} type='checkbox'/><label>I agree <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'#FEDC97', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
+        <input ref={checkBoxRef} className={classes.checkBox} name='policy' onClick={checkBoxHandler} type='checkbox'/><label>I agree <span style={{color:'white', textDecoration:'underline', letterSpacing:'1px'}}>Terms of Use</span> and <span style={{color:'white', textDecoration:'underline', letterSpacing:'1px'}}>Privacy Policy</span>{fields.errors.checkBox? <span className={classes.spanError}>{fields.errors.checkBox}</span>:null}</label>
         <div>
         <button className={classes.button} type='submit'>Register</button>
         </div>

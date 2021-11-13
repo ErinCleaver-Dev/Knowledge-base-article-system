@@ -14,8 +14,11 @@ import { AiOutlineDeploymentUnit } from 'react-icons/ai';
 
 
 
+
+
 const Home = () => {
-    
+ 
+
     const  [user, setUser] = useContext(UserContext)
 
     const CategoryBox = styled(Box) ({

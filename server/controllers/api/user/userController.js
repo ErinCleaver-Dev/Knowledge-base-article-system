@@ -4,10 +4,13 @@ const router = Router();
 const userService = require('../../../services/userService')
 const userResponseService = require('../../../services/userResponseService')
 const userHistoryService = require('../../../services/userHistoryService')
+const { sendEmailFunc } = require('../../../nodemailer/nodemailer')
 
 router.post('/api/addUser', (req, res, next) => {
     console.log(req.body)
     userService.create(req.body).then((result) => {
+        console.log(result);
+        sendEmailFunc(result.email);
         res.json(result)
     }).catch()
 })
