@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from "styled-components"
 import { Editor, EditorState, convertFromRaw } from "draft-js";
-import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 
 const ListItem = styled.li`
     border: 2px solid black;
@@ -10,11 +10,8 @@ const ListItem = styled.li`
 
 
 const Comment = ({comment}) => {
-    let content = ''
-    let initialEditorState = EditorState.createWithContent( convertFromRaw(JSON.parse(comment.post_content)));
     
-    const [editorState, setEditorState] = useState(initialEditorState);
-    
+        
     return (
         <>
        
@@ -23,12 +20,6 @@ const Comment = ({comment}) => {
                 <>
                 {comment.post_content}
                 </>
-                
-                <Editor
-                        editorState={editorState}
-                        readOnly={true}
-                        />
-
                 </ListItem> 
 
             ) : (null)}

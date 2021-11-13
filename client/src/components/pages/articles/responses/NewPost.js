@@ -1,56 +1,70 @@
-import React, {useState, useContext} from 'react'
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import React, {useState, useContext, createRef, useEffect} from 'react'
 import { styled } from '@mui/material/styles';
-import { ValidateComment } from './postValidator'
+import styles from 'styled-components';
+
+import { ValidateCommentType, ValidatePost } from './postValidator'
 import './posts.css'
-import { Editor } from "react-draft-wysiwyg";
 import {RadioGroup, Radio, Button, FormControlLabel, Box, inputLabelClasses} from '@mui/material'
 import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
+import { TextArea } from 'semantic-ui-react'
 
 
 const NewPost = (props) => {
-    const [editorState, setEditorState ] = useState(EditorState.createEmpty())
+    const [post, setPost] = useState()
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
+    const textareaInput = createRef()
 
-
+    console.log(props.article_id)
+ 
     const [newPost, setNewPost ] = useState(
         {
             userResponse_type: '',
             post_content: '',
-            article_id: props.article_id,
+            article_id: '',
             user_id: '',
         }
     )
 
+    console.log(newPost)
     const handleNewPost = event => {
         console.log('clicked new post')
         console.log('set type', newPost.post_content)
-        if(!editorState.getCurrentContent().hasText()) {
+        if(props.article_id == '') {
+            console.log("failed to load article id")
+
+        } else if(ValidatePost(newPost.post_content)) {
             console.log('test for text')
             setError('Plase enter a post.')
             console.log(error)
-        } else if(ValidateComment(newPost.userResponse_type)) {
+        } else if(ValidateCommentType(newPost.userResponse_type)) {
             console.log(newPost.userResponse_type)
             setError('Pleae select comment or issue')
             console.log(error)
         } else {
-            setError('')
+            console.log("texting else")
             console.log("uid", props.uid)
             axios.post(`${Config.URL}api/getUserByUid`, {
             uid: user.uid
             }).then((response) => { 
-                console.log("getting user id: ", response.data._id)
-                setNewPost({...newPost, user_id: response.data._id})
+                if(response.data._id) {
 
-                console.log("checking on new post", newPost);
+                    setNewPost({...newPost, user_id: response.data._id, article_id: props.article_id})
+
+                    console.log("checking on new post", newPost);
+                    if(newPost.article_id != "") {
+                        axios.post(`${Config.URL}api/creatPost`, {
+                            post: newPost
+                        })
+                        window.location.reload();
+                    }
+                } else {
+                    setError('Failed to send information to server')
+                }
                 
-                axios.post(`${Config.URL}api/creatPost`, {
-                    post: newPost
-                })
-
+                
 
             }, []);
 
@@ -60,15 +74,11 @@ const NewPost = (props) => {
     }
 
 
-    const handleEditorChange = (editorState) =>{
-        const postedContent = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        setNewPost({...newPost, post_content: postedContent})
-        setEditorState(editorState);
+    const handlePostChange = (event) =>{
+        console.log("Testing text area change: ", event.target.value)
+        setNewPost({...newPost, post_content: event.target.value})
+        console.log(newPost)
     }
-
-    const StyledEditor = styled(Editor) ({
-        border: '2px solid #033F63'
-    })
 
     const FormatedGroup = styled("div") ({
         display: 'flex',
@@ -109,15 +119,25 @@ const NewPost = (props) => {
             backgroundColor: '#213946'
         }
     })
+    const StyledTextArea = styles(TextArea)`
+        width: 95%;
+        height: 100px;
+        resize: none;
+        padding: 10px;
+    `
+
     const ErrorMeassage = styled(Box) ({
         color: "red",
         textSize: '1.7em'
     })
     
     const handleToggle = (event) => {
+        event.preventDefault();
         setNewPost({...newPost, userResponse_type: event.target.value})
         console.log('set type', event.target.value)
     }
+
+
 
     return (
         <>
@@ -126,20 +146,12 @@ const NewPost = (props) => {
             <FormatedRadio value="comment" onClick={handleToggle} name="Comment">Comment</FormatedRadio>
             <FormatedRadio value="issue" onClick={handleToggle} label="Issue">Issue</FormatedRadio>
         </FormatedGroup>
-            <Editor 
-            toolbar = {{             
-                options:['inline'],
-                inline: {
-                    options:['bold', 'italic', 'underline'] 
-                }
-            }}
-            wrapperClassName="wrapper-class"
-            editorClassName="editor-class"
-            toolbarClassName="toolbar-class"
-
-            onEditorStateChange={handleEditorChange}
-            editorState={editorState}
+            <StyledTextArea 
+                defaultValue={newPost.post_content}
+                name="post_content" 
+                onBlur={handlePostChange}
             />
+
             <FormatedButton onClick={handleNewPost}
             >New Post
             </FormatedButton>
