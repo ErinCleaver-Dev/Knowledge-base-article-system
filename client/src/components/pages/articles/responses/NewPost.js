@@ -1,9 +1,7 @@
 import React, {useState, useContext, createRef, useEffect} from 'react'
 import { styled } from '@mui/material/styles';
 import styles from 'styled-components';
-
 import { ValidateCommentType, ValidatePost } from './postValidator'
-import './posts.css'
 import {RadioGroup, Radio, Button, FormControlLabel, Box, inputLabelClasses} from '@mui/material'
 import axios from 'axios';
 import Config from '../../../../config/index'
@@ -17,7 +15,6 @@ const NewPost = (props) => {
     const [user, setUser] = useContext(UserContext);
     const textareaInput = createRef()
 
-    console.log(props.article_id)
  
     const [newPost, setNewPost ] = useState(
         {
@@ -28,8 +25,11 @@ const NewPost = (props) => {
         }
     )
 
-    console.log(newPost)
     const handleNewPost = event => {
+        console.log(props.article_id)
+
+        setNewPost({...newPost, article_id: props.article_id})
+
         console.log('clicked new post')
         console.log('set type', newPost.post_content)
         if(props.article_id == '') {
@@ -51,7 +51,7 @@ const NewPost = (props) => {
             }).then((response) => { 
                 if(response.data._id) {
 
-                    setNewPost({...newPost, user_id: response.data._id, article_id: props.article_id})
+                    setNewPost({...newPost, user_id: response.data._id})
 
                     console.log("checking on new post", newPost);
                     if(newPost.article_id != "") {
@@ -75,9 +75,7 @@ const NewPost = (props) => {
 
 
     const handlePostChange = (event) =>{
-        console.log("Testing text area change: ", event.target.value)
         setNewPost({...newPost, post_content: event.target.value})
-        console.log(newPost)
     }
 
     const FormatedGroup = styled("div") ({
@@ -124,6 +122,9 @@ const NewPost = (props) => {
         height: 100px;
         resize: none;
         padding: 10px;
+        marginBottom: 10px;
+        border: 2px solid #033F63;
+        border-radius: 10px;
     `
 
     const ErrorMeassage = styled(Box) ({
