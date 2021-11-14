@@ -45,7 +45,7 @@ const Comment = ({comment}) => {
         <>
        
         {comment ? (
-                <ListItem>
+                <ListItem id={comment._id}>
                 <UserInfo>
                     <ImageContainer/>
                     <span>

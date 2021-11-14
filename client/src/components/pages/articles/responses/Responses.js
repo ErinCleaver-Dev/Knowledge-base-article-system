@@ -66,7 +66,7 @@ const MapComments = ({article_id}) => {
             let items = comments.map((comment) => {
               return (
                 <CommentList>
-                  <Comment id={comment._id} key={comment._id} comment={comment}/>
+                  <Comment key={comment._id} comment={comment}/>
                   {comment.replys && CommentTree(comment.replys)}
                 </CommentList>
               )

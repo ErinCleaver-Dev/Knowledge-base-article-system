@@ -29,20 +29,22 @@ const Reply = (props) => {
 
     const getUserudi = () => {
         console.log('Test get user uid')
-        axios.post(`${Config.URL}api/getUserByUid`, {
-            uid: user.uid
-            }).then((response) => { 
-                if(response.data._id) {
-                    setError('')
-                    console.log(`test for user id:  ${response.data._id} `)
-                    const user_id = response.data._id
-                    console.log(`test for user id:  ${user_id} `)
-                    setNewPost({
-                        ...newPost, 
-                        user_id: user_id
-                    })
-                } 
-        }, [])
+        if(localStorage.getItem('isLoggedIn')) {
+            axios.post(`${Config.URL}api/getUserByUid`, {
+                uid: user.uid
+                }).then((response) => { 
+                    if(response.data._id) {
+                        setError('')
+                        console.log(`test for user id:  ${response.data._id} `)
+                        const user_id = response.data._id
+                        console.log(`test for user id:  ${user_id} `)
+                        setNewPost({
+                            ...newPost, 
+                            user_id: user_id
+                        })
+                    } 
+            }, [])
+        }
     }
 
    

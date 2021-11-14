@@ -83,6 +83,7 @@ function App() {
             <Route exact path="/EjKBA/search" component={Search}/>
             <Route exact path="/EjKBA/feedback_support" component={FeedbackAndSupp}/>
             <Route exact path="/EjKBA/view_article/:id" component={ViewArticle}/>
+            
           </Switch>
           </Body>
         </UserContext.Provider>
