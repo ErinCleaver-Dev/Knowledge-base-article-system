@@ -169,7 +169,7 @@ const ViewArticle = (props) => {
                }
                </>) : (null) }
                
-               <LikesIcon onClick={} disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
+               <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
            </ButtonBox>
            <Responses article_id ={article._id} />
         </>
