@@ -46,7 +46,6 @@ const Comment = ({comment}) => {
        
         {comment ? (
                 <ListItem>
-
                 <UserInfo>
                     <ImageContainer/>
                     <span>
