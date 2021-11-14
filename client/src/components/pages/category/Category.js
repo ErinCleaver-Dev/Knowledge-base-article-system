@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import SearchBox from '../../layout/search_box/SearchBox'
 import axios from 'axios';
-import ArticleCard from '../../layout/ArticleCard/ArticleCard'
+import ArticleCardForSearchAndCategory  from '../../layout/ArticleCard/ArticleCardForSearchAndCategory';
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import { styled } from '@mui/material/styles';
 import {Button, Box} from '@mui/material'
@@ -28,7 +28,7 @@ const Category = (props) => {
         sort: articleData.sortby,
         start: articleData.start,
         }).then((response) => {
-            setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles})
+            setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles.reverse()})
             if(!response.data.articles) {
                 setLoadding("no articles found")
             }
@@ -58,6 +58,7 @@ const Category = (props) => {
 
     const PaginationArticles = styled(Pagination) ({
         alignSelf: 'center',
+        marginTop: '10px',
         button: {
             color: '#033F63',
             fontSize: '1.8em',
@@ -68,7 +69,7 @@ const Category = (props) => {
         },
     })
 
-    console.log(articleData)
+    //console.log(articleData)
     
     return (
         
@@ -77,11 +78,11 @@ const Category = (props) => {
             <h2 className="category_title">{category}</h2>
             <SearchBox />
             <Sort>
-                Sort by
+                Newest to Oldest
             </Sort>
             {articleData.articles ? (
                 articleData.articles.map(data => (
-                    <ArticleCard 
+                    <ArticleCardForSearchAndCategory  
                     width={'100%'}
                     key={data._id}
                     id={data._id}

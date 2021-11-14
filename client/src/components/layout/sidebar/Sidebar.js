@@ -41,7 +41,7 @@ const SidebarNav =  styled(Box)({
     },['@media (max-width:550px)']: {
         top:'105px',
        
-    }
+    }, boxShadow: '1px 1px 3px white'
 })
 
 

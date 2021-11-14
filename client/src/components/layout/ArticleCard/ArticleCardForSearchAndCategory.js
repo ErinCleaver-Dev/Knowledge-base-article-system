@@ -7,14 +7,13 @@ import Config from '../../../config/index';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 
-const ArticleCard = (props) => {
+const ArticleCardForSearchAndCategory = (props) => {
 
-
-  
 
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
         borderRadius: '5px',
+        maxWidth:'1440px !important',
         display: 'flex',
         alignSelf: 'center',
         flexDirection: 'row',
@@ -34,12 +33,16 @@ const ArticleCard = (props) => {
             whiteSpace:'nowrap',
             overflow:'hidden',
             textOverflow:'ellipsis',
+           
             ['@media (max-width:1300px)']: { 
-                width:'400px',
+                width:'900px',
               },
+            ['@media (max-width:1020px)']: { 
+                width:'600px',
+            },
             ['@media (max-width:660px)']: { 
                 fontSize:'22px',
-                width:'200px'
+                width:'250px'
             },
             '&:hover':{
                 wordBreak: 'break-word',
@@ -121,4 +124,4 @@ const ArticleCard = (props) => {
     )
 }
 
-export default ArticleCard
+export default ArticleCardForSearchAndCategory;

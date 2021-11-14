@@ -63,6 +63,7 @@ const Navbar = (props) => {
             justifyContent: 'none',
             alignItems: 'none',
         },
+        boxShadow:'1px 2px 1px black'
         
     })
 

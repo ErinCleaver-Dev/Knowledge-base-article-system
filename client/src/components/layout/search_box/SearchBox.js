@@ -1,23 +1,44 @@
 import {OutlinedInput, InputAdornment} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
+import { makeStyles } from "@mui/styles";
 import React, {useState, useEffect} from 'react'
 import Cookies from 'universal-cookie';
 import { useHistory , withRouter} from 'react-router-dom';
 import _ from 'lodash';
 
+const useOutlinedInputStyles = makeStyles(theme => ({
+    root: {
+      "& $notchedOutline": {
+        borderColor:'transparent'
+      },
+      "&:hover $notchedOutline": {
+        borderColor: "black"
+      },
+      "&$focused $notchedOutline": {
+        borderColor: "black"
+      }
+    },
+    focused: {},
+    notchedOutline: {}
+  }));
+
+
 
 const SearchBoxInput = styled(OutlinedInput) ({
     alignSelf: 'center',
+    marginTop:'8px',
     marginBottom: '20px',
-    width: '600px',
-    ['@media (max-width:1024px)']: {
-        width: '100%'
-    }
+    width: '100%',
+    fontSize:'1.6em',
+    boxShadow:'1px 1px 3px black inset',
+    
 })
 
 const SearchBox = ({location}) => {
     const cookie = new Cookies();
+
+    const outlinedInputClasses = useOutlinedInputStyles();
 
     const [search, setSearch] = useState(cookie.get('search')|| '')
     const history = useHistory();
@@ -61,6 +82,7 @@ const SearchBox = ({location}) => {
     return (
         <>
             <SearchBoxInput
+                classes={outlinedInputClasses}
                 id="outlined-adornment-amount"
                 onKeyUp={handleKeyPress}
                 value={search}

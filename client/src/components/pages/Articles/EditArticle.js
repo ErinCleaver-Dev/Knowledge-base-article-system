@@ -17,6 +17,7 @@ import tagStyles from './tags.css';
 
 const OuterContainer = styled(Container)({
     width:'100%',
+    maxWidth:'1440px !important',
     border: '3px solid #28666E',
     borderRadius: '5px',
     paddingTop: '24px',
@@ -85,6 +86,9 @@ const styles = {
     demoWrapper:{
         boxSizing:'border-box',
         margin:'auto',
+        ['@media (max-width:1300px)']:{
+            maxWidth:'1100px',
+        },
         ['@media (max-width:1200px)']:{
             maxWidth:'900px',
         },

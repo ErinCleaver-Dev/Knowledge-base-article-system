@@ -10,7 +10,10 @@ const FormatedBackButton = styled(Button) ({
     maxWidth: '150px',
     padding: '10px',
     img: {
-        height: '30px'
+        height: '30px',
+        ['@media (max-width:550px)']: { 
+            height: '15px'
+          },
     },
     span: {
         paddingLeft: '10px',
@@ -22,7 +25,9 @@ const FormatedBackButton = styled(Button) ({
     },
     marginTop: '40px',
     ['@media (max-width:550px)']: { 
-        marginTop: '20px'
+        marginTop: '20px',
+        maxWidth:'105px',
+        fontSize:'10px'
       },
 })
 export const BackButton = () => {
