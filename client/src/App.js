@@ -16,29 +16,46 @@ import ViewArticle from './components/pages/articles/ViewArticle';
 import {auth, signOutFunc} from './firebase/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import {Redirect} from 'react-router-dom';
-
-
-
-
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import { getMessaging, getToken, onMessage} from "firebase/messaging";
 
 export const UserContext = React.createContext();
 
+
 function App() {
   const [user, setUser] = useState('');
- 
+
   useEffect(()=>{
     onAuthStateChanged(auth, user=>{
        setUser(user);
        //console.log(user);
-    })
+
+
+       const messaging = getMessaging();
+       getToken(messaging, { vapidKey: 'BMMlgWuiEdnBWV1nlmR12MVHL_h3F7GAR9jp1kfGV87o7F6Iq6Pq5tVbglX-WtrQxY7BGPb58YvwFNEHrbmk85I' }).then((currentToken) => {
+         if (currentToken) {
+           // Send the token to your server and update the UI if necessary
+           // ...
+           //console.log(currentToken)
+         } else {
+           // Show permission request UI
+           console.log('No registration token available. Request permission to generate one.');
+           // ...
+         }
+       }).catch((err) => {
+         console.log('An error occurred while retrieving token. ', err);
+         // ...
+       });
+
+       
+});
   },[])
 
-
+  
   return (
       <Router>
         <UserContext.Provider value={[user, setUser]} >

@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+//import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { styled } from '@mui/material/styles';
 import Gravatar from 'react-gravatar';
 import {UserContext} from '../../../App';
@@ -10,8 +10,21 @@ const ProfileContainer = styled('span') ({
     color: 'white',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '250px',
+    justifyContent: 'center',
+    ['@media (max-width:650px)']: {
+        position:'absolute',
+        fontSize:'16px',
+        right:'10px',
+        top:'55px',
+        'img':{
+            width:'25px',
+            height:'25px',
+            margin:'2px !important',
+            display:'block'
+        },
+        
+    },
+    
 })
 
 
@@ -21,12 +34,12 @@ const ProfileCard = (props) => {
     
     return (
         <ProfileContainer>
-            <EmojiEmotionsIcon/> {props.name} <Gravatar
+           😄Hello, {props.name}<Gravatar
                 className='profileImage'
 	            email={user.email}
 	            size={300}
 	            rating="pg"
-	            default="wavatar"
+	            default="mp"
 	            style={{margin: '20px auto', borderRadius:'50%', display:'block', border:'4px solid #033F63'}}
             />
         </ProfileContainer>

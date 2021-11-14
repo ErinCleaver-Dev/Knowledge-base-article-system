@@ -4,25 +4,30 @@ import {Container, Grid, Alert} from '@mui/material';
 import {withStyles} from '@mui/styles';
 import {Redirect} from 'react-router-dom';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { WithContext as KeyWordTags  } from 'react-tag-input';
 import {useHistory, useParams} from 'react-router-dom';
 import { Editor } from "react-draft-wysiwyg";
 import '../../.././../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import _ from 'lodash';
 import axios from 'axios';
 import config from '../../../config/index';
+import tagStyles from './tags.css';
+
 
 
 const OuterContainer = styled(Container)({
     width:'100%',
+    maxWidth:'1440px !important',
     border: '3px solid #28666E',
     borderRadius: '5px',
     paddingTop: '24px',
     paddingBottom:'24px',
     ['@media (max-width:1150px)']:{
         width:'100%',
-        paddingLeft:'10px !important',
     },
-
+    // '.ReactTags__tags':{
+    //     border:'red solid 1px'
+    // } <- test
 })
 
 const ContainerGrid = styled(Grid)({
@@ -34,11 +39,11 @@ const styles = {
     title:{
         color: '#033F63',
         textAlign: 'center',
-        fontSize:'2.5em'
+        fontSize:'1.8em'
     },
     subTitle:{
         color: '#033F63',
-        fontSize: '2em'
+        fontSize: '1.8em'
     },
     titleAndYTInput:{
         display:'block',
@@ -55,16 +60,17 @@ const styles = {
     },
     editorContainer:{
         border: '#033F63 solid 3px',
+        width:'100%',
         padding:'10px',
         borderRadius: '3px',
         boxSizing:'border-box',
         '&:focus-within':{
             border: '#06283C solid 5px',
-        }
+        },
     },
     editorContainerError:{
         border: 'red solid 3px',
-        marginTop: '10px'
+        marginTop: '10px',
     },
     demoEditor:{
         border: '#033F63 solid 3px',
@@ -72,27 +78,34 @@ const styles = {
         margin:'10px',
         paddingLeft:'10px',
         paddingRight:'10px',
-        maxHeight:'350px',
-        minHeight:'350px',
+        maxHeight:'500px',
+        minHeight:'500px',
         overflowY:'auto',
+        fontSize:'20px'
     },
     demoWrapper:{
         boxSizing:'border-box',
-        maxWidth:'850px',
         margin:'auto',
-        ['@media (max-width:1240px)']:{
-            maxWidth:'550px',
+        ['@media (max-width:1300px)']:{
+            maxWidth:'1100px',
         },
-        ['@media (max-width:990px)']:{
+        ['@media (max-width:1200px)']:{
+            maxWidth:'900px',
+        },
+        ['@media (max-width:900px)']:{
             maxWidth:'750px',
         },
-        ['@media (max-width:870px)']:{
+        ['@media (max-width:780px)']:{
             maxWidth:'650px',
         },
-        ['@media (max-width:650px)']:{
+        ['@media (max-width:680px)']:{
+            maxWidth:'500px',
+        },
+        ['@media (max-width:500px)']:{
             maxWidth:'400px',
-        },['@media (max-width:470px)']:{
-            maxWidth:'290px',
+        },
+        ['@media (max-width:400px)']:{
+            maxWidth:'294px',
         },
     },
     toolBar:{
@@ -105,7 +118,7 @@ const styles = {
         appearance:'none',
         display:'block',
         padding:'10px',
-        height:'70%',
+        height:'80%',
         paddingRight:'60px',
         fontSize:'1.3em',
         color: '#033F63',
@@ -119,9 +132,10 @@ const styles = {
         backgroundSize: '40px',
         backgroundPosition: '98% 50%',
         cursor:'pointer',
-        ['@media (max-width:886px)']:{
+        ['@media (max-width:900px)']:{
         height:'100%',
-        }
+        },
+        borderRadius: '3px',
     },
     categoryOption:{
         fontSize:'1.3em',
@@ -130,17 +144,30 @@ const styles = {
         padding:'0px',
         width:'100%'
     },
+    clearTags:{
+        border:'none',
+        cursor: 'pointer',
+        backgroundColor: '#033F63',
+        fontSize:'1em',
+        padding:'5px',
+        fontFamily: 'Acme, sans-serif',
+        marginBottom:'1px',
+        color:'white',
+        '&:hover':{
+            backgroundColor:'#021a29'
+        }
+    },
     decisionArticleButton:{
         display:'block',
         backgroundColor: '#033F63',
-        width:'100%',
         cursor:'pointer',
         padding:'10px 30px',
+        fontFamily: 'Acme, sans-serif',
         fontSize: '2em',
         color:'white',
-        '&:disabled':{
-            cursor:'wait',
-        }
+        marginTop:'10px',
+        marginLeft:'15px',
+        marginBottom:'10px'
     }
     
 }
@@ -161,8 +188,8 @@ const EditArticle = ({classes}) => {
 
     const [fieldValues,setFieldValues] = useState(initialFieldsState);
     const [editorState,setEditorState] = useState(initialEditorState);
-    const [keyWords,setKeyWords] = useState({first:'',second:'',third:'',forth:'',fifth:''});
-    const [errors, setError] = useState({title:'', editorState:'', category:'', keyWords:''});
+    const [keyWords,setKeyWords] = useState([]);
+    const [errors, setError] = useState({title:'', editorState:'', category:''});
     const [submitError, setSubmitError] = useState(false);
     const [loadingError, setLoadingError] = useState(false);
     let history = useHistory();
@@ -185,18 +212,17 @@ const EditArticle = ({classes}) => {
                 });
                 // convert editorState string to Raw Object -> and then convertFromRow
                 setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(result.data.post_content))));
+                
                 let keyTerms = result.data.key_terms;
-                setKeyWords({
-                    ...keyWords, 
-                    first: keyTerms[0]||'',
-                    second: keyTerms[1]||'',
-                    third: keyTerms[2]||'',
-                    forth: keyTerms[3]||'',
-                    fifth: keyTerms[4]||'', 
+                let keyWordTagsArray = [];
+                keyTerms.map(keyTerm=>{
+                    keyWordTagsArray.push({id: keyTerm, text: keyTerm})
                 })
+                console.log(keyWordTagsArray)
+                setKeyWords(keyWordTagsArray);
             }
         }).catch(e=>{
-            setLoadingError('Error - Server down, please bear with us and try again later');
+            setLoadingError('Error - Server down, please bear with us and try again later or refresh!');
         })
     },[])
 
@@ -208,23 +234,47 @@ const EditArticle = ({classes}) => {
                 ...fieldValues.fields,
                 [e.target.name]: e.target.value,
            }})
-        setError({title:'', editorState:'', category:'', keyWords:''});
+        setError({title:'', editorState:'', category:''});
     }
 
-    //keyWordHandlers
-    const keyWordHandlers = (e) =>{
-        setKeyWords({
-            ...keyWords,
-            [e.target.name]: e.target.value
-        })
-        setError({title:'', editorState:'', category:'', keyWords:''});
-    }
 
     //handleEditorChange
     const handleEditorChange = (editorState) =>{
         setEditorState(editorState);
-        setError({title:'', editorState:'', category:'', keyWords:''});
+        setError({title:'', editorState:'', category:''});
     }
+
+    /*--------------------------------------------------------handle keyWords ---------------------------------------------------*/
+
+    const KeyCodes = {
+        comma: 188,
+        enter: 13,
+      };
+      
+      const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
+      const handleDelete = (i) => {
+        setKeyWords(keyWords.filter((tag, index) => index !== i));
+      };
+    
+      const handleAddition = (tag) => {
+        setKeyWords([...keyWords, tag]);
+      };
+    
+      const handleDrag = (tag, currPos, newPos) => {
+        const newTags = [...keyWords].slice();
+    
+        newTags.splice(currPos, 1);
+        newTags.splice(newPos, 0, tag);
+    
+        setKeyWords(newTags);
+      };
+
+      const onClearAll = () => {
+        setKeyWords([]);
+      };
+    
+
 
     //handleSubmitChange
     const handleSubmitChange = (e) =>{
@@ -249,28 +299,16 @@ const EditArticle = ({classes}) => {
             finalData = {...finalData, category: fieldValues.fields.category}
         }
 
-        //check keyWords error and add value
-        let count = 0;
+       
+        //load keyWords data
         let key_terms = [];
-        Object.keys(keyWords).map(key=>{
-            //console.log(keyWords[key])
-            if(keyWords[key] === ''){
-            count++;
-            //console.log('1')
-            }else if(!keyWords[key].match(/^([a-z0-9A-Z])[a-z. A-Z0-9]*$/gm)){
-                //console.log('2')
-                count += 10;
-            }else{
-                key_terms.push(_.lowerCase(keyWords[key]));
-                //console.log('3')
-            }
+        keyWords.map(keyWord=>{
+            key_terms.push(_.lowerCase(keyWord.text));
         })
-        
-        if (count >= 5){
-            allError = {...allError, keyWords: 'Keyword should at least one or no other characters than letters, space and dot are allowed!'}
-        }else{
-            finalData = {...finalData, key_terms}
-        }
+
+        finalData = {...finalData, key_terms};
+
+
 
         //check error convert Raw editorState content to string for saving 
         if(!editorState.getCurrentContent().hasText()){
@@ -316,43 +354,37 @@ const EditArticle = ({classes}) => {
         {localStorage.getItem('isLoggedIn') && localStorage.getItem('userSecret') === user_id ?(
         <OuterContainer component='form' onSubmit={handleSubmitChange}>
             {/* {test?<div dangerouslySetInnerHTML={{ __html: test }}></div>:null} */}
+            {loadingError?
+                <Alert variant="filled" severity='error'>
+                {submitError}
+                </Alert>
+                :null}
             {submitError?
                 <Alert variant="filled" severity='error'>
                 {submitError}
                 </Alert>
                 :null}
-            {loadingError?
-                <Alert variant="filled" severity='error'>
-                {loadingError}
-                </Alert>
-                :null}
             <h2 className={classes.title}>Create Article</h2>
             <ContainerGrid container alignItems={'center'} spacing={1}>
-                <Grid item xs={12} md={3} >
-                <h2 className={classes.subTitle} >Title<span style={{display:'block'}}>(Required)</span></h2>
-                </Grid>
-                <Grid item xs={12} md={9} >
+                
+                <Grid item xs={12} md={12} >
                 {errors.title ? (
                     <Grid item xs={12} md={12}>
                         <span style={{color:'red'}}>{errors.title}</span>
                     </Grid> 
                 ):null}
-                <input className={classes.titleAndYTInput} type='text' style={errors.title?({border:'red solid 3px', marginTop:'10px'}):null} name='title' value={fieldValues.fields.title} onChange={handleUserInputState}/>
+                <input className={classes.titleAndYTInput} type='text' placeholder='Title *(required)*' style={errors.title?({border:'red solid 3px', marginTop:'10px'}):null} name='title' value={fieldValues.fields.title} onChange={handleUserInputState}/>
                 </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2}>
-                <Grid item xs={12} md={3} >
-                <h2 className={classes.subTitle}>YouTube Link</h2>
-                </Grid>
-                <Grid item xs={12} md={9} >
-                <input className={classes.titleAndYTInput} type='text' name='YTLink' value={fieldValues.fields.YTLink} onChange={handleUserInputState}/>
+                
+                <Grid item xs={12} md={12} >
+                <input className={classes.titleAndYTInput} type='text' placeholder='YouTube Link' name='YTLink' value={fieldValues.fields.YTLink} onChange={handleUserInputState}/>
                 </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2}>
-                <Grid item xs={12} md={3} >
-                <h2 className={classes.subTitle}>Content<span style={{display:'block'}}>(Required)</span></h2>
-                </Grid>
-                <Grid item xs={12} md={9} >
+                
+                <Grid item xs={12} md={12} >
                 {errors.editorState ? (
                     <Grid item xs={12} md={12}>
                         <span style={{color:'red'}}>{errors.editorState}</span>
@@ -361,6 +393,7 @@ const EditArticle = ({classes}) => {
                 <div className={errors.editorState ? `${classes.editorContainer} ${classes.editorContainerError}` : classes.editorContainer}>
                 <Editor
                     editorState={editorState}
+                    placeholder='     Enter your content to here *(required)*'
                     onEditorStateChange={handleEditorChange}
                     wrapperClassName={classes.demoWrapper}
                     editorClassName={classes.demoEditor}
@@ -371,7 +404,7 @@ const EditArticle = ({classes}) => {
             </ContainerGrid>
             <ContainerGrid container spacing={2}>
                 <Grid item xs={12} md={3} >
-                <h2 className={classes.subTitle}>Category<span style={{display:'block'}}>(Required)</span></h2>
+                <h2 className={classes.subTitle}>Category<span style={{display:'block', fontSize:'0.8em'}}>*(Required)*</span></h2>
                 </Grid>
                 <Grid container alignItems={'center'} item xs={12} md={9} >
                 {errors.category?(
@@ -392,34 +425,28 @@ const EditArticle = ({classes}) => {
             </ContainerGrid>
             <ContainerGrid container spacing={2}>
                 <Grid item xs={12} md={3} >
-                <h2 className={classes.subTitle}>KeyWords<span style={{display:'block'}}>(Required)</span></h2>
+                <h2 className={classes.subTitle}>KeyWords</h2>
+            
                 </Grid>
-                <Grid item container spacing={2} xs={12} md={9} justifyContent={'flex-start'} alignItems={'center'} >
-                {errors.keyWords?(
-                <Grid item xs={12} md={12}>
-                <span style={{color:'red'}}>{errors.keyWords}</span>
-                </Grid>
-                ): null}
-                <Grid item xs={4} md={2.4}>
-                {errors.keyWords?(
-                    <input className={classes.titleAndYTInput} style={{border:'red solid 3px'}} type='text' name='first' value={keyWords.first} onChange={keyWordHandlers}/>
-                ):(
-                    <input className={classes.titleAndYTInput} type='text' name='first' value={keyWords.first} onChange={keyWordHandlers}/>
-                )}
-                </Grid>
-                <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='second' value={keyWords.second} onChange={keyWordHandlers}/>
-                </Grid>
-                <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='third' value={keyWords.third} onChange={keyWordHandlers}/>
-                </Grid>
-                <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='forth' value={keyWords.forth} onChange={keyWordHandlers}/>
-                </Grid>
-                <Grid item xs={4} md={2.4}>
-                <input className={classes.titleAndYTInput} type='text' name='fifth' value={keyWords.fifth} onChange={keyWordHandlers}/>
-                </Grid>
-                </Grid>
+                <Grid item container spacing={2} xs={12} md={9} justifyContent={'center'} flexDirection='column' >
+                    <div className={tagStyles.ReactTags} style={{width:'100%', padding:'16px', boxSizing:'border-box', position:'relative'}} >
+                    {keyWords.length > 0 ? (
+                        <button className={classes.clearTags} type='button' onClick={onClearAll}>Clear All</button>
+                    ):(null)}
+                    <KeyWordTags
+                        tags={keyWords}
+                        handleDelete={handleDelete}
+                        handleAddition={handleAddition}
+                        handleDrag={handleDrag}
+                        delimiters={delimiters}
+                        placeholder='Please add your keywords'
+                        inputFieldPosition="top"
+                        autofocus={false}
+                        allowUnique={true}
+                        allowDeleteFromEmptyInput={false}
+                    />
+                    </div>
+              </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2} justifyContent={'space-between'}>
             {successMessage?
@@ -429,14 +456,14 @@ const EditArticle = ({classes}) => {
                 </Alert>
                 </Grid>
                 :null}
-                <Grid item item xs={12} md={3}></Grid>
-                <Grid container item xs={12} md={9} spacing={2} justifyContent={'space-between'}>
-                <Grid item xs={12} md={6}>
+                {/* <Grid item item xs={12} md={3}></Grid> */}
+                <Grid container item xs={12} md={12} spacing={2} justifyContent={'space-between'}>
+                
                     <button className={classes.decisionArticleButton} disabled={successMessage?true:false} type='submit'>Submit Change</button>
-                </Grid>
-                <Grid item xs={12} md={4}>
+                
+                
                     <button className={classes.decisionArticleButton} type='button' onClick={()=>{history.goBack()}}>Cancel</button>
-                </Grid>
+                
                 </Grid>
             </ContainerGrid>
 

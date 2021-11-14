@@ -17,15 +17,37 @@ const UserArticlesCard = (props) => {
         padding: '5px',
         marginBottom: '0px',
         textDecoration: 'none',
+        width: '100%',
+        '.icon':{
+            display:'inline-block',
+            position:'relative',
+            top:'2px',
+        }, 
         'h2': {
             fontSize: '1.8em',
             paddingTop: '5px',
-            paddingBottom: '5px'
+            paddingBottom: '5px',
+            whiteSpace:'nowrap',
+            overflow:'hidden',
+            textOverflow:'ellipsis',
+            ['@media (max-width:1089px)']: { 
+                width:'500px',
+              },
+            ['@media (max-width:660px)']: { 
+                fontSize:'22px',
+                width:'200px'
+            },
+            '&:hover':{
+                wordBreak: 'break-word',
+                width:'100%',
+                whiteSpace:'normal'
+            }     
         },
         'p': {
             fontSize: '1.3em',
             fontWeight: 'bold',
-            paddingBottom: '5px'
+            paddingBottom: '5px',
+            color:'#28666e',
         },
         '.pp':{
             fontSize: '1.2em',
@@ -34,13 +56,16 @@ const UserArticlesCard = (props) => {
                 marginLeft: '20px',
             }
         },
-        ['@media (max-width:1280px)']: { 
-            flex: 'none',
-            width: '100%',
-        },'&:hover':{
+        '&:hover':{
             transform: 'scale(1.02)',
-            transition: 'transform .2s ease-in-out'
-        }
+            transition: 'transform .2s ease-in-out',
+            background:'#28666E',
+            color:'white',
+            'p':{
+                color:'white'
+            }
+        },
+        boxShadow:'1px 1px 5px black'
 
     })
 
@@ -55,7 +80,10 @@ const UserArticlesCard = (props) => {
         fontWeight: 'bold',
         '&:hover': {
             backgroundColor: '#213946'
-        }
+        },
+        fontFamily: 'Acme, sans-serif',
+        fontSize:'1em',
+        
     })
 
     /*-------------------------------------------------------*/
@@ -74,11 +102,11 @@ const UserArticlesCard = (props) => {
                     </Grid>
                     <Grid item container xs={12}>
                         <Grid item xs={6} md={3}>
-                        <p><FavoriteIcon className='icon' fontSize="small"/>Likes:</p>
+                        <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon' fontSize="small"/>Likes:</p>
                             <p className='pp'>{props.likes}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                        <p><ContactPageIcon className='icon' fontSize="small"/>Author:</p>
+                        <p><ContactPageIcon style={{color:'black'}} className='icon' fontSize="small"/>Author:</p>
                             <p className='pp'> Yourself</p>
                         </Grid>
                         <Grid item xs={6} md={3}>

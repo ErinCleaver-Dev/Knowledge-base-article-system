@@ -9,38 +9,50 @@ import SearchBox from '../../layout/search_box/SearchBox'
 import { UserContext } from '../../../App';
 import { FaReact, FaServer } from 'react-icons/fa';
 import { SiJavascript, SiMongodb } from 'react-icons/si';
-import { MdOutlineWeb } from 'react-icons/md';
+import {CgScreenWide} from 'react-icons/cg'
 import { AiOutlineDeploymentUnit } from 'react-icons/ai';
 
 
 
+
+
+
 const Home = () => {
-    
+ 
+
     const  [user, setUser] = useContext(UserContext)
 
     const CategoryBox = styled(Box) ({
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 33% [col-start])', 
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', 
+        gridGap: '20px',
+        boxSizing:'border-box',
+        ['@media (max-width:600px)']: { 
+            gridGap: '8px',
+        }
     })
     
     const HomeButtons = styled(Button) ({
         backgroundColor: '#28666E',
-        color: 'white',
         display: 'flex',
         flexDirection: 'column',
+        color: 'white',
         height: '150px',
-        marginLeft: '20px',
-        marginBottom: '30px',
         fontSize: '1.8em',
         fontWeight: 'bold',
         '&:hover': {
-            backgroundColor: '#28666E'
+            backgroundColor: '#014260'
         },
         ['@media (max-width:1024px)']: { 
-            marginLeft: '10px',
-            fontSize: '.9em',
+            fontSize: '1.4em',
+            height: '150px',
+        },
+        ['@media (max-width:600px)']: { 
+            fontSize: '1em',
             height: '100px',
-        }
+        },
+        fontFamily: 'Acme, sans-serif',
+        boxShadow: '4px 4px 4px black'
         
     })
     
@@ -58,14 +70,19 @@ const Home = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginTop: '80px',
+        marginTop: '50px',
         width: '100%',
+        ['@media (max-width:600px)']: { 
+            marginTop:'30px'
+        },
     })
+    
     
     const Articles = styled(Box) ({
         display: 'flex',
         flexWrap: 'wrap',
-        width: '100%'
+        width: '100%',
+        justifyContent:'center'
     })
     
 
@@ -75,18 +92,18 @@ const Home = () => {
             {/* {console.log(articles)} */}
             <SearchBox />
             <CategoryBox>
-                <HomeButtons component={Link} to='/EjKBA/category?q=react'>React</HomeButtons>
-                <HomeButtons component={Link} to='/EjKBA/category?q=javascript'>Javascript</HomeButtons>
-                <HomeButtons component={Link} to='/EjKBA/category?q=frontend'>Frontend</HomeButtons>
-                <HomeButtons component={Link} to='/EjKBA/category?q=backend'>Backend</HomeButtons>
-                <HomeButtons component={Link} to='/EjKBA/category?q=database'>Database</HomeButtons>
-                <HomeButtons component={Link} to='/EjKBA/category?q=deployment'>Deployment</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=react'><FaReact style={{color:'lightblue'}}/>React</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=javascript'><SiJavascript style={{color:'yellow'}}/>Javascript</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=frontend'><CgScreenWide style={{color:'black'}}/>Frontend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=backend'><FaServer style={{color:'lightGray'}}/>Backend</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=database'><SiMongodb style={{color:'#12b412'}}/>Database</HomeButtons>
+                <HomeButtons component={Link} to='/EjKBA/category?q=deployment'><AiOutlineDeploymentUnit style={{color:'#d419d4'}}/>Deployment</HomeButtons>
             </CategoryBox>
             <TopTen>
                 <h1 className="homeTitle">Top 10 Articles</h1>
                 <Articles>
                     {articles ? (
-                    articles.map(data => (
+                    articles.map((data, i) => (
                         <ArticleCard width={'48%'} 
                         key={data._id}
                         id={data._id}
@@ -94,6 +111,7 @@ const Home = () => {
                         likes={data.likes} 
                         date={data.published_date}
                         user_id={data.user_id}
+                        index={i}
                         />
                     ))
                     ) : 
