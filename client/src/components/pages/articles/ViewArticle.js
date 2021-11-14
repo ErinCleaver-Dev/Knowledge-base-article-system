@@ -99,6 +99,10 @@ const FormattedBotton = styled(Button) ({
     }
 })
 
+const onClicked = () => {
+    console.log("licked article")
+}
+
 const ViewArticle = (props) => {
     const _id = props.match.params.id
     const initialEditorState = EditorState.createEmpty();
@@ -165,7 +169,7 @@ const ViewArticle = (props) => {
                }
                </>) : (null) }
                
-               <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
+               <LikesIcon onClick={} disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
            </ButtonBox>
            <Responses article_id ={article._id} />
         </>
