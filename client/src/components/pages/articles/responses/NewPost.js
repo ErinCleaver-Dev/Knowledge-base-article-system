@@ -7,14 +7,15 @@ import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
 import { TextArea } from 'semantic-ui-react'
+import { UserIdContext } from '../ViewArticle'
 
 
 const NewPost = (props) => {
     const [post, setPost] = useState()
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
+    const [user_id, setUser_id] = useContext(UserIdContext)
     const textareaInput = createRef()
-
  
     const [newPost, setNewPost ] = useState(
         {
@@ -26,12 +27,7 @@ const NewPost = (props) => {
     )
 
     const handleNewPost = event => {
-        console.log(props.article_id)
-
-        setNewPost({...newPost, article_id: props.article_id})
-
-        console.log('clicked new post')
-        console.log('set type', newPost.post_content)
+        setNewPost({...newPost, article_id: props.article_id, user_id: user_id})
         if(props.article_id == '') {
             console.log("failed to load article id")
 
@@ -46,27 +42,13 @@ const NewPost = (props) => {
         } else {
             console.log("texting else")
             console.log("uid", props.uid)
-            axios.post(`${Config.URL}api/getUserByUid`, {
-            uid: user.uid
-            }).then((response) => { 
-                if(response.data._id) {
-
-                    setNewPost({...newPost, user_id: response.data._id})
-
-                    console.log("checking on new post", newPost);
-                    if(newPost.article_id != "") {
-                        axios.post(`${Config.URL}api/creatPost`, {
-                            post: newPost
-                        })
-                        window.location.reload();
-                    }
-                } else {
-                    setError('Failed to send information to server')
-                }
-                
-                
-
-            }, []);
+          
+            if(newPost.article_id != "") {
+                axios.post(`${Config.URL}api/creatPost`, {
+                    post: newPost
+                })
+                window.location.reload();
+            }
 
 
         }

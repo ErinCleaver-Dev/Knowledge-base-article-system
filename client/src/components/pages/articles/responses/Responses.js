@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
@@ -11,6 +11,10 @@ import styles from "styled-components"
 import axios from 'axios';
 import Comment from './Comment'
 import Config from '../../../../config/index'
+import { UserIdContext } from '../ViewArticle'
+import { UserContext } from '../../../../App';
+
+
 
 
 const FormatedButton = styled(Button) ({
@@ -42,15 +46,14 @@ const CommentList = styles.ul`
 const MapComments = ({article_id}) => {
 
     const [comments, setComments] = useState('')
-    
+
+
 
     useEffect(() => {
         
-        console.log('test map comments article id: ', article_id)
         axios.post(`${Config.URL}api/getComments`, {
             article_id: article_id
         }).then((response) => {
-            console.log("resosonse: ", response.data)
             _(response.data).forEach(f=>
                 {f.replys=_(response.data).filter(g=>g.parentId==f._id).value();});
      
@@ -58,8 +61,7 @@ const MapComments = ({article_id}) => {
             setComments(newComments)
         })
     }, [])
-   
-    
+       
     if(comments != '' && article_id) {
         const CommentTree = (comments) => {
 
@@ -74,9 +76,7 @@ const MapComments = ({article_id}) => {
           
             return items
           }
-
       
-        console.log("test", comments);
         return (
             <>
                 {CommentTree(comments)}
@@ -89,13 +89,27 @@ const MapComments = ({article_id}) => {
   
 
 const Responses = ({article_id}) => {    
+    const [user_id, setUser_id] = useContext(UserIdContext)    
+    const [user, setUser] = useContext(UserContext);
+    
+    const getUseruID = () => {
+        if(localStorage.getItem('isLoggedIn')) {
+            axios.post(`${Config.URL}api/getUserByUid`, {
+                uid: user.uid
+                }).then((response) => { 
+                    if(response.data._id) {
+                        setUser_id(response.data._id)
+                    } 
+            }, [])
+        }
+    }
 
     return (
         
         <ResponsesBox>
-            {console.log(article_id)}
+            {getUseruID()}
             {localStorage.getItem('isLoggedIn') ? (<>
-                <NewPost article_id={article_id}/>
+                <NewPost user_id={user_id} article_id={article_id}/>
                 </>
             ) : 
             (null)

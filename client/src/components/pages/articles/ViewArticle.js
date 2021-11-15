@@ -1,13 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, createContext} from 'react';
 import { UserContext } from '../../../App';
 import Responses from './responses/Responses'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Editor, EditorState, convertFromRaw } from "draft-js";
 import axios from 'axios';
 import Config from '../../../config/index'
+import Likes from './likes/Likes'
+
+export const UserIdContext = React.createContext();
 
 
 const Title = styled(Box) ({
@@ -39,13 +41,6 @@ const Video = styled("iframe") ({
     ['@media (max-width:1024px)']: {
         width: "100%",
     }
-})
-
-const LikesIcon = styled(FavoriteIcon) ({
-    color: '#033F63',
-    fontSize: '1.8em',
-    paddingLeft: '10px',
-    cursor:'pointer',
 })
 
 const ItemLists = styled(Box) ({
@@ -108,10 +103,10 @@ const ViewArticle = (props) => {
     const initialEditorState = EditorState.createEmpty();
     const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
+    const [user_id, setUser_id] = useState([])
 
     const [user, setUser] = useContext(UserContext);
      useEffect(() => {
-        //console.log("testing axios")
         axios.post(`${Config.URL}api/getArticle`, {
             _id: _id
         }).then((response) => {
@@ -120,15 +115,14 @@ const ViewArticle = (props) => {
         })
     }, []);
 
-    
     const date = new Date(article.published_date)
   
     
     let video = article.video
     
     return (
-        <>
-            {article ? (
+        <UserIdContext.Provider value={[user_id, setUser_id]}>  
+            {article && user_id ? (
                 <>
                         <Title>{article.title}</Title> 
                         <ContentBox1>
@@ -169,10 +163,10 @@ const ViewArticle = (props) => {
                }
                </>) : (null) }
                
-               <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {article.likes}
+               <Likes likes={article.likes} article_id={article._id} user_id={user_id} />
            </ButtonBox>
-           <Responses article_id ={article._id} />
-        </>
+           <Responses article_id ={article._id} user_id={user_id}/>
+        </UserIdContext.Provider>
     )
 }
 

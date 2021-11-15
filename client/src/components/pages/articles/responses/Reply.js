@@ -7,13 +7,15 @@ import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
 import { TextArea } from 'semantic-ui-react'
+import { UserIdContext } from '../ViewArticle'
 
 
 const Reply = (props) => {
     const [post, setPost] = useState()
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
-    
+    const [user_id, setUser_id] = useContext(UserIdContext)
+
     const [displayReply, setDisplayReply] = useState('none')
 
     const [newPost, setNewPost ] = useState(
@@ -26,31 +28,9 @@ const Reply = (props) => {
         }
     )
 
-
-    const getUserudi = () => {
-        console.log('Test get user uid')
-        if(localStorage.getItem('isLoggedIn')) {
-            axios.post(`${Config.URL}api/getUserByUid`, {
-                uid: user.uid
-                }).then((response) => { 
-                    if(response.data._id) {
-                        setError('')
-                        console.log(`test for user id:  ${response.data._id} `)
-                        const user_id = response.data._id
-                        console.log(`test for user id:  ${user_id} `)
-                        setNewPost({
-                            ...newPost, 
-                            user_id: user_id
-                        })
-                    } 
-            }, [])
-        }
-    }
-
    
     const handleNewPost = event => {
-        console.log('clicked new post')
-        setNewPost({...newPost, article_id: props.article_id, parentId: props.parentId})
+        setNewPost({...newPost, article_id: props.article_id, parentId: props.parentId, user_id: user_id})
 
         if(displayReply == 'none') {
             setDisplayReply('inline-block')
@@ -60,9 +40,7 @@ const Reply = (props) => {
         } else if(ValidateCommentType(newPost.userResponse_type)) {
             setError('Pleae select comment or issue')
             console.log(error)
-        } else {
-            console.log("testing else: ", newPost)
-            
+        } else {            
 
             if(newPost.user_id != '') {
                 axios.post(`${Config.URL}api/creatPost`, {
@@ -136,18 +114,10 @@ const Reply = (props) => {
     const handleToggle = (event) => {
         event.preventDefault();
         setNewPost({...newPost, userResponse_type: event.target.value})
-        console.log('set type', event.target.value)
     }
 
-    useEffect(() => {
-        getUserudi();
-    }, [])
-
     return (
-        
         <>
-        {newPost.user_id == '' ?
-        (getUserudi()) : (<>
           <FormatedGroup row aria-label="type" value>
             </FormatedGroup>
             <StyledTextArea 
@@ -155,10 +125,10 @@ const Reply = (props) => {
                 name="post_content" 
                 onBlur={handlePostChange}
             />
-
+             {localStorage.getItem('isLoggedIn') ? (
             <FormatedButton onClick={handleNewPost}
             >Reply
-            </FormatedButton>
+            </FormatedButton>) : (null)}
             {error != '' ? 
             (
                 <ErrorMeassage>
@@ -167,10 +137,9 @@ const Reply = (props) => {
             ) 
                 : (console.log(error))
             }
-        </>)
-        }
-      
         </>
+    
+      
     )
 }
 

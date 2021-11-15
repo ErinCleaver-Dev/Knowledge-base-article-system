@@ -22,6 +22,8 @@ async function createLikes(userId, articleId) {
         return await likes.save().then(result => {
             console.log('a like saved!! ', result)
         })
+    } else {
+        return exists
     }
 }
 

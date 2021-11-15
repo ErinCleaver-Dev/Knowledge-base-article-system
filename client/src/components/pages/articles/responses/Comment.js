@@ -40,7 +40,6 @@ const Comment = ({comment}) => {
         post_date = new Date(comment.post_date)
     }
 
-    console.log("Testing comment", comment)
     return (
         <>
        
@@ -49,8 +48,12 @@ const Comment = ({comment}) => {
                 <UserInfo>
                     <ImageContainer/>
                     <span>
-                    {comment.user_id.firstName[0]}
-                    {comment.user_id.lastName}
+                    {comment.user_id ? 
+                        (<>{comment.user_id.firstName[0]}
+                        {comment.user_id.lastName}</>) 
+                        : 
+                        (null)
+                    }
                     </span>
                     <span>
                         {
