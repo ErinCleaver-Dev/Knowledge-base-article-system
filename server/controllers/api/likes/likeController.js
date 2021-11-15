@@ -5,8 +5,16 @@ const articleService = require('../../../services/articleService')
 const likesService = require('../../../services/likesService')
 
 router.post('/api/likeArticle', (req, res, next) => {
-    likesService.createLikes(req.query.userId, req.query.articleId).then(() => {
-        return "record creacted."
+    likesService.createLikes(req.query.userId, req.query.articleId).then((results) => {
+        if(results == true) {
+            req.send({
+                created: 'Record already exists',
+            })
+        } else {
+            req.send({
+                created: 'Created new record',
+            })
+        }
     }).catch(next)
 })
 

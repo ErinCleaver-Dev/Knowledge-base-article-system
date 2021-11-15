@@ -15,7 +15,10 @@ const LikesIcon = styled(FavoriteIcon) ({
 
 const Likes = ({likes, articleId}) => {
     const [user_id, setUser_id] = useContext(UserIdContext)
-    
+    const [newLike, setNewLike] = useState({
+        articleId: articleId,
+        user_id: user_id,
+    })
 
     return (
         <>
