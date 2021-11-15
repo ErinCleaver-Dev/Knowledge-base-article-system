@@ -13,9 +13,9 @@ const LikesIcon = styled(FavoriteIcon) ({
     cursor:'pointer',
 })
 
-
-
 const Likes = ({likes, articleId}) => {
+    const [user_id, setUser_id] = useContext(UserIdContext)
+    
 
     return (
         <>
