@@ -404,7 +404,7 @@ const CreateArticle = ({classes}) => {
                         handleAddition={handleAddition}
                         handleDrag={handleDrag}
                         delimiters={delimiters}
-                        placeholder='Please add your keywords'
+                        placeholder='Please add your keywords and hit Enter'
                         inputFieldPosition="top"
                         autofocus={false}
                         allowUnique={true}

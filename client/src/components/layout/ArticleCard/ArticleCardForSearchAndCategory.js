@@ -47,7 +47,8 @@ const ArticleCardForSearchAndCategory = (props) => {
             '&:hover':{
                 wordBreak: 'break-word',
                 width:'100%',
-                whiteSpace:'normal'
+                whiteSpace:'normal',
+                textShadow:'4px 4px 10px black'
             }     
         },
         'p': {

@@ -58,6 +58,13 @@ router.post('/api/getComments', (req, res, next) => {
     }).catch(next)
 })
 
+router.post('/api/getCommentsByUserId', (req, res, next) => {
+    userResponseService.getCommentsByUserId(req.body.user_id).then(result => {
+        // console.log(result)
+        res.json(result)
+    }).catch(next)
+})
+
 
 router.post('/api/createViewedArticles', (req, res, next) => {
     userHistoryService.createViewedArticle(req.body.userId, req.body.articleId).then(() => {
