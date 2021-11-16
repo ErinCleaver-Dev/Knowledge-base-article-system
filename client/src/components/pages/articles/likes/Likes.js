@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
-import { UserIdContext } from '../ViewArticle'
+import { ArticleInfoContext } from '../ViewArticle'
 
 const LikesIcon = styled(FavoriteIcon) ({
     color: '#033F63',
@@ -13,15 +13,19 @@ const LikesIcon = styled(FavoriteIcon) ({
     cursor:'pointer',
 })
 
-const Likes = ({likes, articleId}) => {
-    const [user_id, setUser_id] = useContext(UserIdContext)
-    const [newLike, setNewLike] = useState({
-        articleId: articleId,
-        user_id: user_id,
-    })
+const Likes = ({likes, article_id}) => {
+    const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)        
+    const newLike = {
+        article_id: articleInfo.article_id,
+        user_id: articleInfo.user_id,
+        liked: true
+    }
+
+    console.log("Testing new like ",newLike)
 
     return (
         <>
+
             <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {likes ? (likes) : (0)}
         </>
     )

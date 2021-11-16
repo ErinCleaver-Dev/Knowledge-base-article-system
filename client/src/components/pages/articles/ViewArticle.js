@@ -9,7 +9,7 @@ import axios from 'axios';
 import Config from '../../../config/index'
 import Likes from './likes/Likes'
 
-export const UserIdContext = React.createContext();
+export const ArticleInfoContext = React.createContext();
 
 
 const Title = styled(Box) ({
@@ -103,7 +103,10 @@ const ViewArticle = (props) => {
     const initialEditorState = EditorState.createEmpty();
     const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
-    const [user_id, setUser_id] = useState([])
+    const [articleInfo, setArticleInfo] = useState({
+        user_id: '',
+        article_id: _id
+    })
 
     const [user, setUser] = useContext(UserContext);
      useEffect(() => {
@@ -121,8 +124,8 @@ const ViewArticle = (props) => {
     let video = article.video
     
     return (
-        <UserIdContext.Provider value={[user_id, setUser_id]}>  
-            {article && user_id ? (
+        <ArticleInfoContext.Provider value={[articleInfo, setArticleInfo]}>  
+            {article ? (
                 <>
                         <Title>{article.title}</Title> 
                         <ContentBox1>
@@ -163,10 +166,10 @@ const ViewArticle = (props) => {
                }
                </>) : (null) }
                
-               <Likes likes={article.likes} article_id={article._id} user_id={user_id} />
+               <Likes likes={article.likes} article_id={_id} />
            </ButtonBox>
-           <Responses article_id ={article._id} user_id={user_id}/>
-        </UserIdContext.Provider>
+           <Responses article_id ={_id} />
+        </ArticleInfoContext.Provider>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext,} from 'react'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
@@ -11,7 +11,7 @@ import styles from "styled-components"
 import axios from 'axios';
 import Comment from './Comment'
 import Config from '../../../../config/index'
-import { UserIdContext } from '../ViewArticle'
+import { ArticleInfoContext } from '../ViewArticle'
 import { UserContext } from '../../../../App';
 
 
@@ -60,6 +60,7 @@ const MapComments = ({article_id}) => {
             var newComments=_(response.data).filter(f=>f.parentId==null).value();        
             setComments(newComments)
         })
+       
     }, [])
        
     if(comments != '' && article_id) {
@@ -89,7 +90,8 @@ const MapComments = ({article_id}) => {
   
 
 const Responses = ({article_id}) => {    
-    const [user_id, setUser_id] = useContext(UserIdContext)    
+    const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)    
+    const [isloading, setIsLoading] = useState(true);
     const [user, setUser] = useContext(UserContext);
     
     const getUseruID = () => {
@@ -98,18 +100,22 @@ const Responses = ({article_id}) => {
                 uid: user.uid
                 }).then((response) => { 
                     if(response.data._id) {
-                        setUser_id(response.data._id)
+                        setArticleInfo({...articleInfo, user_id: response.data._id})
+                        setIsLoading(false);
                     } 
             }, [])
         }
     }
 
+  
+
+
     return (
         
         <ResponsesBox>
-            {getUseruID()}
+            {isloading ? (getUseruID()) : (null)}
             {localStorage.getItem('isLoggedIn') ? (<>
-                <NewPost user_id={user_id} article_id={article_id}/>
+                <NewPost article_id={article_id}/>
                 </>
             ) : 
             (null)

@@ -7,22 +7,21 @@ import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
 import { TextArea } from 'semantic-ui-react'
-import { UserIdContext } from '../ViewArticle'
+import { ArticleInfoContext } from '../ViewArticle'
 
 
 const Reply = (props) => {
     const [post, setPost] = useState()
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
-    const [user_id, setUser_id] = useContext(UserIdContext)
-
+    const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)    
     const [displayReply, setDisplayReply] = useState('none')
 
     const [newPost, setNewPost ] = useState(
         {
             userResponse_type: 'reply',
             post_content: '',
-            article_id: props.articleId,
+            article_id: '',
             parentId: '',
             user_id: '',
         }
@@ -30,8 +29,7 @@ const Reply = (props) => {
 
    
     const handleNewPost = event => {
-        setNewPost({...newPost, article_id: props.article_id, parentId: props.parentId, user_id: user_id})
-
+        
         if(displayReply == 'none') {
             setDisplayReply('inline-block')
         } else if(ValidatePost(newPost.post_content)) {
@@ -54,7 +52,8 @@ const Reply = (props) => {
     }
 
     const handlePostChange = (event) =>{
-        setNewPost({...newPost, post_content: event.target.value})
+        setNewPost({...newPost, post_content: event.target.value, article_id: articleInfo.article_id, user_id: articleInfo.user_id, parentId: props.parentId})
+        console.log(newPost)
     }
 
     const FormatedGroup = styled("div") ({
@@ -114,6 +113,7 @@ const Reply = (props) => {
     const handleToggle = (event) => {
         event.preventDefault();
         setNewPost({...newPost, userResponse_type: event.target.value})
+        console.log(newPost)
     }
 
     return (

@@ -7,27 +7,31 @@ import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
 import { TextArea } from 'semantic-ui-react'
-import { UserIdContext } from '../ViewArticle'
+import { ArticleInfoContext } from '../ViewArticle'
 
 
 const NewPost = (props) => {
     const [post, setPost] = useState()
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
-    const [user_id, setUser_id] = useContext(UserIdContext)
-    const textareaInput = createRef()
- 
+    const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)        
+   
+    const [getResponse, setResponse] = useState('')
+
     const [newPost, setNewPost ] = useState(
         {
-            userResponse_type: '',
+            userResponse_type: getResponse,
             post_content: '',
-            article_id: '',
-            user_id: '',
+            article_id: "",
+            user_id: ""
         }
     )
+    
+   
+    
 
     const handleNewPost = event => {
-        setNewPost({...newPost, article_id: props.article_id, user_id: user_id})
+        
         if(props.article_id == '') {
             console.log("failed to load article id")
 
@@ -40,9 +44,7 @@ const NewPost = (props) => {
             setError('Pleae select comment or issue')
             console.log(error)
         } else {
-            console.log("texting else")
-            console.log("uid", props.uid)
-          
+            console.log("texting else")          
             if(newPost.article_id != "") {
                 axios.post(`${Config.URL}api/creatPost`, {
                     post: newPost
@@ -115,16 +117,15 @@ const NewPost = (props) => {
     })
     
     const handleToggle = (event) => {
-        event.preventDefault();
-        setNewPost({...newPost, userResponse_type: event.target.value})
+        setNewPost({...newPost, userResponse_type: event.target.value,  user_id: articleInfo.user_id, article_id: articleInfo.article_id});
         console.log('set type', event.target.value)
     }
 
-
+    console.log("Testing new post ", newPost)
 
     return (
         <>
- 
+        {}
         <FormatedGroup row aria-label="type" value>
             <FormatedRadio value="comment" onClick={handleToggle} name="Comment">Comment</FormatedRadio>
             <FormatedRadio value="issue" onClick={handleToggle} label="Issue">Issue</FormatedRadio>
