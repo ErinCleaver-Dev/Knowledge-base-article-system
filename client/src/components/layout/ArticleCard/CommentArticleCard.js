@@ -2,12 +2,11 @@ import React from 'react';
 import { Container, Grid } from '@mui/material/';
 import { styled } from '@mui/material/styles';
 import {Link} from 'react-router-dom';
-import {Button} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
 
-
-const SavedArticlesCard = (props) => {
+const CommentArticleCard = (props) => {
 
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
@@ -40,14 +39,13 @@ const SavedArticlesCard = (props) => {
                 width:'100%',
                 whiteSpace:'normal',
                 textShadow:'4px 4px 10px black'
-            },          
+            }, 
         },
         'p': {
             fontSize: '1.3em',
             fontWeight: 'bold',
             paddingBottom: '5px',
             color:'#28666e'
-            
         },
         '.pp':{
             fontSize: '1.2em',
@@ -71,38 +69,64 @@ const SavedArticlesCard = (props) => {
             'p':{
                 color:'white'
             }
-        },boxShadow:'1px 1px 5px black'
-
-    })
-
-    
-    const FormattedButton = styled(Button) ({
-        background: '#033F63',
-        color: '#FFFFFF',
-        display:'block',
-        padding: '10px',
-        width:'100%',
-        textAlign:'center',
-        fontWeight: 'bold',
-        '&:hover': {
-            backgroundColor: '#213946'
         },
-        fontFamily: 'Acme, sans-serif',
-    })
+        boxShadow:'1px 1px 5px black',
+        'h3': {
+            fontSize: '1.2em',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            color:'black'
+        },
+        'h4': {
+            fontSize: '1.2em',
+            color:'black',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            whiteSpace:'nowrap',
+            overflow:'hidden',
+            textOverflow:'ellipsis',
+            ['@media (max-width:1260px)']: { 
+                width:'700px',
+              },
+            ['@media (max-width:1089px)']: { 
+                width:'500px',
+              },
+            ['@media (max-width:660px)']: { 
+                fontSize:'0.9em',
+                width:'200px'
+            },
+            '&:hover':{
+                wordBreak: 'break-word',
+                width:'100%',
+                whiteSpace:'normal',
+                textShadow:'1px 1px 10px white'
+            },
+            '.content':{
+                color:'black',
+                marginRight:'10px'
+            }
+        }
 
+    })
 
     /*-------------------------------------------------------*/
    
-    let saved_date = new Date(props.saved_date).toLocaleString();
+    let responded_date = new Date(props.response_date).toLocaleString();
    
     let published_date = new Date(props.published_date).toLocaleDateString();
 
     return (
-        <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.article_id}`}>
+        <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.article_id}#${localStorage.getItem('userSecret')}`}>
             <Grid container >
-                <Grid item container xs={12} md={10}>
+                <Grid item container xs={12} md={12}>
                     <Grid item xs={12}>
                         <h2>{props.title}</h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h3>*{props.response_type === 'comment'? 'Root Comment' : 'Reply to a comment'}*</h3>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h4><DoubleArrowRoundedIcon className='content'/>{props.response_content}</h4>
                     </Grid>
                     <Grid item container xs={12}>
                         <Grid item xs={6} md={3}>
@@ -118,18 +142,14 @@ const SavedArticlesCard = (props) => {
                             <p className='pp'>{published_date}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <p>Date saved:</p>
-                            <p className='pp'> {saved_date}</p> 
+                            <p>Date responded:</p>
+                            <p className='pp'> {responded_date}</p> 
                         </Grid>
                     </Grid>
-                </Grid>
-
-                <Grid item container xs={12} md={2} alignItems='center'>
-                        <FormattedButton component={Link} to={`/EjKBA/saved_articles?unSave=${props.article_id}`}>unSave</FormattedButton>  
                 </Grid>
             </Grid> 
         </ArticleContainer>
     )
 }
 
-export default SavedArticlesCard;
+export default CommentArticleCard;

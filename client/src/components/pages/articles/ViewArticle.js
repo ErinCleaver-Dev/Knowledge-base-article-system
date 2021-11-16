@@ -100,6 +100,7 @@ const onClicked = () => {
 
 const ViewArticle = (props) => {
     const _id = props.match.params.id
+    console.log(props.match)
     const initialEditorState = EditorState.createEmpty();
     const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
@@ -113,6 +114,11 @@ const ViewArticle = (props) => {
             setArticle(response.data)
             setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(response.data.post_content))));
         })
+
+        if(localStorage.getItem('userSecret')){
+            axios.post(`${Config.URL}api/createViewedArticles`, {userId:localStorage.getItem('userSecret'), articleId:_id}).catch(e=> console.log(e));
+        }
+        
     }, []);
 
     const date = new Date(article.published_date)

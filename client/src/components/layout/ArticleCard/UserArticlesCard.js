@@ -30,6 +30,9 @@ const UserArticlesCard = (props) => {
             whiteSpace:'nowrap',
             overflow:'hidden',
             textOverflow:'ellipsis',
+            ['@media (max-width:1260px)']: { 
+                width:'700px',
+              },
             ['@media (max-width:1089px)']: { 
                 width:'500px',
               },
@@ -40,7 +43,8 @@ const UserArticlesCard = (props) => {
             '&:hover':{
                 wordBreak: 'break-word',
                 width:'100%',
-                whiteSpace:'normal'
+                whiteSpace:'normal',
+                textShadow:'4px 4px 10px black'
             }     
         },
         'p': {

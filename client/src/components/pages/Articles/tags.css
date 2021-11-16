@@ -65,7 +65,8 @@
 }
 
 @media screen and (max-width:630px) {
-    .ReactTags__tagInput input.ReactTags__tagInputField {
+    .ReactTags__tagInput input.ReactTags__tagInputField,
+    .ReactTags__tagInput input.ReactTags__tagInputField:focus-within {
         width: 100%;
         box-sizing: border-box;
     }
