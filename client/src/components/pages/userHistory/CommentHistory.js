@@ -75,7 +75,7 @@ const CommentHistory = (props) => {
 
     useEffect(() => {
         axios.post(`${Config.URL}api/getCommentsByUserId`, {user_id:localStorage.getItem('userSecret')}).then((response) => {
-            console.log(response.data)
+            //console.log(response.data)
              setLoadingError(false)
              setLoading(false)
              let articleResults;
