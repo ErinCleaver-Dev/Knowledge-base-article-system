@@ -139,6 +139,7 @@ const CommentHistory = (props) => {
                         <CommentArticleCard
                             userName = {comment.article_id.user_id.firstName ? comment.article_id.user_id.firstName + ' ' + comment.article_id.user_id.lastName: comment.article_id.user_id.displayName}
                             article_id = {comment.article_id._id}
+                            comment_id={comment._id}
                             key = {comment._id}
                             title={comment.article_id.title} 
                             likes={comment.article_id.likes} 

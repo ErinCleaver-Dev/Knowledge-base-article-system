@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
+import { HashLink } from 'react-router-hash-link';
+
 
 const CommentArticleCard = (props) => {
 
@@ -116,7 +118,7 @@ const CommentArticleCard = (props) => {
     let published_date = new Date(props.published_date).toLocaleDateString();
 
     return (
-        <ArticleContainer component={Link} to={`/EjKBA/view_article/${props.article_id}#${localStorage.getItem('userSecret')}`}>
+        <ArticleContainer component={HashLink} to={`/EjKBA/view_article/${props.article_id}#${props.comment_id}`}>
             <Grid container >
                 <Grid item container xs={12} md={12}>
                     <Grid item xs={12}>
