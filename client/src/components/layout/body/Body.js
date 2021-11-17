@@ -30,7 +30,7 @@ const BodyContainer = styled(Box)({
     paddingBottom: '50px',
     ['@media (max-width:1024px)']: {
         margin: "10px 10px",
-    }
+    },
 })
 
 const SideBarButton = styled('button')({

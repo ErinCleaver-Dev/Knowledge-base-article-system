@@ -117,8 +117,17 @@ const CommentArticleCard = (props) => {
    
     let published_date = new Date(props.published_date).toLocaleDateString();
 
+
+    const scrollWithOffset = (el) => {
+        const yCoordinate = el.getBoundingClientRect().bottom + window.pageYOffset;
+        console.log(el)
+        console.log(yCoordinate)
+        const yOffset = 20; 
+        window.scrollTo({ top: yCoordinate + yOffset, behavior: 'smooth' }); 
+    }
+
     return (
-        <ArticleContainer component={HashLink} to={`/EjKBA/view_article/${props.article_id}#${props.comment_id}`}>
+        <ArticleContainer component={HashLink} scroll={el => scrollWithOffset(el)} to={`/EjKBA/view_article/${props.article_id}#${props.comment_id}`}>
             <Grid container >
                 <Grid item container xs={12} md={12}>
                     <Grid item xs={12}>

@@ -41,6 +41,7 @@ const ResponsesBox = styled(Box) ({
 
 const CommentList = styles.ul`
     margin-left: 40px;
+    height: 200px;
 `
 
 const MapComments = ({article_id}) => {

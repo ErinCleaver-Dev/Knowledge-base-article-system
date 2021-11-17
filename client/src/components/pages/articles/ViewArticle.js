@@ -1,9 +1,10 @@
-import React, {useState, useEffect, useContext, createContext} from 'react';
+import React, {useState, useEffect, useContext, createContext,} from 'react';
 import { UserContext } from '../../../App';
 import Responses from './responses/Responses'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
+import {useLocation} from 'react-router-dom';
 import { Editor, EditorState, convertFromRaw } from "draft-js";
 import axios from 'axios';
 import Config from '../../../config/index'
@@ -67,6 +68,7 @@ const ButtonBox = styled(Box) ({
     alignItems: 'center',
     borderBottom: "1px solid black",
     paddingBottom: "20px",
+    height:'80px',
 })
 
 const HR = styled('div') ({
@@ -100,7 +102,7 @@ const onClicked = () => {
 
 const ViewArticle = (props) => {
     const _id = props.match.params.id
-    console.log(props.match)
+    console.log(props.history)
     const initialEditorState = EditorState.createEmpty();
     const [editorState,setEditorState] = useState(initialEditorState);
     const [article, setArticle] = useState([]);
@@ -109,9 +111,12 @@ const ViewArticle = (props) => {
         article_id: _id
     })
 
+    const location = useLocation()
+    console.log(location)
+
     const [user, setUser] = useContext(UserContext);
-     useEffect(() => {
-        axios.post(`${Config.URL}api/getArticle`, {
+     useEffect(async() => {
+        await axios.post(`${Config.URL}api/getArticle`, {
             _id: _id
         }).then((response) => {
             setArticle(response.data)
@@ -119,8 +124,15 @@ const ViewArticle = (props) => {
         })
 
         if(localStorage.getItem('userSecret')){
-            axios.post(`${Config.URL}api/createViewedArticles`, {userId:localStorage.getItem('userSecret'), articleId:_id}).catch(e=> console.log(e));
+           await axios.post(`${Config.URL}api/createViewedArticles`, {userId:localStorage.getItem('userSecret'), articleId:_id}).catch(e=> console.log(e));
         }
+        
+        if (location.hash){
+            let item = document.getElementById(location.hash.replace('#',''));
+            let yPosition = item.getBoundingClientRect().top + window.pageYOffset 
+            window.scrollTo({ top: yPosition-200, behavior: 'smooth' })
+        }
+        
         
     }, []);
 
@@ -139,7 +151,7 @@ const ViewArticle = (props) => {
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
                         {video && video.startsWith('https://www.youtube.com') ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >
-                        </Video>) : (null)}
+                        </Video>) : (<div style={{ height: '400px', width:'2px'}}></div>)}
                         
                         <Editor
                         wrapperClassName={"formatedPost"}
