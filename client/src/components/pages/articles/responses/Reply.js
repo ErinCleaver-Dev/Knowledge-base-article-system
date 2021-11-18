@@ -46,7 +46,6 @@ const Reply = (props) => {
                 })
                 window.location.reload();
             }
-
         }
 
     }
