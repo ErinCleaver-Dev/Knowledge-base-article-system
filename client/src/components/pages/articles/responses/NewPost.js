@@ -46,7 +46,7 @@ const NewPost = (props) => {
         } else {
             console.log("texting else")          
             if(newPost.article_id != "") {
-                axios.post(`${Config.URL}api/creatPost`, {
+                axios.post(`${Config.URL}api/deleteLike`, {
                     post: newPost
                 })
                 window.location.reload();

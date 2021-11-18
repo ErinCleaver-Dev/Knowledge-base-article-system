@@ -5,30 +5,26 @@ const articleService = require('../../../services/articleService')
 const likesService = require('../../../services/likesService')
 
 router.post('/api/likeArticle', (req, res, next) => {
-    likesService.createLikes(req.query.userId, req.query.articleId).then((results) => {
-        if(results == true) {
-            req.send({
-                created: 'Record already exists',
-            })
-        } else {
-            req.send({
-                created: 'Created new record',
-            })
+
+    likesService.createLikes(req.body.newLike.user_id, req.body.newLike.article_id).then((results) => {
+        if(results) {
+            res.send(results)
         }
     }).catch(next)
 })
 
 router.post('/api/deleteLike', (req, res, next) => {
-    if(req.query.userID && req.query.articleID) {
-        likesService.deleteLike(req.query.userID, req.query.articleID)
+    console.log('test delete service ', req.body)
+    if(req.body.deleteLike) {
+        likesService.deleteLike(req.body.deleteLike)
     } else {
         return res.status(400).json({ errors: [{ msg: 'failed to delete article' }] })
     }
 })
 
 router.post('/api/updateLikeCounter', (req, res, next) => {
-    let likes = 0;  
-    let articleid = req.query.articleID
+    let articleid = req.body.articleID
+    console.log("test like counter")
 
     if(articleid) {
         likesService.getLikes(articleid).then(count => {
