@@ -31,6 +31,10 @@ const Likes = ({likes, article_id}) => {
                 })
             }
         })
+
+        axios.post(`${Config.URL}api/updateLikeCounter`, {
+            article_id: articleInfo.article_id,
+        })
     }
 
     useEffect(() =>{

@@ -25,7 +25,7 @@ async function createLikes(user_id, article_id) {
 
     if(!exists) {
         return await likes.save().then(result => {
-            console.log('a like saved!! ')
+            console.log('Added like')
         }) 
     } else {
         return _id
@@ -37,15 +37,16 @@ async function createLikes(user_id, article_id) {
 async function deleteLike(like_id) {
     
     return await Likes.findOneAndDelete({_id: like_id}).then(result => {
-        console.log("deleted like ", result)
+        console.log("deleted like")
     })
 }
 
-async function getLikes(articleId) {
-    if(articleId) {
-        return await Likes.count({ article_id: articleId }).then(result => {
-            console.log("test count ", result)
-        })
+async function getLikes(article_id) {
+    if(article_id) {
+        
+        const count = await Likes.count({ article_id: article_id })
+        return count
+
     } else {
         console.log('no article found')
     }

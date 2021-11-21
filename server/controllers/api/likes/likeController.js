@@ -14,7 +14,6 @@ router.post('/api/likeArticle', (req, res, next) => {
 })
 
 router.post('/api/deleteLike', (req, res, next) => {
-    console.log('test delete service ', req.body)
     if(req.body.deleteLike) {
         likesService.deleteLike(req.body.deleteLike)
     } else {
@@ -23,12 +22,14 @@ router.post('/api/deleteLike', (req, res, next) => {
 })
 
 router.post('/api/updateLikeCounter', (req, res, next) => {
-    let articleid = req.body.articleID
-    console.log("test like counter")
-
-    if(articleid) {
-        likesService.getLikes(articleid).then(count => {
-            articleService.updateLike(articleid, count).catch(next)
+    let article_id = req.body.article_id
+    if(article_id) {
+        likesService.getLikes(article_id).then(count => {
+            console.log("test like counter", count)
+            if(count == 'undefined') {
+                count = 0;
+            }
+            articleService.updateLike(article_id, count).catch(next)
         }).catch(next)
        
     } else {
