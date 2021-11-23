@@ -42,6 +42,7 @@ const CommentContainer = styled('div')({
 
 
 const ResponsesBox = styled(Box) ({
+    maxWidth:'1440px',
     marginTop: '10px',
 })
 

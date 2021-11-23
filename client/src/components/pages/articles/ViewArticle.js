@@ -39,7 +39,8 @@ const ContentBox1 = styled(Box) ({
 })
 const Video = styled("iframe") ({
     alignSelf: 'center',
-    width: "70%",
+    width:'100%',
+    maxWidth:'1440px',
     borderRadius: "5px",
     height: '400px',
     backgroundColor: 'gray',
@@ -49,6 +50,7 @@ const Video = styled("iframe") ({
 })
 
 const CategoryLists = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     paddingTop: "10px",
     justifyContent:'space-between',
@@ -96,6 +98,7 @@ const CategoryLists = styled(Box) ({
 })
 
 const KeywordLists = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     paddingTop: "10px",
     h3: {
@@ -140,6 +143,8 @@ const KeyWordLink = styled(Link)({
 
 
 const ButtonBox = styled(Box) ({
+    maxWidth:'1440px',
+    maxWidth:'1440px',
     display: 'flex',
     paddingTop: "10px",
     justifyContent: 'flex-end',
@@ -150,6 +155,8 @@ const ButtonBox = styled(Box) ({
 })
 
 const HR = styled('div') ({
+    maxWidth:'1440px',
+    margin:'auto',
     padding: 0,
     borderTop: '1px solid #033F63'
 })
@@ -174,6 +181,7 @@ const FormattedButton = styled(Button) ({
 })
 
 const Display = styled('div') ({
+    maxWidth:'1440px',
     'pre':{
         background: '#808080a1',
         fontWeight: 'bolder',
