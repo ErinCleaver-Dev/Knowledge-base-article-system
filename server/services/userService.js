@@ -8,19 +8,17 @@ async function create(data) {
     let user = new User(data);
 
     return await user.save().then(result => {
-        console.log(result)
-        console.log('an user saved!!')
+        console.log('Created new user!!')
         return result;
     })
 }
 
 async function getUser(_id) {
-    console.log(_id)
+    
     return await User.findById(_id).lean()
 }
 
 async function getUserByUid(uid) {
-    console.log(uid)
     return await User.findOne({ uid: uid }).lean()
 }
 

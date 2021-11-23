@@ -6,27 +6,56 @@ import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
 import { ArticleInfoContext } from '../ViewArticle'
 
-const LikesIcon = styled(FavoriteIcon) ({
-    color: '#033F63',
-    fontSize: '1.8em',
-    paddingLeft: '10px',
-    cursor:'pointer',
-})
+
 
 const Likes = ({likes, article_id}) => {
-    const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)        
+    const [articleInfo, setArticleInfo] = useContext
+    (ArticleInfoContext)
+    
     const newLike = {
         article_id: articleInfo.article_id,
         user_id: articleInfo.user_id,
-        liked: true
     }
 
-    console.log("Testing new like ",newLike)
+    const clickHandler = () => {
+        console.log('Clicked like')
+        axios.post(`${Config.URL}api/likeArticle`, {
+            newLike
+        }).then(response => {
+            console.log("test response", response)
+            let deleteLike = response.data
+            if(response) {
+                
+                axios.post(`${Config.URL}api/deleteLike`, {
+                    deleteLike
+                })
+            }
+        })
+
+        axios.post(`${Config.URL}api/updateLikeCounter`, {
+            article_id: articleInfo.article_id,
+        })
+    }
+
+    useEffect(() =>{
+        axios.post(`${Config.URL}api/updateLikeCounter`, {
+            article_id: articleInfo.article_id,
+        })
+    }, [])
+
+
+    const LikesIcon = styled(FavoriteIcon) ({
+        color: '#033F63',
+        fontSize: '1.8em',
+        paddingLeft: '10px',
+        pointerEvents: localStorage.getItem('isLoggedIn') ? ('auto') : ('none'),
+        cursor: 'pointer',
+    })
+    
 
     return (
         <>
-
-            <LikesIcon disabled={localStorage.getItem('isLoggedIn')} /> Likes: {likes ? (likes) : (0)}
+            <LikesIcon onClick={clickHandler}  /> Likes: {likes ? (likes) : (0)}
         </>
     )
 }

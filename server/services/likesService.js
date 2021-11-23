@@ -1,47 +1,52 @@
 const Likes = require('../models/Likes');
 
 
-async function createLikes(userId, articleId) {
+async function createLikes(user_id, article_id) {
+
+    console.log(user_id, article_id);
     let likes = new Likes({
-        user_id: userId,
-        article_id: articleId,
+        user_id: user_id,
+        article_id: article_id,
         liked: true,
     });
+    let _id = '';
 
     let exists = true;
-
-    await Likes.findOne({$and : [{user_id: userId}, {article_id: articleId}]}).then ((result) => {
-        if(result) {
-            console.log("Article already liked.")
+    let liked = ''
+    liked = await Likes.find({$and: [{article_id: article_id}, {user_id: user_id}]}).then(result => {
+        if(result.length > 0) {
+            _id = result[0]._id
         } else {
             exists = false;
         }
     })
+    
+    
 
     if(!exists) {
         return await likes.save().then(result => {
-            console.log('a like saved!! ', result)
-        })
+            console.log('Added like')
+        }) 
     } else {
-        return exists
+        return _id
     }
 }
 
 
 
-async function deleteLike(userId, articleId) {
-    return await Likes.findOneAndDelete({$and : [{user_id: userId}, {article_id: articleId}]}), (err, doc) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(doc + 'this data was deleted');
-        }
-    }
+async function deleteLike(like_id) {
+    
+    return await Likes.findOneAndDelete({_id: like_id}).then(result => {
+        console.log("deleted like")
+    })
 }
 
-async function getLikes(articleId) {
-    if(articleId) {
-        return await Likes.count({$and : [{ article_id: articleId }, {liked: true }]})
+async function getLikes(article_id) {
+    if(article_id) {
+        
+        const count = await Likes.count({ article_id: article_id })
+        return count
+
     } else {
         console.log('no article found')
     }
