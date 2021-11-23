@@ -7,7 +7,6 @@ import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { WithContext as KeyWordTags  } from 'react-tag-input';
 import {useHistory, useParams} from 'react-router-dom';
 import { Editor } from "react-draft-wysiwyg";
-
 import '../../.././../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import _ from 'lodash';
 import axios from 'axios';
