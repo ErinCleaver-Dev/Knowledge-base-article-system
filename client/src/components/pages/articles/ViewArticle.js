@@ -266,6 +266,7 @@ const ViewArticle = (props) => {
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
                         {video ? (
+                        <div className='player-wrapper'>
                         <ReactPlayer
                             
                             className="react-player"
@@ -273,7 +274,9 @@ const ViewArticle = (props) => {
                             height='40vh'
                             
                         url={video}>
-                        </ReactPlayer>) : (null)}
+                        
+                        </ReactPlayer>
+                        </div>) : (null)}
                         
                         <Display dangerouslySetInnerHTML={{ __html: postContent }}></Display>
                         <HR/>
