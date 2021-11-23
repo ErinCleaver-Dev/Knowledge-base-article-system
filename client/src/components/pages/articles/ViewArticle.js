@@ -3,7 +3,8 @@ import { UserContext } from '../../../App';
 import Responses from './responses/Responses'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
-import { styled } from '@mui/material/styles';
+import { styled as styles } from '@mui/material/styles';
+import styled from 'styled-components'
 import {useLocation, Link} from 'react-router-dom';
 import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
@@ -13,11 +14,13 @@ import _ from 'lodash';
 import { keyframes } from '@mui/system';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import ReactPlayer from 'react-player'
+
 
 export const ArticleInfoContext = React.createContext();
 
 
-const Title = styled(Box) ({
+const Title = styles(Box) ({
     fontSize: "2.8em",
     textAlign: "center",
     width: '100%',
@@ -28,7 +31,7 @@ const Title = styled(Box) ({
 
 })
 
-const ContentBox1 = styled(Box) ({
+const ContentBox1 = styles(Box) ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -37,18 +40,8 @@ const ContentBox1 = styled(Box) ({
     marginBottom: '30px',
     borderBottom: '1px solid #033F63',
 })
-const Video = styled("iframe") ({
-    alignSelf: 'center',
-    width: "70%",
-    borderRadius: "5px",
-    height: '400px',
-    backgroundColor: 'gray',
-    ['@media (max-width:1024px)']: {
-        width: "100%",
-    }
-})
 
-const CategoryLists = styled(Box) ({
+const CategoryLists = styles(Box) ({
     display: 'flex',
     paddingTop: "10px",
     justifyContent:'space-between',
@@ -95,7 +88,7 @@ const CategoryLists = styled(Box) ({
     }
 })
 
-const KeywordLists = styled(Box) ({
+const KeywordLists = styles(Box) ({
     display: 'flex',
     paddingTop: "10px",
     h3: {
@@ -116,7 +109,7 @@ const breatheAnimation = keyframes`
  50% {top: 3px}
  100% {top: 0px}
 `
-const KeyWordLink = styled(Link)({
+const KeyWordLink = styles(Link)({
     textDecoration:'none',
     fontWeight:'bold',
     color:'black',
@@ -139,7 +132,7 @@ const KeyWordLink = styled(Link)({
 })
 
 
-const ButtonBox = styled(Box) ({
+const ButtonBox = styles(Box) ({
     display: 'flex',
     paddingTop: "10px",
     justifyContent: 'flex-end',
@@ -149,12 +142,12 @@ const ButtonBox = styled(Box) ({
     height:'80px',
 })
 
-const HR = styled('div') ({
+const HR = styles('div') ({
     padding: 0,
     borderTop: '1px solid #033F63'
 })
         
-const FormattedButton = styled(Button) ({
+const FormattedButton = styles(Button) ({
     background: '#033F63',
     color: '#FFFFFF',
     maxWidth: '150px',
@@ -173,7 +166,7 @@ const FormattedButton = styled(Button) ({
     }
 })
 
-const Display = styled('div') ({
+const Display = styles('div') ({
     'pre':{
         background: '#808080a1',
         fontWeight: 'bolder',
@@ -272,8 +265,15 @@ const ViewArticle = (props) => {
                         <BackButton/>
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
-                        {video && video.startsWith('https://www.youtube.com') ? (<Video  allow="encrypted-media" allowFullScreen src={video.replace('com/watch?v=', 'com/embed/')} >
-                        </Video>) : (null)}
+                        {video ? (
+                        <ReactPlayer
+                            
+                            className="react-player"
+                            width='100%'
+                            height='40vh'
+                            
+                        url={video}>
+                        </ReactPlayer>) : (null)}
                         
                         <Display dangerouslySetInnerHTML={{ __html: postContent }}></Display>
                         <HR/>
