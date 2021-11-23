@@ -1,11 +1,7 @@
-import React, {useState, useEffect, useContext,} from 'react'
-import {Button, Box} from '@mui/material'
+import React, {useState, useEffect, useContext,createContext} from 'react'
+import {Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
-import {useHistory} from 'react-router-dom';
-import { Editor } from "react-draft-wysiwyg";
 import NewPost from "./NewPost"
-import { AiOutlineConsoleSql } from 'react-icons/ai';
 import _ from 'lodash';
 import styles from "styled-components"
 import axios from 'axios';
@@ -14,51 +10,60 @@ import Config from '../../../../config/index'
 import { ArticleInfoContext } from '../ViewArticle'
 import { UserContext } from '../../../../App';
 
+export const AllCommentsContext = createContext()
 
-
-
-const FormatedButton = styled(Button) ({
-    background: '#033F63',
-    color: '#FFFFFF',
-    maxWidth: '150px',
-    padding: '10px',
-    img: {
-        height: '30px'
+const RootCommentContainer = styled('div')({
+    borderRadius:'5px',
+    boxShadow:'1px 1px 4px black',
+    padding:'10px 10px 10px 10px',
+    margin:'10px 0',
+    ['@media (max-width:400px)']: {
+        width: "335px",
+        overflowX:'auto',
+        boxShadow:'2px 2px 10px black',
     },
-    span: {
-        paddingLeft: '10px',
-        fontSize: '1.2em',
-        fontWeight: 'bold'
-    },
-    '&:hover': {
-        backgroundColor: '#213946'
-    }
+    ['@media (max-width:760px)']: {
+        maxWidth: "650px",
+        overflowX:'auto',
+    }, 
 })
 
+const CommentContainer = styled('div')({
+    marginLeft:'30px',
+    borderLeft:'3px solid lightgray',
+    ['@media (max-width:760px)']: {
+        marginLeft:'20px',
+    },
+    ['@media (max-width:600px)']: {
+        marginLeft:'10px',
+    }
+    
+})
+
+
 const ResponsesBox = styled(Box) ({
-    marginTop: '40px',
+    marginTop: '10px',
 })
 
 const CommentList = styles.ul`
-    margin-left: 40px;
-    height: 200px;
+    
+    minHeight: 200px;
 `
 
 const MapComments = ({article_id}) => {
 
-    const [comments, setComments] = useState('')
-
-
+    const [comments, setComments] = useState('');
 
     useEffect(() => {
         
         axios.post(`${Config.URL}api/getComments`, {
             article_id: article_id
         }).then((response) => {
-            _(response.data).forEach(f=>
-                {f.replys=_(response.data).filter(g=>g.parentId==f._id).value();});
+            let commentArray = response.data.filter((comment)=>comment.userResponse_type !== 'issue');
+            _(commentArray).forEach(f=>
+                {f.replys=_(commentArray).filter(g=>g.parentId==f._id).value();});
      
-            var newComments=_(response.data).filter(f=>f.parentId==null).value();        
+            var newComments=_(commentArray).filter(f=>f.parentId==null).value();        
             setComments(newComments)
         })
        
@@ -69,10 +74,25 @@ const MapComments = ({article_id}) => {
 
             let items = comments.map((comment) => {
               return (
-                <CommentList>
-                  <Comment key={comment._id} comment={comment}/>
+                  <>
+                  <AllCommentsContext.Provider value={[comments, setComments]} >
+                {comment.parentId ? (
+                    <CommentContainer key={comment._id}>
+                    <CommentList>
+                    <Comment  comment={comment}/>
+                    {comment.replys && CommentTree(comment.replys)}
+                  </CommentList>
+                  </CommentContainer>
+                ):(
+                    <RootCommentContainer key={comment._id} >
+                <CommentList >
+                  <Comment comment={comment}/>
                   {comment.replys && CommentTree(comment.replys)}
                 </CommentList>
+                </RootCommentContainer>
+                )}
+                </AllCommentsContext.Provider>
+                </>
               )
             })
           
@@ -94,6 +114,7 @@ const Responses = ({article_id}) => {
     const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)    
     const [isloading, setIsLoading] = useState(true);
     const [user, setUser] = useContext(UserContext);
+
     
     const getUseruID = () => {
         if(localStorage.getItem('isLoggedIn')) {
@@ -127,4 +148,4 @@ const Responses = ({article_id}) => {
     )
 }
 
-export default Responses
+export default Responses;

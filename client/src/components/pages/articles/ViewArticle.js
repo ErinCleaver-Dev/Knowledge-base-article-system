@@ -1,14 +1,18 @@
-import React, {useState, useEffect, useContext, createContext,} from 'react';
+import React, {useState, useEffect, useContext, createContext} from 'react';
 import { UserContext } from '../../../App';
 import Responses from './responses/Responses'
 import { BackButton } from '../../layout/styledComponents/styledComponents'
 import {Button, Box} from '@mui/material'
 import { styled } from '@mui/material/styles';
-import {useLocation} from 'react-router-dom';
-import { Editor, EditorState, convertFromRaw } from "draft-js";
+import {useLocation, Link} from 'react-router-dom';
+import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
 import Config from '../../../config/index'
 import Likes from './likes/Likes'
+import _ from 'lodash';
+import { keyframes } from '@mui/system';
+import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
+import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 
 export const ArticleInfoContext = React.createContext();
 
@@ -44,7 +48,54 @@ const Video = styled("iframe") ({
     }
 })
 
-const ItemLists = styled(Box) ({
+const CategoryLists = styled(Box) ({
+    display: 'flex',
+    paddingTop: "10px",
+    justifyContent:'space-between',
+    color:'black',
+    'a':{
+        transition: '0.5s all ease',
+        '&:hover':{
+            backgroundColor:'#28666E',
+            padding:'5px',
+            borderRadius:'3px',
+            color:'white'
+        },
+        '&:active':{
+            color:'black'
+        },
+        '&:visited':{
+            color:'black',
+            '&:hover':{
+                color:'white'
+            }
+        }  
+    },
+    button:{
+        display:'flex',
+        color:'white',
+        alignItems:'center',
+        cursor:'pointer',
+        border:'none',
+        backgroundColor:'#033F63',
+        borderRadius:'5px',
+        '&:hover':{
+            backgroundColor:'#03022d'
+        },
+        '.saveIcon':{
+            fontSize:'2em'
+        },
+        span:{
+            padding:'5px',
+            fontWeight:'bold',
+            fontSize:'1.2em',
+            letterSpacing:'1px',
+            fontFamily: 'Acme, sans-serif'
+        }
+    }
+})
+
+const KeywordLists = styled(Box) ({
     display: 'flex',
     paddingTop: "10px",
     h3: {
@@ -52,14 +103,41 @@ const ItemLists = styled(Box) ({
     },
     ul: {
         listStyle: 'none',
+        flex:1,
         display: 'flex',
-        li: {
-            padding: "3px",
-            border: "1px solid black",
-            marginRight: "10px"
-        }
+        gap: '10px',
+        justifyContent:'flex-start',
+        flexWrap:'wrap',
     }
 })
+
+const breatheAnimation = keyframes`
+ 0% { top: 0px;}
+ 50% {top: 3px}
+ 100% {top: 0px}
+`
+const KeyWordLink = styled(Link)({
+    textDecoration:'none',
+    fontWeight:'bold',
+    color:'black',
+    display:'block',
+    padding:'4px',
+    border:'black 2px solid',
+    borderRadius:'5px',
+    position: 'relative',
+    boxShadow:'1px 1px 5px black',
+    animationName: `${breatheAnimation}`,
+    animationDuration: '1.2s',
+    animationTimingFunction: 'ease',
+    animationIterationCount: 'infinite',
+    animationDirection: 'alternate',
+    '&:hover':{
+        transform:'scale(1.2)',
+        backgroundColor:'#033F63',
+        color:'white'
+    }
+})
+
 
 const ButtonBox = styled(Box) ({
     display: 'flex',
@@ -76,72 +154,116 @@ const HR = styled('div') ({
     borderTop: '1px solid #033F63'
 })
         
-const FormattedBotton = styled(Button) ({
+const FormattedButton = styled(Button) ({
     background: '#033F63',
     color: '#FFFFFF',
     maxWidth: '150px',
     padding: '10px',
     marginLeft: '10px',
     minWidth: '100px',
-    img: {
-        height: '30px'
-    },
-    span: {
-        paddingLeft: '10px',
-        fontSize: '1.2em',
-        fontWeight: 'bold'
-    },
+    fontFamily: 'Acme, sans-serif',
     '&:hover': {
         backgroundColor: '#213946'
+    },
+    fontWeight:'bold',
+    fontSize: '1em',
+    ['@media (max-width:500px)']: {
+        maxWidth:'100px',
+        fontSize: '0.8em',
     }
 })
 
-const onClicked = () => {
-    console.log("licked article")
-}
+const Display = styled('div') ({
+    'pre':{
+        background: '#808080a1',
+        fontWeight: 'bolder',
+        padding: '20px',
+        marginTop: '10px',
+        marginBottom: '10px'
+    } 
+})
+
 
 const ViewArticle = (props) => {
+    const [render, setRender] = useState(false);
+    console.log(render)
     const _id = props.match.params.id
     console.log(props.history)
-    const initialEditorState = EditorState.createEmpty();
-    const [editorState,setEditorState] = useState(initialEditorState);
+    const [postContent,setPostContent] = useState({});
     const [article, setArticle] = useState([]);
     const [articleInfo, setArticleInfo] = useState({
         user_id: '',
         article_id: _id
     })
+    const [saved, setSaved] = useState(false);
 
     const location = useLocation()
     console.log(location)
 
     const [user, setUser] = useContext(UserContext);
      useEffect(async() => {
+         console.log('hi')
         await axios.post(`${Config.URL}api/getArticle`, {
             _id: _id
         }).then((response) => {
             setArticle(response.data)
-            setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(response.data.post_content))));
+            setPostContent(draftToHtml(JSON.parse(response.data.post_content)));
         })
 
         if(localStorage.getItem('userSecret')){
            await axios.post(`${Config.URL}api/createViewedArticles`, {userId:localStorage.getItem('userSecret'), articleId:_id}).catch(e=> console.log(e));
         }
+
+        //save article functionality
+        await axios.get(`${Config.URL}api/getSavedArticles?userId=${localStorage.getItem('userSecret')}`).then((response) => {
+            
+            let articleResults = response.data.getSavedArticles;
+            //console.log(articleResults)
+            let saved = false;
+            articleResults.map(article=>{
+               if(article.article._id === _id){
+                   saved = true;
+               }
+            })
+            if(saved){
+                setSaved(saved)
+            }
+        }).catch(e=>{
+            //console.log(e)
+        })
         
+        //scroll to certain comment
         if (location.hash){
             let item = document.getElementById(location.hash.replace('#',''));
             let yPosition = item.getBoundingClientRect().top + window.pageYOffset 
-            window.scrollTo({ top: yPosition-200, behavior: 'smooth' })
+            window.scroll({ top: yPosition-200, behavior:'smooth'})
         }
-        
-        
-    }, []);
+    }, [render]);
+
+    //function for Save and unSave
+    const saveAndUnSaveArticle = (e) =>{
+        if(!saved){
+            axios.post(`${Config.URL}api/createSavedArticles`, {userId:localStorage.getItem('userSecret'), articleId:_id}).then((result)=>{
+                setSaved(true);
+            }).catch(e=>{
+                //console.log(e);
+            });
+        }else{
+            axios.post(`${Config.URL}api/deleteSavedArticle`, {userId:localStorage.getItem('userSecret'), articleId: _id}).then((result)=>{
+                setSaved(false);
+            }).catch(e=>{
+                //console.log(e);
+            });
+        }
+    }
+
 
     const date = new Date(article.published_date)
-  
-    
+
     let video = article.video
     
     return (
+        
         <ArticleInfoContext.Provider value={[articleInfo, setArticleInfo]}>  
             {article ? (
                 <>
@@ -150,26 +272,22 @@ const ViewArticle = (props) => {
                         <BackButton/>
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
-                        {video && video.startsWith('https://www.youtube.com') ? (<Video  allow="encrypted-media" allowfullscreen src={video.replace('com/watch?v=', 'com/embed/')} >
-                        </Video>) : (<div style={{ height: '400px', width:'2px'}}></div>)}
+                        {video && video.startsWith('https://www.youtube.com') ? (<Video  allow="encrypted-media" allowFullScreen src={video.replace('com/watch?v=', 'com/embed/')} >
+                        </Video>) : (null)}
                         
-                        <Editor
-                        wrapperClassName={"formatedPost"}
-                        editorState={editorState}
-                        readOnly={true}
-                        />
+                        <Display dangerouslySetInnerHTML={{ __html: postContent }}></Display>
                         <HR/>
-                        <ItemLists><h3>Categories: </h3><p>javascript</p></ItemLists>
-                        <ItemLists>
+                <CategoryLists><h3>Categories: &nbsp; <Link to={`/EjKBA/category?q=${article.category}`} style={{fontSize:'1.4em', fontWeight:'normal'}}>{_.capitalize(article.category)}</Link></h3>{localStorage.getItem('userSecret')?<button onClick={saveAndUnSaveArticle}>{!saved?<><BookmarkBorderRoundedIcon className='saveIcon'/><span>Save</span></>:<><BookmarkRoundedIcon className='saveIcon'/><span>Saved</span></>}</button>:null}</CategoryLists>
+                        <KeywordLists>
                         <h3>Keywords: </h3>
                         <ul>
                             {article.key_terms ? (<>
                                 {article.key_terms.map((term, key) =>(
-                                <li key={key}>{term}</li>
+                                <li key={key}><KeyWordLink to={`/EjKBA/search?q=${term}`}>{term}</KeyWordLink></li>
                             ))}
                             </>) : (null) }
                         </ul>
-                    </ItemLists>
+                    </KeywordLists>
 
                 </>
             ) : (<h2>Loaindg article...</h2>) }
@@ -177,8 +295,8 @@ const ViewArticle = (props) => {
                {article.user_id ? (<>
                 {localStorage.getItem('isLoggedIn') && article.user_id.uid == user.uid ? ( 
                     <>
-                        <FormattedBotton>Delete</FormattedBotton>
-                        <FormattedBotton>Edit Article</FormattedBotton>
+                        <FormattedButton component={Link} to={`/EjKBA/user_articles?author=${article.user_id._id}&delete=${_id}`}>Delete</FormattedButton>
+                        <FormattedButton component={Link} to={`/EjKBA/edit_article/${localStorage.getItem('userSecret')}/${_id}`}>Edit Article</FormattedButton>
                     </>) : 
                     (null)
                }
@@ -188,6 +306,7 @@ const ViewArticle = (props) => {
            </ButtonBox>
            <Responses article_id ={_id} />
         </ArticleInfoContext.Provider>
+        
     )
 }
 

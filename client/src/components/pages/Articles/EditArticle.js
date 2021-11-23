@@ -167,7 +167,10 @@ const styles = {
         color:'white',
         marginTop:'10px',
         marginLeft:'15px',
-        marginBottom:'10px'
+        marginBottom:'10px',
+        ['@media (max-width:500px)']:{
+            fontSize:'1em'
+        },
     }
     
 }
@@ -179,7 +182,7 @@ const EditArticle = ({classes}) => {
     const initialFieldsState = {
         fields:{
             title: '',
-            YTLink: '',
+            VideoLink: '',
             category: '',  
         }
     }
@@ -206,7 +209,7 @@ const EditArticle = ({classes}) => {
                 setFieldValues({
                     fields:{
                         title: result.data.title,
-                        YTLink: result.data.video,
+                        videoLink: result.data.video,
                         category: result.data.category,
                     }
                 });
@@ -291,7 +294,7 @@ const EditArticle = ({classes}) => {
             finalData = {...finalData, title: fieldValues.fields.title}
         }
 
-        finalData = {...finalData, video: fieldValues.fields.YTLink}
+        finalData = {...finalData, video: fieldValues.fields.VideoLink}
 
         if(fieldValues.fields.category === ''){
             allError = {...allError, category: 'Category should be required!'}
@@ -379,7 +382,7 @@ const EditArticle = ({classes}) => {
             <ContainerGrid container spacing={2}>
                 
                 <Grid item xs={12} md={12} >
-                <input className={classes.titleAndYTInput} type='text' placeholder='YouTube Link' name='YTLink' value={fieldValues.fields.YTLink} onChange={handleUserInputState}/>
+                <input className={classes.titleAndYTInput} type='text' placeholder='Video Link' name='VideoLink' value={fieldValues.fields.videoLink} onChange={handleUserInputState}/>
                 </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2}>

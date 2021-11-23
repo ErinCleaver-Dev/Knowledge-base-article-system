@@ -153,6 +153,9 @@ const styles = {
         fontFamily: 'Acme, sans-serif',
         fontSize: '2em',
         color:'white',
+        ['@media (max-width:500px)']:{
+            fontSize:'1em'
+        },
     },
     clearTags:{
         border:'none',
@@ -176,7 +179,7 @@ const CreateArticle = ({classes}) => {
     const initialFieldsState = {
         fields:{
             title: '',
-            YTLink: '',
+            VideoLink: '',
             category: '',  
         }
     }
@@ -262,7 +265,7 @@ const CreateArticle = ({classes}) => {
             finalData = {...finalData, title: fieldValues.fields.title}
         }
 
-        finalData = {...finalData, video: fieldValues.fields.YTLink}
+        finalData = {...finalData, video: fieldValues.fields.VideoLink}
 
         if(fieldValues.fields.category === ''){
             allError = {...allError, category: 'Category should be required!'}
@@ -344,7 +347,7 @@ const CreateArticle = ({classes}) => {
             <ContainerGrid container spacing={2}>
                 
                 <Grid item xs={12} md={12} >
-                <input className={classes.titleAndYTInput} type='text' placeholder='YouTube Link' name='YTLink' value={fieldValues.fields.YTLink} onChange={handleUserInputState}/>
+                <input className={classes.titleAndYTInput} type='text' placeholder='Video Link' name='VideoLink' value={fieldValues.fields.VideoLink} onChange={handleUserInputState}/>
                 </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2}>

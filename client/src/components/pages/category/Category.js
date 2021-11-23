@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import {Button, Box} from '@mui/material'
 import Config from '../../../config/index'
 import Pagination from '@mui/material/Pagination';
+import _ from 'lodash';
 
 
 const Category = (props) => {
@@ -75,7 +76,7 @@ const Category = (props) => {
         
         <>
             <BackButton/>
-            <h2 className="category_title">{category}</h2>
+            <h2 className="category_title">{_.capitalize(category)}</h2>
             <SearchBox />
             <Sort>
                 Newest to Oldest

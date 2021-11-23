@@ -5,10 +5,18 @@ import {Link} from 'react-router-dom';
 import {Button} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
-
+import { keyframes } from '@mui/system';
 
 const SavedArticlesCard = (props) => {
 
+    const bigger = keyframes`
+    from {
+        transform: scale(0.6);
+      }
+      to {
+        transform: scale(1.2);
+      }
+    `
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
         borderRadius: '5px',
@@ -59,10 +67,16 @@ const SavedArticlesCard = (props) => {
         ['@media (max-width:1280px)']: { 
             flex: 'none',
             width: '100%',
-        },'.icon':{
+        },'.icon1':{
             display:'inline-block',
             position:'relative',
-            top:'4px'
+            top:'2px',
+            animation:`${bigger} 1.5s ease infinite`
+        },
+        '.icon2':{
+            display:'inline-block',
+            position:'relative',
+            top:'2px',
         },'&:hover':{
             transform: 'scale(1.02)',
             transition: 'transform .2s ease-in-out',
@@ -106,11 +120,11 @@ const SavedArticlesCard = (props) => {
                     </Grid>
                     <Grid item container xs={12}>
                         <Grid item xs={6} md={3}>
-                            <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon' fontSize="small"/>Likes:</p>
+                            <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon1' fontSize="small"/>Likes:</p>
                             <p className='pp'>{props.likes}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <p><ContactPageIcon style={{color:'black'}} className='icon' fontSize="small"/>Author:</p>
+                            <p><ContactPageIcon style={{color:'black'}} className='icon2' fontSize="small"/>Author:</p>
                             <p className='pp'> {props.userName}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>

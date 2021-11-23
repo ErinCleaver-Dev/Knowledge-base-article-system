@@ -98,12 +98,17 @@ const UserArticles = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(1);
     const location = useLocation();
-    let deleteMessage = location.search;
+    const queries = new URLSearchParams(location.search)
+
+    let author = queries.get('author');
+    let deletedArticle = queries.get('delete');
+    let deletedMessage = location.search;
+    //console.log(author, deletedArticle)
     let history = useHistory();
 
     useEffect(() => {
         axios.post(`${Config.URL}api/getUsersArticles`, {user_id: localStorage.getItem('userSecret')}).then((response) => {
-            //console.log(response.data)
+            console.log(response.data)
             setLoadingError(false);
             setLoading(false)
             let articleResults;
@@ -152,8 +157,7 @@ const UserArticles = (props) => {
     }
 
     const deleteHandler = (e) =>{
-        //console.log((deleteMessage.replace('?delete=','')));
-        axios.post(`${Config.URL}api/deleteArticle`, {_id: deleteMessage.replace('?delete=','')}).then(result=>{
+        axios.post(`${Config.URL}api/deleteArticle`, {_id: deletedArticle}).then(result=>{
             //console.log(result.data, 'was deleted');
             let filterArticle = articles.filter(article=> article._id != result.data._id);
             //console.log(filterArticle);
@@ -181,7 +185,7 @@ const UserArticles = (props) => {
             <SortButton type='button' onClick={()=>{setSort('publish')}}>Date Published</SortButton>
             <SortButton type='button' onClick={()=>{setSort('revise')}}>Date Revised</SortButton>
             </Span1>    
-            {deleteMessage.startsWith('?delete=')?(
+            {deletedMessage.startsWith('?author=') && localStorage.getItem('userSecret') === author?(
                 <MessageContainer>
                     <h1>Would you like to delete this article?</h1>
                     <DecisionButton type='button' onClick={deleteHandler}>Yes</DecisionButton>
@@ -196,7 +200,7 @@ const UserArticles = (props) => {
                 articles.map(article=>{
                     return( 
                         <UserArticlesCard
-                            user_id = {localStorage.getItem('userSecret')}
+                            user_id = {article.user_id._id}
                             article_id = {article._id}
                             key = {article._id}
                             title={article.title} 

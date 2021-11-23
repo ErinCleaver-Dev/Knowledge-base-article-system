@@ -13,7 +13,7 @@ const userResponseSchema = new mongoose.Schema({
     post_date: {
         type: Date,
         require: true,
-        default: new Date()
+        default: Date.now,
     },
     article_id: {
         type: mongoose.Schema.Types.ObjectId,

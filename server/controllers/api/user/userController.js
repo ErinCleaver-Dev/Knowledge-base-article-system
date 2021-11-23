@@ -38,33 +38,6 @@ router.post('/api/getUserByUid', (req, res, next) => {
     }).catch(next)
 })
 
-router.post('/api/creatPost', (req, res, next) => {
-    console.log(req.body)
-    if (req.body) {
-        userResponseService.create(req.body.post).then(() => {
-
-        }).catch(next)
-    } else {
-        return res.status(400).json({ errors: [{ msg: 'failed to create post' }] })
-    }
-})
-
-router.post('/api/getComments', (req, res, next) => {
-
-    console.log('get comments service', req.body.article_id)
-    userResponseService.getComments(req.body.article_id).then(result => {
-        console.log("testing comments and reply: ", result)
-        res.send(result)
-    }).catch(next)
-})
-
-router.post('/api/getCommentsByUserId', (req, res, next) => {
-    userResponseService.getCommentsByUserId(req.body.user_id).then(result => {
-        // console.log(result)
-        res.json(result)
-    }).catch(next)
-})
-
 
 router.post('/api/createViewedArticles', (req, res, next) => {
     userHistoryService.createViewedArticle(req.body.userId, req.body.articleId).then(() => {
@@ -121,5 +94,50 @@ router.post('/api/createFeedback', (req, res) => {
         res.json({ message: e })
     })
 })
+
+// the followings are for UserResponse
+
+router.post('/api/creatPost', (req, res, next) => {
+    console.log(req.body)
+    if (req.body) {
+        userResponseService.create(req.body.post).then(() => {
+
+        }).catch(next)
+    } else {
+        return res.status(400).json({ errors: [{ msg: 'failed to create post' }] })
+    }
+})
+
+router.post('/api/getComments', (req, res, next) => {
+
+    console.log('get comments service', req.body.article_id)
+    userResponseService.getComments(req.body.article_id).then(result => {
+        console.log("testing comments and reply: ", result)
+        res.send(result)
+    }).catch(next)
+})
+
+router.post('/api/getCommentsByUserId', (req, res, next) => {
+    userResponseService.getCommentsByUserId(req.body.user_id).then(result => {
+        // console.log(result)
+        res.json(result)
+    }).catch(next)
+})
+
+
+router.post('/api/deleteComments', (req, res, next) => {
+    userResponseService.deleteCommentsById(req.body.deletedComments).catch(next);
+})
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

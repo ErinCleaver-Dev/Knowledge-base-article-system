@@ -6,10 +6,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import DoubleArrowRoundedIcon from '@mui/icons-material/DoubleArrowRounded';
 import { HashLink } from 'react-router-hash-link';
-
+import { keyframes } from '@mui/system';
 
 const CommentArticleCard = (props) => {
 
+    const bigger = keyframes`
+    from {
+        transform: scale(0.6);
+      }
+      to {
+        transform: scale(1.2);
+      }
+    `
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
         borderRadius: '5px',
@@ -59,10 +67,16 @@ const CommentArticleCard = (props) => {
         ['@media (max-width:1280px)']: { 
             flex: 'none',
             width: '100%',
-        },'.icon':{
+        },'.icon1':{
             display:'inline-block',
             position:'relative',
-            top:'4px'
+            top:'2px',
+            animation:`${bigger} 1.5s ease infinite`
+        },
+        '.icon2':{
+            display:'inline-block',
+            position:'relative',
+            top:'2px',
         },'&:hover':{
             transform: 'scale(1.02)',
             transition: 'transform .2s ease-in-out',
@@ -119,15 +133,13 @@ const CommentArticleCard = (props) => {
 
 
     const scrollWithOffset = (el) => {
-        const yCoordinate = el.getBoundingClientRect().bottom + window.pageYOffset;
-        console.log(el)
-        console.log(yCoordinate)
-        const yOffset = 20; 
+        const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
+        const yOffset = 0; 
         window.scrollTo({ top: yCoordinate + yOffset, behavior: 'smooth' }); 
     }
 
     return (
-        <ArticleContainer component={HashLink} scroll={el => scrollWithOffset(el)} to={`/EjKBA/view_article/${props.article_id}#${props.comment_id}`}>
+        <ArticleContainer component={HashLink} scroll={el => scrollWithOffset(el)}  to={`/EjKBA/view_article/${props.article_id}#${props.comment_id}`}>
             <Grid container >
                 <Grid item container xs={12} md={12}>
                     <Grid item xs={12}>
@@ -141,11 +153,11 @@ const CommentArticleCard = (props) => {
                     </Grid>
                     <Grid item container xs={12}>
                         <Grid item xs={6} md={3}>
-                            <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon' fontSize="small"/>Likes:</p>
+                            <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon1' fontSize="small"/>Likes:</p>
                             <p className='pp'>{props.likes}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>
-                            <p><ContactPageIcon style={{color:'black'}} className='icon' fontSize="small"/>Author:</p>
+                            <p><ContactPageIcon style={{color:'black'}} className='icon2' fontSize="small"/>Author:</p>
                             <p className='pp'> {props.userName}</p>
                         </Grid>
                         <Grid item xs={6} md={3}>

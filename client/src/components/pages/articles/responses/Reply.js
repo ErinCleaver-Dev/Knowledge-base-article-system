@@ -1,21 +1,25 @@
-import React, {useState, useContext, createRef, useEffect} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import { styled } from '@mui/material/styles';
 import styles from 'styled-components';
-import { ValidateCommentType, ValidatePost } from './postValidator'
-import {RadioGroup, Radio, Button, FormControlLabel, Box, inputLabelClasses} from '@mui/material'
+import {ValidatePost } from './postValidator'
+import {Button, Box} from '@mui/material'
 import axios from 'axios';
 import Config from '../../../../config/index'
 import { UserContext } from '../../../../App';
-import { TextArea } from 'semantic-ui-react'
 import { ArticleInfoContext } from '../ViewArticle'
-
+import CommentIcon from '@mui/icons-material/Comment';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import SendIcon from '@mui/icons-material/Send';
+import {AllCommentsContext} from './Responses';
+import { daysSincePosted } from '../../tools/dateCalucators'
 
 const Reply = (props) => {
-    const [post, setPost] = useState()
+    const [post, setPost] = useState('')
     const [error, setError] = useState('')
     const [user, setUser] = useContext(UserContext);
     const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext)    
     const [displayReply, setDisplayReply] = useState('none')
+    const [comments, setComments] =useContext(AllCommentsContext);
 
     const [newPost, setNewPost ] = useState(
         {
@@ -27,65 +31,86 @@ const Reply = (props) => {
         }
     )
 
+    const textAreaRef = useRef();
+
+    useEffect(()=>{
+        textAreaRef.current.value = post;
+        textAreaRef.current.focus();
+    })
    
     const handleNewPost = event => {
+        console.log(textAreaRef.current.value)
         
-        if(displayReply == 'none') {
-            setDisplayReply('inline-block')
-        } else if(ValidatePost(newPost.post_content)) {
-            setError('Plase enter a post.')
+        if(ValidatePost(textAreaRef.current.value)) {
+            setError('Please enter a post.')
             console.log(error)
-        } else if(ValidateCommentType(newPost.userResponse_type)) {
-            setError('Pleae select comment or issue')
-            console.log(error)
-        } else {            
-
-            if(newPost.user_id != '') {
+        } 
+        else {            
+            let data = {...newPost, post_content: textAreaRef.current.value, article_id: articleInfo.article_id, user_id: articleInfo.user_id, parentId: props.parentId}
+            if(data.user_id != '') {
                 axios.post(`${Config.URL}api/creatPost`, {
-                    post: newPost
+                    post: data
                 })
                 window.location.reload();
             }
-
         }
+    }
+
+    const handleReplyIcon = (e) =>  {
+        setError('')
+        displayReply=== 'none'? setDisplayReply('inline-block'):setDisplayReply('none')
+    }
+
+    const getAllNestedCommentsRecursion = (object, array)=>{
+        if(object.replys.length > 0){
+            object.replys.map(reply=>{
+                return getAllNestedCommentsRecursion(reply, array);
+            })
+        }
+        array.push(object._id);
+        return array;
+    }
+
+    const handleDeleteComments = async(e) =>{
+        let deletedComment = comments.filter(comment=>{
+            if(comment._id === props.parentId){
+                return comment;
+            }
+        })
+        console.log(deletedComment)
+        deletedComment = deletedComment[0];
+        //console.log(deleteComment)
+        let result = getAllNestedCommentsRecursion(deletedComment,[]);
+        //console.log(result);
+        axios.post(`${Config.URL}api/deleteComments`, {
+            deletedComments: result
+        })
+        window.location.reload();
 
     }
 
-    const handlePostChange = (event) =>{
-        setNewPost({...newPost, post_content: event.target.value, article_id: articleInfo.article_id, user_id: articleInfo.user_id, parentId: props.parentId})
-        console.log(newPost)
-    }
+    const StyledTextArea = styles('textarea')`
+        width: 95%;
+        height:200px;
+        resize: none;
+        padding: 10px;
+        border:none;
+        border-radius: 10px;
+        display: ${displayReply};
+        font-size: 1.2em;
+        font-weight:bold;
+        outline:none;
+        box-shadow: 1px 1px 10px #033F63;
+    `
 
-    const FormatedGroup = styled("div") ({
-        display: 'flex',
-        justifyContent: 'flex-end'
-    })
-    const FormatedRadio = styled(Button) ({
-        
-         
-        background: '#033F63',
-        color: '#FFFFFF',
-        width: '150px',
-        textAlign: 'center',
-        marginLeft: '10px',
-        marginBottom: '5px',
-        fontSize: '1.2em',
-        padding: '0px 5px',
-        borderRadius: '5px',
-        '&:hover': {
-            backgroundColor: '#213946'
-        },
-        '&:focus': {
-            backgroundColor: '#213946'
-        },
-        
-    })
-
-    const FormatedButton = styled(Button) ({
+    const FormattedButton = styled(Button) ({
         background: '#033F63',
         color: '#FFFFFF',
         maxWidth: '150px',
         padding: '5px',
+        img: {
+            height: '30px'
+        },
         span: {
             paddingLeft: '10px',
             fontSize: '1.2em',
@@ -93,49 +118,57 @@ const Reply = (props) => {
         },
         '&:hover': {
             backgroundColor: '#213946'
+        },
+        fontFamily:'Acme, sans-serif'
+    })
+
+    const ReplyIcon = styled(CommentIcon)({
+        fontSize:'20px',
+        cursor:'pointer',
+        transition: '0.5s ease all',
+        '&:hover':{
+            transform:'scale(1.2)'
         }
     })
-    const StyledTextArea = styles(TextArea)`
-        width: 95%;
-        height: 50px;
-        resize: none;
-        padding: 10px;
-        border: 2px solid #033F63;
-        border-radius: 10px;
-        display: ${displayReply};
-    `
 
-    const ErrorMeassage = styled(Box) ({
+    const DeleteIcon = styled(DeleteForeverIcon)({
+        fontSize:'20px',
+        cursor:'pointer',
+        transition: '0.5s ease all',
+        '&:hover':{
+            transform:'scale(1.2)'
+        },
+        position:'relative',
+        top:'-1px'
+    })
+
+    const ErrorMessage = styled(Box) ({
         color: "red",
         textSize: '1.7em'
     })
     
-    const handleToggle = (event) => {
-        event.preventDefault();
-        setNewPost({...newPost, userResponse_type: event.target.value})
-        console.log(newPost)
-    }
 
     return (
-        <>
-          <FormatedGroup row aria-label="type" value>
-            </FormatedGroup>
+        <>  
+        {localStorage.getItem('isLoggedIn') ? (
+                 <div style={{display:'flex', justifyContent:'space-between'}}>
+                 <ReplyIcon onClick={handleReplyIcon}/>
+                 {articleInfo.user_id === localStorage.getItem('userSecret')?<>{daysSincePosted(props.post_date)?null:<DeleteIcon onClick={handleDeleteComments}/>}</>:null}
+                 </div>
+            ) : (null)}
             <StyledTextArea 
-                defaultValue={newPost.post_content}
                 name="post_content" 
-                onBlur={handlePostChange}
+                ref = {textAreaRef}
+                onChange={(e)=>{setPost(e.target.value)}}
             />
-             {localStorage.getItem('isLoggedIn') ? (
-            <FormatedButton onClick={handleNewPost}
-            >Reply
-            </FormatedButton>) : (null)}
+             {displayReply === 'inline-block' ?<FormattedButton onClick={handleNewPost}>Send<SendIcon/></FormattedButton>:null}
             {error != '' ? 
             (
-                <ErrorMeassage>
+                <ErrorMessage>
                 {error}
-                </ErrorMeassage>
+                </ErrorMessage>
             ) 
-                : (console.log(error))
+                : (null)
             }
         </>
     

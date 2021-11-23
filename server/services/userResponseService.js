@@ -28,8 +28,15 @@ module.exports = {
                 ]
             })
             .populate({ path: 'article_id', select: 'title published_date user_id likes', populate: 'user_id' })
-
-
-
+    },
+    deleteCommentsById: async function(array) {
+        return await UserResponse.deleteMany({
+            _id: {
+                $in: array
+            }
+        }).then(result => {
+            console.log('Delete comments Successfully!');
+            console.log(result);
+        })
     }
 }

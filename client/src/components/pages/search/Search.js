@@ -23,7 +23,7 @@ const Search = (props) => {
 
 
     const [articleData, setArticleData] = useState({
-        articles: "",
+        articles: '',
         sortby: 'date',
         start: 1,
         pages: 1
@@ -39,7 +39,11 @@ const Search = (props) => {
             sort: articleData.sortby,
             start: articleData.start,
             }).then((response) => {
-                setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles.reverse()})
+                let article = response.data.articles
+                if(response.data.articles){
+                    article.reverse();
+                }
+                setArticleData({...articleData, pages: response.data.pages, articles : article})
              
             })
     }, [cookie.get('search'), props.location.search]);

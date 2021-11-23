@@ -6,11 +6,19 @@ import axios from 'axios';
 import Config from '../../../config/index';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import { keyframes } from '@mui/system';
 
 const ArticleCard = (props) => {
 
 
-  
+    const bigger = keyframes`
+    from {
+        transform: scale(0.6);
+      }
+      to {
+        transform: scale(1.2);
+      }
+    `
 
     const ArticleContainer = styled(Container) ({
         border: '2px solid #033F63',
@@ -59,11 +67,17 @@ const ArticleCard = (props) => {
             backgroundColor: '#28666E',
             color:'white'
         },
-        '.icon':{
+        '.icon1':{
             display:'inline-block',
             position:'relative',
             top:'2px',
-        }, 
+            animation:`${bigger} 1.5s ease infinite`
+        },
+        '.icon2':{
+            display:'inline-block',
+            position:'relative',
+            top:'2px',
+        },
         '.pp':{
             fontSize: '1.2em',
             fontWeight: 'normal',
@@ -105,11 +119,11 @@ const ArticleCard = (props) => {
                     </Grid>
                     <Grid item container xs={12}>
                         <Grid item xs={3} md={4}>
-                        <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon' fontSize="small"/>Likes:</p>
+                        <p><FavoriteIcon style={{color:'#ff00a5'}} className='icon1' fontSize="small"/>Likes:</p>
                             <p className='pp'>{props.likes}</p>
                         </Grid>
                         <Grid item xs={4} md={4}>
-                        <p><ContactPageIcon style={{color:'black'}} className='icon' fontSize="small"/>Author:</p>
+                        <p><ContactPageIcon style={{color:'black'}} className='icon2' fontSize="small"/>Author:</p>
                             <p className='pp'>{userData.displayName? userData.displayName:`${userData.firstName} ${userData.lastName}`}</p>
                         </Grid>
                         <Grid item xs={5} md={4}>

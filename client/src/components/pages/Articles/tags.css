@@ -72,6 +72,21 @@
     }
 }
 
+@media screen and (max-width:500px) {
+    .ReactTags__selected span.ReactTags__tag {
+        font-size: 12px;
+        margin: 0;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        padding: 2px 10px;
+        padding-top: 0px;
+    }
+    .ReactTags__selected button.ReactTags__remove {
+        position: relative;
+        top: 2px;
+    }
+}
+
 
 /* Styles for suggestions */
 

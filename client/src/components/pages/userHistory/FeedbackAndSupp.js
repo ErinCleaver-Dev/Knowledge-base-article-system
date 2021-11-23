@@ -225,7 +225,7 @@ const FeedbackAndSupp = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <label>Content <span style={{color:'red'}}>{fields.errors.content? fields.errors.postContent : null}</span></label>
-                    <textarea name='postContent'content style={fields.errors.reason?{border:'red solid 3px', boxShadow:'none'}:null} value={fields.fields.content} onChange={handleUserInput}/>
+                    <textarea name='postContent' style={fields.errors.reason?{border:'red solid 3px', boxShadow:'none'}:null} value={fields.fields.content} onChange={handleUserInput}/>
                 </Grid>
                 <Grid item xs={12}>
                     <Button type='submit'>Submit</Button>
