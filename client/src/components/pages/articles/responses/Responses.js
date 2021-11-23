@@ -75,9 +75,9 @@ const MapComments = ({article_id}) => {
             let items = comments.map((comment) => {
               return (
                   <>
-                  <AllCommentsContext.Provider value={[comments, setComments]} >
+                  <AllCommentsContext.Provider key={comment._id} value={[comments, setComments]} >
                 {comment.parentId ? (
-                    <CommentContainer key={comment._id}>
+                    <CommentContainer >
                     <CommentList>
                     <Comment  comment={comment}/>
                     {comment.replys && CommentTree(comment.replys)}

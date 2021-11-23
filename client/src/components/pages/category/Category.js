@@ -51,8 +51,9 @@ const Category = (props) => {
     const handleChange = (event, value) => {
 
         if(articleData.pages < value) {
-            console.log('no articles found');
-
+            console.log('no articles found')
+        } else {
+            setArticleData({...articleData, start: event.target.value})
         }
         console.log(value)
     }

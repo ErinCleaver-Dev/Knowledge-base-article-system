@@ -62,8 +62,11 @@ const Search = (props) => {
 
         if(articleData.pages < value) {
             console.log('no articles found');
-
+            
+        } else {
+            setArticleData({...articleData, start: event.target.value})
         }
+
         //console.log(value)
     }
 
