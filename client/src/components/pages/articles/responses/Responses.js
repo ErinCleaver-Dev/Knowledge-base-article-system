@@ -74,7 +74,6 @@ const MapComments = ({article_id}) => {
 
             let items = comments.map((comment) => {
               return (
-                  <>
                   <AllCommentsContext.Provider key={comment._id} value={[comments, setComments]} >
                 {comment.parentId ? (
                     <CommentContainer >
@@ -92,7 +91,7 @@ const MapComments = ({article_id}) => {
                 </RootCommentContainer>
                 )}
                 </AllCommentsContext.Provider>
-                </>
+
               )
             })
           
