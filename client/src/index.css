@@ -66,7 +66,10 @@ body {
     height: 40vh; 
     border-radius: 30px;
     margin-bottom: 10px;
-    background-color: gray;
+    background: url('./images/no-video-found.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 40vh;
+    background-color: #2B3990;
   }
   
   .react-player {
