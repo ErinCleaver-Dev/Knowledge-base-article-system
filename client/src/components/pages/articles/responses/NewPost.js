@@ -70,7 +70,8 @@ const NewPost = (props) => {
         justifyContent: 'flex-end'
     })
     const FormattedRadio = styled(Button)((props)=> ({
-        backgroundColor: props.isClicked,
+        backgroundColor: props.isclicked.color,
+        boxShadow: props.isclicked.shadow,
         color: '#FFFFFF',
         width: '150px',
         textAlign: 'center',
@@ -168,8 +169,8 @@ const NewPost = (props) => {
     return (
         <>
         <FormattedGroup aria-label="type" >
-            <FormattedRadio value="comment" onClick={handleToggle} name="Comment" isclicked={'comment' === clickedValueForCommentAndIssue ? 'black':'#033F63'}>Comment</FormattedRadio>
-            <FormattedRadio value="issue" onClick={handleToggle} name="Issue" isclicked={'issue'=== clickedValueForCommentAndIssue ? 'black':'#033F63'} >Issue</FormattedRadio>
+            <FormattedRadio value="comment" onClick={handleToggle} name="Comment" isclicked={'comment' === clickedValueForCommentAndIssue ? {color:'black', shadow:'1px 1px 10px black'}:{color:'#033F63', shadow:'none'}}>Comment</FormattedRadio>
+            <FormattedRadio value="issue" onClick={handleToggle} name="Issue" isclicked={'issue'=== clickedValueForCommentAndIssue ? {color:'black', shadow:'1px 1px 10px black '}:{color:'#033F63', shadow:'none'}} >Issue</FormattedRadio>
         </FormattedGroup>
             <LeaveCommentGroup>
             <Gravatar

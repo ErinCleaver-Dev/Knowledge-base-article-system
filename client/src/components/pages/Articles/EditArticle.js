@@ -382,7 +382,7 @@ const EditArticle = ({classes}) => {
             <ContainerGrid container spacing={2}>
                 
                 <Grid item xs={12} md={12} >
-                <input className={classes.titleAndYTInput} type='text' placeholder='Video Link' name='VideoLink' value={fieldValues.fields.videoLink} onChange={handleUserInputState}/>
+                <input className={classes.titleAndYTInput} type='text' placeholder='Video Link' name='videoLink' value={fieldValues.fields.videoLink} onChange={handleUserInputState}/>
                 </Grid>
             </ContainerGrid>
             <ContainerGrid container spacing={2}>

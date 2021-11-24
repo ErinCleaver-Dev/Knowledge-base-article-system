@@ -28,10 +28,11 @@ const Title = styles(Box) ({
     borderBottom: '1px solid #033F63',
     paddingBottom: '20px',
     marginBottom: '20px',
-
+    maxWidth:'1440px',
 })
 
-const ContentBox1 = styles(Box) ({
+const ContentBox1 = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -88,7 +89,8 @@ const CategoryLists = styles(Box) ({
     }
 })
 
-const KeywordLists = styles(Box) ({
+const KeywordLists = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     paddingTop: "10px",
     h3: {
@@ -132,7 +134,8 @@ const KeyWordLink = styles(Link)({
 })
 
 
-const ButtonBox = styles(Box) ({
+const ButtonBox = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     paddingTop: "10px",
     justifyContent: 'flex-end',
@@ -142,7 +145,9 @@ const ButtonBox = styles(Box) ({
     height:'80px',
 })
 
-const HR = styles('div') ({
+const HR = styled('div') ({
+    maxWidth:'1440px',
+    margin:'auto',
     padding: 0,
     borderTop: '1px solid #033F63'
 })
@@ -166,13 +171,19 @@ const FormattedButton = styles(Button) ({
     }
 })
 
-const Display = styles('div') ({
+const Display = styled('div') ({
+    marginTop:'10px',
+    maxWidth:'1440px',
     'pre':{
         background: '#808080a1',
         fontWeight: 'bolder',
         padding: '20px',
         marginTop: '10px',
-        marginBottom: '10px'
+        marginBottom: '10px',
+        ['@media (max-width:500px)']: {
+            overflowX: 'scroll',
+            width: '316px',
+        }
     } 
 })
 
