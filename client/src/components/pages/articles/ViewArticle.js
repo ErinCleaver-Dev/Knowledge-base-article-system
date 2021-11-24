@@ -282,6 +282,8 @@ const ViewArticle = (props) => {
                             className="react-player"
                             width='100%'
                             height='100%'
+                            playbackRate={1}
+                            controls={true}
                             
                         url={video}>
                         </ReactPlayer>
