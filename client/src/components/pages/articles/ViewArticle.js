@@ -276,7 +276,7 @@ const ViewArticle = (props) => {
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
                         {video ? (
-                        <div className={video ? ('player-wrapper') : ('player-wrapper player-wrapper-not-found')}  >
+                        <div className={'player-wrapper'}  >
                         <ReactPlayer
                             
                             className="react-player"
