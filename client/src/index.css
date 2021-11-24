@@ -57,8 +57,10 @@ body {
     font-weight: 400 !important;
     padding: 8px !important;
     margin-top: 0px !important;
-    margin-bottom: 0px  !important;
+    margin-bottom: 0px !important;
+    overflow-x: scroll;
 }
+
 @media only screen and (max-width: 1025px) {
     .public-DraftEditor-content {
         width: 100%;

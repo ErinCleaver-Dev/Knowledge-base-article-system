@@ -25,10 +25,11 @@ const Title = styled(Box) ({
     borderBottom: '1px solid #033F63',
     paddingBottom: '20px',
     marginBottom: '20px',
-
+    maxWidth:'1440px',
 })
 
 const ContentBox1 = styled(Box) ({
+    maxWidth:'1440px',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -38,15 +39,13 @@ const ContentBox1 = styled(Box) ({
     borderBottom: '1px solid #033F63',
 })
 const Video = styled("iframe") ({
-    alignSelf: 'center',
+
     width:'100%',
     maxWidth:'1440px',
     borderRadius: "5px",
     height: '400px',
     backgroundColor: 'gray',
-    ['@media (max-width:1024px)']: {
-        width: "100%",
-    }
+    
 })
 
 const CategoryLists = styled(Box) ({
@@ -181,13 +180,18 @@ const FormattedButton = styled(Button) ({
 })
 
 const Display = styled('div') ({
+    marginTop:'10px',
     maxWidth:'1440px',
     'pre':{
         background: '#808080a1',
         fontWeight: 'bolder',
         padding: '20px',
         marginTop: '10px',
-        marginBottom: '10px'
+        marginBottom: '10px',
+        ['@media (max-width:500px)']: {
+            overflowX: 'scroll',
+            width: '316px',
+        }
     } 
 })
 

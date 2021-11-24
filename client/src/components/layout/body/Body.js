@@ -25,10 +25,12 @@ const Main = styled(Box) ({
 const BodyContainer = styled(Box)({
     margin: "0 40px",
     display: "flex",
+    margin:'auto',
+    maxWidth:'1440px',
     flex: 1.5,
     flexDirection: 'column',
     paddingBottom: '50px',
-    ['@media (max-width:1024px)']: {
+    ['@media (max-width:1440px)']: {
         margin: "10px 10px",
     },
 })
