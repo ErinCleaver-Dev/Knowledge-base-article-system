@@ -195,7 +195,6 @@ const ViewArticle = (props) => {
 
     const [user, setUser] = useContext(UserContext);
      useEffect(async() => {
-         console.log('hi')
         await axios.post(`${Config.URL}api/getArticle`, {
             _id: _id
         }).then((response) => {
@@ -266,15 +265,14 @@ const ViewArticle = (props) => {
                         <p>Date published: {date.toDateString()}</p>
                         </ContentBox1>
                         {video ? (
-                        <div className='player-wrapper'>
+                        <div className={video ? ('player-wrapper') : ('player-wrapper player-wrapper-not-found')}  >
                         <ReactPlayer
                             
                             className="react-player"
                             width='100%'
-                            height='40vh'
+                            height='100%'
                             
                         url={video}>
-                        
                         </ReactPlayer>
                         </div>) : (null)}
                         

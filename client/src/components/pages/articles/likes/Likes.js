@@ -1,4 +1,5 @@
 import React, {useState, useContext, createRef, useEffect} from 'react'
+import { useHistory, useLocation } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
@@ -9,6 +10,9 @@ import { ArticleInfoContext } from '../ViewArticle'
 
 
 const Likes = ({likes, article_id}) => {
+    const history = useHistory();
+    const location = useLocation();  
+
     const [articleInfo, setArticleInfo] = useContext
     (ArticleInfoContext)
     
@@ -22,7 +26,6 @@ const Likes = ({likes, article_id}) => {
         axios.post(`${Config.URL}api/likeArticle`, {
             newLike
         }).then(response => {
-            console.log("test response", response)
             let deleteLike = response.data
             if(response) {
                 
@@ -30,17 +33,18 @@ const Likes = ({likes, article_id}) => {
                     deleteLike
                 })
             }
+
+         
         })
 
-        axios.post(`${Config.URL}api/updateLikeCounter`, {
-            article_id: articleInfo.article_id,
-        })
+        window.location.reload()
     }
 
     useEffect(() =>{
         axios.post(`${Config.URL}api/updateLikeCounter`, {
             article_id: articleInfo.article_id,
         })
+        
     }, [])
 
 

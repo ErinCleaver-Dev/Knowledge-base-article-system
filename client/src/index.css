@@ -58,20 +58,25 @@ body {
     padding: 8px !important;
     margin-top: 0px !important;
     margin-bottom: 0px  !important;
+    overflow-x: auto;
 }
 
 .player-wrapper {
+    align-self: center;
     position: relative;
     width: 100%;
+    max-width: 800px;
+    min-height: 500px;
     height: 40vh; 
     border-radius: 30px;
     margin-bottom: 10px;
+  }
+  .player-wrapper-not-found {
     background: url('./images/no-video-found.svg');
+    background-color: #2B3990;
     background-repeat: no-repeat;
     background-size: 100% 40vh;
-    background-color: #2B3990;
   }
-  
   .react-player {
     position: relative;
     top: 0;
