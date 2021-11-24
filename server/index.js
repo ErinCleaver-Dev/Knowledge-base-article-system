@@ -1,7 +1,11 @@
-const config = require('./config');
+require("dotenv").config({
+});
+
 const express = require('express');
-const { Router } = require('express')
 const app = express();
+
+const config = require('./config');
+
 
 const routes = require('./routes');
 require('./config/express')(app)
