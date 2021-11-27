@@ -16,10 +16,8 @@ const Search = (props) => {
     //console.log('test Search order 1')
     let search = props.location.search.replace('?q=', '')
     search = search.replace('%20', ' ')
-    const [articles, setArticles] = useState([]);
     //const [sortBy, setSortBy] = useState('date');
-    const [start, setStart] = useState(1);
-    const [pages, setPages] = useState(1);
+    const [isLoadding, setLoadding] = useState(true)
 
 
     const [articleData, setArticleData] = useState({
@@ -32,21 +30,26 @@ const Search = (props) => {
     
     useEffect(() => {
         //console.log("testing axios")
-        search = search.replace('%20', ' ');
         console.log(search)
-        axios.post(`${Config.URL}api/findArticles`, {
-            search : search,
-            sort: articleData.sortby,
-            start: articleData.start,
-            }).then((response) => {
-                let article = response.data.articles
-                if(response.data.articles){
-                    article.reverse();
-                }
-                setArticleData({...articleData, pages: response.data.pages, articles : article})
-             
-            })
+        searchPost(1, search)
     }, [cookie.get('search'), props.location.search]);
+
+    const searchPost = (page, search) => {
+        console.log("search post")
+        axios.post(`${Config.URL}api/getCategories`, {
+            category : search,
+            sort: articleData.sortby,
+            start: page,
+            }).then((response) => {
+                setArticleData({...articleData, start: page, pages: response.data.pages, articles : response.data.articles.reverse()})
+                console.log('loaded data')
+                if(!response.data.articles) {
+                    setLoadding("no articles found")
+                }
+            })
+
+            setLoadding(false)
+    }
 
     const StyledDiv = styled('div') ({
         color: "#033F63",
@@ -59,12 +62,13 @@ const Search = (props) => {
     })
 
     const handleChange = (event, value) => {
+        setLoadding(true);
 
         if(articleData.pages < value) {
             console.log('no articles found');
             
         } else {
-            setArticleData({...articleData, start: event.target.value})
+            searchPost(value, search)
         }
 
         //console.log(value)
@@ -91,7 +95,7 @@ const Search = (props) => {
             <Sort>
                 Newest to Oldest
             </Sort>
-            {articleData.articles ? (
+            {articleData.articles && !isLoadding ? (
                 articleData.articles.map(data => (
                     <ArticleCardForSearchAndCategory 
                     width={'100%'}
@@ -107,7 +111,7 @@ const Search = (props) => {
                 ) : 
                 (<>Page is loading</>)
             }
-            <PaginationArticles count={pages} defaultPage={start} onChange={handleChange} siblingCount={1} />
+            <PaginationArticles count={articleData.pages} defaultPage={articleData.start} onChange={handleChange} siblingCount={1} />
 
         </>
     )

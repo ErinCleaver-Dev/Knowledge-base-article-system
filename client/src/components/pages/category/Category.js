@@ -20,24 +20,28 @@ const Category = (props) => {
         pages: 1
     });
     const [userData, setUserData] = useState();
-    const [isLoadding, setLoadding] = useState('Is Loading')
+    const [isLoadding, setLoadding] = useState(true)
 
     useEffect(() => {
-        
-        axios.post(`${Config.URL}api/getCategories`, {
-        category : category,
-        sort: articleData.sortby,
-        start: articleData.start,
-        }).then((response) => {
-            setArticleData({...articleData, pages: response.data.pages, articles : response.data.articles.reverse()})
-            if(!response.data.articles) {
-                setLoadding("no articles found")
-            }
-        })
+        catagory(1)
     }, []);
 
     
-    
+    const catagory = (page) => {
+        axios.post(`${Config.URL}api/getCategories`, {
+            category : category,
+            sort: articleData.sortby,
+            start: page,
+            }).then((response) => {
+                setArticleData({...articleData, start: page, pages: response.data.pages, articles : response.data.articles.reverse()})
+                if(!response.data.articles) {
+                    setLoadding("no articles found")
+                }
+            })
+
+            setLoadding(false)
+    }
+
     const StyledDiv = styled('div') ({
         color: "#033F63",
         fontSize: '2.0em',
@@ -49,13 +53,13 @@ const Category = (props) => {
     })
 
     const handleChange = (event, value) => {
-
+        setLoadding(true)
         if(articleData.pages < value) {
             console.log('no articles found')
         } else {
-            setArticleData({...articleData, start: event.target.value})
+            catagory(value)
         }
-        console.log(value)
+        
     }
 
     const PaginationArticles = styled(Pagination) ({
@@ -82,7 +86,7 @@ const Category = (props) => {
             <Sort>
                 Newest to Oldest
             </Sort>
-            {articleData.articles ? (
+            {articleData.articles && !isLoadding ? (
                 articleData.articles.map(data => (
                     <ArticleCardForSearchAndCategory  
                     width={'100%'}
@@ -96,7 +100,7 @@ const Category = (props) => {
                 ))
                 
                 ) : 
-                (<>{isLoadding}</>)
+                (<>Data is loading</>)
             }
             <PaginationArticles count={articleData.pages} defaultPage={articleData.start} onChange={handleChange} siblingCount={0} />
 
