@@ -183,8 +183,8 @@ const Display = styled('div') ({
         background: '#808080a1',
         fontWeight: 'bolder',
         padding: '20px',
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '0px',
+        marginBottom: '0px',
         ['@media (max-width:500px)']: {
             overflowX: 'scroll',
             width: '316px',
@@ -316,6 +316,7 @@ const ViewArticle = (props) => {
         }
     }
 
+    
 
     const date = new Date(article.published_date)
 
