@@ -176,12 +176,21 @@ const Display = styled("div")({
   marginTop: "10px",
   maxWidth: "1440px",
   overflowWrap: "anywhere",
+  "h1, h2, h3, h4, h5, h6": {
+    marginTop: "10px",
+    marginBottom: "10px",
+  },
+  ol: {
+    marginLeft: "25px",
+    marginTop: "10px",
+    marginBottom: "10px",
+  },
   pre: {
     background: "#808080a1",
     fontWeight: "bolder",
-    padding: "20px",
-    marginTop: "10px",
-    marginBottom: "10px",
+    padding: "10px",
+    marginTop: "0px",
+    marginBottom: "0px",
     ["@media (max-width:500px)"]: {
       overflowX: "scroll",
       width: "316px",
@@ -189,6 +198,8 @@ const Display = styled("div")({
     whiteSpace: "pre-wrap",
     overflowWrap: "normal",
   },
+  whiteSpace: "pre-wrap",
+  overflowWrap: "normal",
   iframe: {
     maxWidth: "1250px",
     maxHeight: "500px",
