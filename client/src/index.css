@@ -84,8 +84,3 @@ body {
     overflow: hidden;
 }
 
-@media only screen and (max-width: 1025px) {
-    .public-DraftEditor-content {
-        width: 100%;
-    }
-}
