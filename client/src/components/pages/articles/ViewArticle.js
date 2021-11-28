@@ -29,6 +29,10 @@ const Title = styles(Box) ({
     paddingBottom: '20px',
     marginBottom: '20px',
     maxWidth:'1440px',
+    overflowWrap:'anywhere',
+    ['@media (max-width:500px)']: {
+        fontSize:'2em'
+    },
 })
 
 const ContentBox1 = styled(Box) ({
@@ -174,6 +178,7 @@ const FormattedButton = styles(Button) ({
 const Display = styled('div') ({
     marginTop:'10px',
     maxWidth:'1440px',
+    overflowWrap:'anywhere',
     'pre':{
         background: '#808080a1',
         fontWeight: 'bolder',
@@ -183,8 +188,59 @@ const Display = styled('div') ({
         ['@media (max-width:500px)']: {
             overflowX: 'scroll',
             width: '316px',
-        }
-    } 
+        },
+        whiteSpace: 'pre-wrap',
+        overflowWrap:'normal',
+    },
+    'iframe':{
+        maxWidth:'1250px',
+        maxHeight:'500px',
+        display:'block',
+        ['@media (max-width:1260px)']: {
+            maxWidth:'1000px',
+            
+        },
+        ['@media (max-width:1010px)']: {
+            maxWidth:'800px',
+            
+        },
+        ['@media (max-width:810px)']: {
+            maxWidth:'600px',
+            maxHeight:'300px',
+        },
+        ['@media (max-width:610px)']: {
+            maxWidth:'400px',
+        },
+        ['@media (max-width:400px)']: {
+            maxWidth:'340px',
+            maxHeight:'250px', 
+        },
+    },
+    'img':{
+        maxWidth:'1250px',
+        maxHeight:'800px',
+        display:'block',
+        ['@media (max-width:1260px)']: {
+            maxWidth:'1000px',
+            
+        },
+        ['@media (max-width:1010px)']: {
+            maxWidth:'800px',
+            
+        },
+        ['@media (max-width:810px)']: {
+            maxWidth:'600px',
+            maxHeight:'300px',
+        },
+        ['@media (max-width:610px)']: {
+            maxWidth:'400px',
+        },
+        ['@media (max-width:400px)']: {
+            maxWidth:'340px',
+            maxHeight:'250px',
+            
+        },
+    }
 })
 
 
