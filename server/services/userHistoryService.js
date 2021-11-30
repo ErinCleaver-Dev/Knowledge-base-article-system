@@ -2,7 +2,7 @@ const UserHistory = require('../models/UserHistory');
 // viewedArticle
 async function createViewedArticle(userId, articleId) {
     await UserHistory.findOneAndDelete({ history_type: 'viewedArticle', article_id: articleId, user_id: userId }).then(result => {
-        console.log("Deleted old duplicated viewedArticle : ", result);
+        console.log("Deleted old duplicated viewedArticle : ");
         return;
     });
     let userHistory = new UserHistory({ history_type: 'viewedArticle', article_id: articleId, user_id: userId });
@@ -32,7 +32,6 @@ async function getViewedArticle(userId) {
 // Saved Article
 async function createSavedArticle(userId, articleId) {
     let userHistory = new UserHistory({ history_type: 'savedArticle', article_id: articleId, user_id: userId });
-    console.log(userHistory)
     return await userHistory.save().then(result => {
         console.log('an savedArticle saved!!')
     })
@@ -66,7 +65,7 @@ async function getSavedArticle(userId) {
 async function createFeedback(userId, reason, postContent) {
     let userHistory = new UserHistory({ user_id: userId, history_type: 'feedback', reason: reason, post_content: postContent });
     return await userHistory.save().then(result => {
-        console.log('an feedback saved!!')
+        console.log('Feedback was saved!!')
     })
 }
 module.exports = {

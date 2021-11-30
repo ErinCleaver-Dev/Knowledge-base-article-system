@@ -5,7 +5,6 @@ module.exports = {
         return await Article.find({}).lean();
     },
     create: async function(data) {
-        console.log("checking for data: ", data)
         let article = new Article(data);
 
         return await article.save().then(result => {
@@ -36,7 +35,6 @@ module.exports = {
         return await Article.findById(_id).populate('user_id', {uid: 1});
     },
     findArticles: async function(body) {
-        console.log("testing find", body)
         let search = body['search'];
         let page = body['start'];
 
@@ -106,7 +104,7 @@ module.exports = {
         return await Article.findByIdAndUpdate(_id, {
             likes: likes,
         }).then(result => {
-            console.log('Updated like counter ', result)
+            console.log('Updated like counter ')
         })
     },
     topTen: async function() {
