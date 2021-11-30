@@ -35,7 +35,7 @@ const Likes = ({ likes, article_id }) => {
 
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 800);
   };
 
   useEffect(() => {
