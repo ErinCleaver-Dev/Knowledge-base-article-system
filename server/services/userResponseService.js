@@ -11,8 +11,6 @@ module.exports = {
     },
     getComments: async function(article_id) {
         if (article_id) {
-
-            console.log("check get comments by id", article_id)
             return await UserResponse.find({ article_id: article_id })
                 .populate('user_id', { firstName: 1, lastName: 1 }).exec()
         }
@@ -36,7 +34,6 @@ module.exports = {
             }
         }).then(result => {
             console.log('Delete comments Successfully!');
-            console.log(result);
         })
     }
 }
