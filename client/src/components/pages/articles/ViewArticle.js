@@ -174,7 +174,7 @@ const FormattedButton = styles(Button)({
 
 const Display = styled("div")({
   maxWidth: "1440px",
-  display: 'flex',
+  display: "flex",
   overflowWrap: "anywhere",
   flexDirection: "column",
   "h1, h2, h3, h4, h5, h6, p, ol, ul": {
@@ -239,7 +239,7 @@ const Display = styled("div")({
       maxHeight: "250px",
     },
   },
-  'ol, ul': {
+  "ol, ul": {
     marginLeft: "15px",
   },
 });
@@ -249,7 +249,7 @@ const ViewArticle = (props) => {
   console.log(render);
   const _id = props.match.params.id;
   console.log(props.history);
-  const [postContent, setPostContent] = useState({});
+  const [postContent, setPostContent] = useState("");
   const [article, setArticle] = useState([]);
   const [articleInfo, setArticleInfo] = useState({
     user_id: "",
@@ -259,6 +259,8 @@ const ViewArticle = (props) => {
 
   const location = useLocation();
   console.log(location);
+  console.log(postContent);
+  console.log("render");
 
   const [user, setUser] = useContext(UserContext);
   useEffect(async () => {
@@ -269,6 +271,8 @@ const ViewArticle = (props) => {
       .then((response) => {
         setArticle(response.data);
         setPostContent(draftToHtml(JSON.parse(response.data.post_content)));
+        console.log(response.data.post_content);
+        console.log("test1");
       });
 
     if (localStorage.getItem("userSecret")) {
@@ -278,6 +282,7 @@ const ViewArticle = (props) => {
           articleId: _id,
         })
         .catch((e) => console.log(e));
+      console.log("test2");
     }
 
     //save article functionality
@@ -291,6 +296,7 @@ const ViewArticle = (props) => {
         let articleResults = response.data.getSavedArticles;
         //console.log(articleResults)
         let saved = false;
+        console.log("test3");
         articleResults.map((article) => {
           if (article.article._id === _id) {
             saved = true;
@@ -303,7 +309,7 @@ const ViewArticle = (props) => {
       .catch((e) => {
         //console.log(e)
       });
-
+    console.log("test4");
     //scroll to certain comment
     if (location.hash) {
       let item = document.getElementById(location.hash.replace("#", ""));
