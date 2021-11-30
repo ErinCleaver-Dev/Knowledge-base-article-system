@@ -43,7 +43,6 @@ router.post('/api/deleteArticle', (req, res, next) => {
 })
 
 router.post('/api/getArticle', (req, res, next) => {
-    console.log("check if infomration from body", req.body)
     if (req.body._id) {
         articleService.getOneByid(req.body._id).then((result) => {
             res.send(result)
@@ -55,7 +54,6 @@ router.post('/api/getArticle', (req, res, next) => {
 
 //for search pages to use
 router.post('/api/findArticles', (req, res, next) => {
-    console.log(req.body.search)
     if (req.body.search) {
         articleService.findArticles(req.body).then((results) => {
             res.send(results)
@@ -78,7 +76,6 @@ router.post('/api/getCategories', (req, res, next) => {
 
 // Get user's articles in te UserArticles page
 router.post('/api/getUsersArticles', (req, res, next) => {
-    console.log(req.body.user_id);
     if (req.body.user_id) {
         articleService.getByUserId(req.body.user_id).then((results) => {
             res.json(results);
@@ -93,7 +90,6 @@ router.post('/api/getUsersArticles', (req, res, next) => {
 
 //Get user's specific article from user_id and article_id
 router.post('/api/getUserSpecificArticle', (req, res, next) => {
-    console.log(req.body);
     articleService.getByUserIdAndArticleId(req.body.user_id, req.body.article_id).then((result) => {
         res.json(result);
     }).catch(e => {

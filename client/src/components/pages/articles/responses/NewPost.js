@@ -34,18 +34,12 @@ const NewPost = (props) => {
 
   const handleNewPost = (event) => {
     if (props.article_id == "") {
-      //console.log("failed to load article id")
       setError("failed to load article id.");
     } else if (ValidatePost(newPost.post_content)) {
-      //console.log('test for text')
       setError("Please enter a post.");
-      //console.log(error)
     } else if (ValidateCommentType(newPost.userResponse_type)) {
-      //console.log(newPost.userResponse_type)
       setError("Please select comment or issue");
-      //console.log(error)
     } else {
-      //console.log("texting else")
       if (newPost.article_id != "") {
         console.log(newPost);
         axios.post(`${Config.URL}api/creatPost`, {

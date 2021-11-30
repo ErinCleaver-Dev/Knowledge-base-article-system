@@ -19,7 +19,6 @@ const Likes = ({ likes, article_id }) => {
   };
 
   const clickHandler = () => {
-    console.log("Clicked like");
     axios
       .post(`${Config.URL}api/likeArticle`, {
         newLike,
