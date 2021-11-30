@@ -173,24 +173,19 @@ const FormattedButton = styles(Button)({
 });
 
 const Display = styled("div")({
-  marginTop: "10px",
   maxWidth: "1440px",
+  display: 'flex',
   overflowWrap: "anywhere",
-  "h1, h2, h3, h4, h5, h6": {
-    marginTop: "10px",
-    marginBottom: "10px",
-  },
-  ol: {
-    marginLeft: "25px",
-    marginTop: "10px",
+  flexDirection: "column",
+  "h1, h2, h3, h4, h5, h6, p, ol, ul": {
     marginBottom: "10px",
   },
   pre: {
     background: "#808080a1",
     fontWeight: "bolder",
     padding: "10px",
-    marginTop: "0px",
-    marginBottom: "0px",
+    marginTop: "0px !important",
+    marginBottom: "0px !important",
     ["@media (max-width:500px)"]: {
       overflowX: "scroll",
       width: "316px",
@@ -244,7 +239,7 @@ const Display = styled("div")({
       maxHeight: "250px",
     },
   },
-  ol: {
+  'ol, ul': {
     marginLeft: "15px",
   },
 });
