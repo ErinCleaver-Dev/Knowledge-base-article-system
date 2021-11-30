@@ -271,12 +271,8 @@ const ViewArticle = (props) => {
       .then((response) => {
         setArticle(response.data);
         setPostContent(draftToHtml(JSON.parse(response.data.post_content)));
-<<<<<<< HEAD
         console.log(response.data.post_content);
         console.log("test1");
-=======
-       
->>>>>>> 37edfd28e510f578f7ec22a3cefbeb0b1b7662d3
       });
 
     if (localStorage.getItem("userSecret")) {
@@ -376,7 +372,11 @@ const ViewArticle = (props) => {
               ></ReactPlayer>
             </div>
           ) : null}
-          {postContent ? (<Display dangerouslySetInnerHTML={{ __html: postContent}}></Display>) : (null)}
+          {postContent ? (
+            <Display
+              dangerouslySetInnerHTML={{ __html: postContent }}
+            ></Display>
+          ) : null}
           <HR />
           <CategoryLists>
             <h3>
