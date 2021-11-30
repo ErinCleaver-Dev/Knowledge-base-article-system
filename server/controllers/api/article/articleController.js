@@ -13,7 +13,6 @@ router.post('/api/addArticle', (req, res, next) => {
 
 router.get('/api/listAllArticles', (req, res) => {
     articleService.getAll().then((data) => {
-        console.log("list articles: ", data)
         res.send(data)
     })
 })
@@ -21,7 +20,6 @@ router.get('/api/listAllArticles', (req, res) => {
 //for home page Top ten
 router.get('/api/topTen', (req, res) => {
     articleService.topTen().then((data) => {
-        console.log("list articles: ", data)
         res.send(data)
     })
 })
@@ -30,14 +28,12 @@ router.get('/api/topTen', (req, res) => {
 router.post('/api/updateArticle', (req, res, next) => {
     articleService.update(req.body.article_id, req.body).then(() => {
         res.send({ result: true });
-        console.log("updated article")
     })
 })
 
 router.post('/api/deleteArticle', (req, res, next) => {
     if (req.body._id) {
         articleService.delete(req.body._id).then(result => {
-            console.log(result)
             res.json(result);
 
         })
@@ -50,7 +46,6 @@ router.post('/api/getArticle', (req, res, next) => {
     console.log("check if infomration from body", req.body)
     if (req.body._id) {
         articleService.getOneByid(req.body._id).then((result) => {
-            console.log(result)
             res.send(result)
         }).catch(next)
     } else {
@@ -63,7 +58,6 @@ router.post('/api/findArticles', (req, res, next) => {
     console.log(req.body.search)
     if (req.body.search) {
         articleService.findArticles(req.body).then((results) => {
-            console.log("list articles: ", results)
             res.send(results)
         })
     } else {
@@ -75,7 +69,6 @@ router.post('/api/findArticles', (req, res, next) => {
 router.post('/api/getCategories', (req, res, next) => {
     if (req.body.category) {
         articleService.findByCategory(req.body).then((results) => {
-            console.log("list articles: ", results)
             res.send(results)
         })
     } else {
@@ -88,7 +81,6 @@ router.post('/api/getUsersArticles', (req, res, next) => {
     console.log(req.body.user_id);
     if (req.body.user_id) {
         articleService.getByUserId(req.body.user_id).then((results) => {
-            console.log("list articles: ", results)
             res.json(results);
         }).catch(e => {
             console.log(e);
@@ -103,7 +95,6 @@ router.post('/api/getUsersArticles', (req, res, next) => {
 router.post('/api/getUserSpecificArticle', (req, res, next) => {
     console.log(req.body);
     articleService.getByUserIdAndArticleId(req.body.user_id, req.body.article_id).then((result) => {
-        console.log(result);
         res.json(result);
     }).catch(e => {
         console.log(e);
