@@ -25,7 +25,6 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
     let article_id = req.body.article_id
     if (article_id) {
         likesService.getLikes(article_id).then(count => {
-            console.log("test like counter", count)
             if (count == 'undefined') {
                 count = 0;
             }
