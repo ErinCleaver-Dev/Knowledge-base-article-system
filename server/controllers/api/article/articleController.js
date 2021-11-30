@@ -90,7 +90,6 @@ router.post("/api/getCategories", (req, res, next) => {
 });
 
 // Get user's articles in te UserArticles page
-<<<<<<< HEAD
 router.post("/api/getUsersArticles", (req, res, next) => {
   console.log(req.body.user_id);
   if (req.body.user_id) {
@@ -117,28 +116,6 @@ router.post("/api/getUserSpecificArticle", (req, res, next) => {
     .getByUserIdAndArticleId(req.body.user_id, req.body.article_id)
     .then((result) => {
       res.json(result);
-=======
-router.post('/api/getUsersArticles', (req, res, next) => {
-    if (req.body.user_id) {
-        articleService.getByUserId(req.body.user_id).then((results) => {
-            res.json(results);
-        }).catch(e => {
-            console.log(e);
-            res.send('');
-        })
-    } else {
-        return res.status(400).json({ errors: [{ msg: 'no search term provided' }] })
-    }
-})
-
-//Get user's specific article from user_id and article_id
-router.post('/api/getUserSpecificArticle', (req, res, next) => {
-    articleService.getByUserIdAndArticleId(req.body.user_id, req.body.article_id).then((result) => {
-        res.json(result);
-    }).catch(e => {
-        console.log(e);
-        res.send('')
->>>>>>> 37edfd28e510f578f7ec22a3cefbeb0b1b7662d3
     })
     .catch((e) => {
       console.log(e);
