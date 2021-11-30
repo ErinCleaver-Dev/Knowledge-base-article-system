@@ -61,14 +61,12 @@ const FormattedComment = styled.div`
 `
 
 const Comment = ({key, comment}) => {
-    //console.log(comment)
     const [user, setUser] = useContext(UserContext);
         
     let post_date = "";
     
     if(comment.post_date) {
         post_date = new Date(comment.post_date)
-        //console.log(post_date)
     }
 
     return (

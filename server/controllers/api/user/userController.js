@@ -9,7 +9,6 @@ const { sendEmailFunc } = require('../../../nodemailer/nodemailer')
 router.post('/api/addUser', (req, res, next) => {
     console.log(req.body)
     userService.create(req.body).then((result) => {
-        console.log(result);
         sendEmailFunc(result.email);
         res.json(result)
     }).catch()
@@ -17,14 +16,12 @@ router.post('/api/addUser', (req, res, next) => {
 
 router.get('/api/listUsers', (req, res) => {
     userService.getAll().then((results) => {
-        console.log("list users: ", results)
         res.send(results)
     })
 })
 
 router.post('/api/getUser', (req, res, next) => {
     userService.getUser(req.body.userId).then((result) => {
-        console.log("get user: ", result)
         return res.send(result)
     }).catch(next)
 })
@@ -33,7 +30,6 @@ router.post('/api/getUser', (req, res, next) => {
 router.post('/api/getUserByUid', (req, res, next) => {
     console.log('testing req', req.body.uid)
     userService.getUserByUid(req.body.uid).then((result) => {
-        console.log("get userByUid: ", result)
         return res.send(result)
     }).catch(next)
 })
@@ -41,7 +37,6 @@ router.post('/api/getUserByUid', (req, res, next) => {
 
 router.post('/api/createViewedArticles', (req, res, next) => {
     userHistoryService.createViewedArticle(req.body.userId, req.body.articleId).then(() => {
-        console.log('created successfully');
         res.json({ message: 'created successfully' })
     }).catch(e => {
         console.log(error);
@@ -50,7 +45,6 @@ router.post('/api/createViewedArticles', (req, res, next) => {
 })
 router.get('/api/getViewedArticles', (req, res) => {
     userHistoryService.getViewedArticle(req.query.userId).then((results) => {
-        console.log(results);
         res.json({ getViewedArticles: results });
     }).catch(err => {
         console.log(err);
@@ -59,7 +53,6 @@ router.get('/api/getViewedArticles', (req, res) => {
 })
 router.post('/api/createSavedArticles', (req, res) => {
     userHistoryService.createSavedArticle(req.body.userId, req.body.articleId).then((results) => {
-        console.log('created successfully');
         res.json({ message: 'created successfully' })
     }).catch(e => {
         console.log(error);
@@ -69,7 +62,6 @@ router.post('/api/createSavedArticles', (req, res) => {
 router.get('/api/getSavedArticles', (req, res) => {
     console.log(req.query)
     userHistoryService.getSavedArticle(req.query.userId).then((results) => {
-        console.log(results);
         res.json({ getSavedArticles: results });
     }).catch(err => {
         console.log(err);
@@ -78,7 +70,6 @@ router.get('/api/getSavedArticles', (req, res) => {
 })
 router.post('/api/deleteSavedArticle', (req, res) => {
     userHistoryService.deleteSavedArticle(req.body.userId, req.body.articleId).then((results) => {
-        console.log('delete Successfully!')
         res.json({ message: 'delete successfully' })
     }).catch(e => {
         console.log(e)
@@ -87,7 +78,6 @@ router.post('/api/deleteSavedArticle', (req, res) => {
 })
 router.post('/api/createFeedback', (req, res) => {
     userHistoryService.createFeedback(req.body.userId, req.body.reason, req.body.postContent).then(result => {
-        console.log('feedback created successfully!')
         res.json({ message: 'feedback created successfully' })
     }).catch(e => {
         console.log(e)
@@ -110,9 +100,7 @@ router.post('/api/creatPost', (req, res, next) => {
 
 router.post('/api/getComments', (req, res, next) => {
 
-    console.log('get comments service', req.body.article_id)
     userResponseService.getComments(req.body.article_id).then(result => {
-        console.log("testing comments and reply: ", result)
         res.send(result)
     }).catch(next)
 })
