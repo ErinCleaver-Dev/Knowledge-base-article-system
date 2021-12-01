@@ -33,7 +33,7 @@ const Likes = ({ likes, article_id }) => {
       });
 
     setTimeout(() => {
-      window.location.reload();
+      window.location.reload(false);
     }, 800);
   };
 
