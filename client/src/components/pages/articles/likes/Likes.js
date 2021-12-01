@@ -17,6 +17,8 @@ const Likes = ({ likes, article_id }) => {
     article_id: articleInfo.article_id,
     user_id: articleInfo.user_id,
   };
+  let liked = false
+
 
   const clickHandler = () => {
     axios
@@ -31,18 +33,20 @@ const Likes = ({ likes, article_id }) => {
           });
         }
       });
-      axios.post(`${Config.URL}api/updateLikeCounter`, {
-        article_id: articleInfo.article_id,
-      }).then((response) => {
-        if(response) {
-          window.location.reload(false)
-        }
-      });
-
+      
+      liked = true;
   };
 
   useEffect(() => {
-    
+    axios.post(`${Config.URL}api/updateLikeCounter`, {
+      article_id: articleInfo.article_id,
+    }).then((response) => {
+   
+      if(liked) {
+        window.location.reload(false)
+      }
+    });
+
   }, []);
 
   const LikesIcon = styled(FavoriteIcon)({
