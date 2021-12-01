@@ -29,7 +29,7 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
                 count = 0;
             }
             articleService.updateLike(article_id, count).then(() =>{
-                res.send('counted like')
+                res.send(true)
             }).catch(next)
         }).catch(next)
 

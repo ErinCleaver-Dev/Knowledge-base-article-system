@@ -31,15 +31,18 @@ const Likes = ({ likes, article_id }) => {
           });
         }
       });
+      axios.post(`${Config.URL}api/updateLikeCounter`, {
+        article_id: articleInfo.article_id,
+      }).then((response) => {
+        if(response) {
+          window.location.reload(false)
+        }
+      });
 
   };
 
   useEffect(() => {
-    axios.post(`${Config.URL}api/updateLikeCounter`, {
-      article_id: articleInfo.article_id,
-    }).then((response) => {
-      window.reload.location(false);
-    });
+    
   }, []);
 
   const LikesIcon = styled(FavoriteIcon)({
