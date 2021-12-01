@@ -51,8 +51,9 @@ const Reply = (props) => {
                 axios.post(`${Config.URL}api/creatPost`, {
                     post: data
                 }).then(()=>{
-                    window.location.reload();
-                }, 1000);
+                    console.log("Path")
+                    window.location.reload(false)
+                });
 
             }
         }

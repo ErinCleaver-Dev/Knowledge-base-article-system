@@ -91,7 +91,7 @@ router.post('/api/creatPost', (req, res, next) => {
     console.log(req.body)
     if (req.body) {
         userResponseService.create(req.body.post).then(() => {
-
+            res.send('created post')
         }).catch(next)
     } else {
         return res.status(400).json({ errors: [{ msg: 'failed to create post' }] })
