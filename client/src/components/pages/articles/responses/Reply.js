@@ -50,10 +50,10 @@ const Reply = (props) => {
             if(data.user_id != '') {
                 axios.post(`${Config.URL}api/creatPost`, {
                     post: data
-                })
-                setTimeout(() => {
-                window.location.reload();
-                }, 8000)
+                }).then(()=>{
+                    window.location.reload();
+                }, 1000);
+
             }
         }
     }
