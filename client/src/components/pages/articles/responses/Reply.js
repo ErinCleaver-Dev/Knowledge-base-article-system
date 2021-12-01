@@ -51,7 +51,9 @@ const Reply = (props) => {
                 axios.post(`${Config.URL}api/creatPost`, {
                     post: data
                 })
+                setTimeout(() => {
                 window.location.reload();
+                }, 8000)
             }
         }
     }
