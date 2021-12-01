@@ -28,7 +28,9 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
             if (count == 'undefined') {
                 count = 0;
             }
-            articleService.updateLike(article_id, count).catch(next)
+            articleService.updateLike(article_id, count).then(() =>{
+                res.send('counted like')
+            }).catch(next)
         }).catch(next)
 
     } else {

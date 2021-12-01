@@ -32,14 +32,13 @@ const Likes = ({ likes, article_id }) => {
         }
       });
 
-    setTimeout(() => {
-      window.location.reload(false);
-    }, 800);
   };
 
   useEffect(() => {
     axios.post(`${Config.URL}api/updateLikeCounter`, {
       article_id: articleInfo.article_id,
+    }).then((response) => {
+      window.reload.location(false);
     });
   }, []);
 
