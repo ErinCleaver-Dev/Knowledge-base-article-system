@@ -48,9 +48,6 @@ async function getLikes(article_id) {
         updateLike(article_id, count);
 
         return count
-
-
-        
     } else {
         console.log('no article found')
     }
