@@ -27,10 +27,10 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
         likesService.getLikes(article_id).then(count => {
             res.header("Access-Control-Allow-Origin", "*");
             console.log(count)
-            return res.send(count);
+            res.send(count);
         }).catch(next)
     } else {
-        return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
+        res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
     }
 
 })
