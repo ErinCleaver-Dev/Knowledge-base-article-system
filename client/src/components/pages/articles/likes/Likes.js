@@ -7,11 +7,12 @@ import Config from "../../../../config/index";
 import { UserContext } from "../../../../App";
 import { ArticleInfoContext } from "../ViewArticle";
 
-const Likes = ({ likes, article_id }) => {
+const Likes = ({likes, article_id }) => {
   const history = useHistory();
   const location = useLocation();
 
   const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext);
+  const [likeCount, setlikeCount] = useState(likes);
 
   const newLike = {
     article_id: articleInfo.article_id,
@@ -31,9 +32,6 @@ const Likes = ({ likes, article_id }) => {
           });
         }
       });
-     setTimeout(() => {     
-       window.location.reload(false)
-     }, 4000)
 
   };
 
@@ -45,6 +43,9 @@ const Likes = ({ likes, article_id }) => {
   const countLikes = () => {
     axios.post(`${Config.URL}api/updateLikeCounter`, {
       article_id: articleInfo.article_id,
+    }).then((response) => {
+      console.log("testing new count", response.data)
+      setlikeCount(response.data.count)
     });
   }
 
@@ -58,7 +59,7 @@ const Likes = ({ likes, article_id }) => {
 
   return (
     <>
-      <LikesIcon onClick={clickHandler} /> Likes: {likes ? likes : 0}
+      <LikesIcon onClick={clickHandler} /> Likes: {likeCount ? likeCount : 0}
     </>
   );
 };
