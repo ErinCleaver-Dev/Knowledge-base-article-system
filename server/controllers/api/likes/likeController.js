@@ -26,6 +26,7 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
     if (article_id) {
         likesService.getLikes(article_id).then(count => {
             res.header("Access-Control-Allow-Origin", "*");
+            console.log(count)
             res.send(count);
         }).catch(next)
     } else {
