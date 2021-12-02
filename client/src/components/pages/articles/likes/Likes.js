@@ -29,10 +29,12 @@ const Likes = ({likes, article_id }) => {
           axios.post(`${Config.URL}api/deleteLike`, {
             deleteLike,
           }).then((response) => {
-            window.location.reload(false);
+            
           });
         }
-        window.location.reload(false);
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 10000) 
       });
 
   };
