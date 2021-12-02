@@ -1,5 +1,5 @@
 const Likes = require('../models/Likes');
-
+const {updateLike} = require('./articleService')
 
 async function createLikes(user_id, article_id) {
 
@@ -45,8 +45,12 @@ async function getLikes(article_id) {
     if (article_id) {
 
         const count = await Likes.count({ article_id: article_id })
+        updateLike(article_id, count);
+
         return count
 
+
+        
     } else {
         console.log('no article found')
     }
