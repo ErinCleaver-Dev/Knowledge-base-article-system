@@ -12,8 +12,8 @@ const Likes = ({likes, article_id }) => {
   const location = useLocation();
 
   const [articleInfo, setArticleInfo] = useContext(ArticleInfoContext);
-  const [likeCount, setlikeCount] = useState(likes);
-
+  
+  const [likeCount, setlikeCount] = useState(0);
   const newLike = {
     article_id: articleInfo.article_id,
     user_id: articleInfo.user_id,
@@ -41,11 +41,18 @@ const Likes = ({likes, article_id }) => {
   }, []);
 
   const countLikes = () => {
+    console.log("Testing count likes")
     axios.post(`${Config.URL}api/updateLikeCounter`, {
       article_id: articleInfo.article_id,
     }).then((response) => {
-      console.log("testing new count", response.data)
-      setlikeCount(response.data.count)
+      console.log("testing new count 1", response)
+      if(response.data != 0) {
+        console.log("testing new count", response.data)
+        setlikeCount(response.data)
+      } else {
+        
+      }
+      
     });
   }
 
@@ -59,7 +66,8 @@ const Likes = ({likes, article_id }) => {
 
   return (
     <>
-      <LikesIcon onClick={clickHandler} /> Likes: {likeCount ? likeCount : 0}
+      
+      <LikesIcon onClick={clickHandler} /> Likes: {likeCount && likes ? likeCount : likes || 0}
     </>
   );
 };
