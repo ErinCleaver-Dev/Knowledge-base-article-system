@@ -30,7 +30,7 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
             res.send(count);
         }).catch(next)
     } else {
-        res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
+        return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
     }
 
 })

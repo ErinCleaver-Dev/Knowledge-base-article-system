@@ -29,8 +29,11 @@ const Likes = ({likes, article_id }) => {
         if (response) {
           axios.post(`${Config.URL}api/deleteLike`, {
             deleteLike,
+          }).then((response) => {
+            window.location.reload(false);
           });
         }
+        window.location.reload(false);
       });
 
   };
@@ -44,16 +47,7 @@ const Likes = ({likes, article_id }) => {
     console.log("Testing count likes")
     axios.post(`${Config.URL}api/updateLikeCounter`, {
       article_id: articleInfo.article_id,
-    }).then((response) => {
-      console.log("Testing respose data", response)
-      if(response.data != 0) {
-        console.log("testing new count", response.data)
-        setlikeCount(response.data)
-      } else {
-        
-      }
-      
-    });
+    }).then();
   }
 
   const LikesIcon = styled(FavoriteIcon)({
@@ -67,7 +61,7 @@ const Likes = ({likes, article_id }) => {
   return (
     <>
       
-      <LikesIcon onClick={clickHandler} /> Likes: {likeCount && likes ? likeCount : likes || 0}
+      <LikesIcon onClick={clickHandler} /> Likes: {likes ? likeCount : likes || 0}
     </>
   );
 };
