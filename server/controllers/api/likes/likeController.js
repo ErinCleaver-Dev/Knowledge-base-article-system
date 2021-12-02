@@ -25,14 +25,7 @@ router.post('/api/updateLikeCounter', (req, res, next) => {
     let article_id = req.body.article_id
     if (article_id) {
         likesService.getLikes(article_id).then(count => {
-            if (count == 'undefined') {
-                count = 0;
-            }
-            articleService.updateLike(article_id, count).then(() =>{
-                res.send(true)
-            }).catch(next)
         }).catch(next)
-
     } else {
         return res.status(400).json({ errors: [{ msg: 'failed to find article' }] })
     }
