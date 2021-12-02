@@ -45,7 +45,7 @@ const Likes = ({likes, article_id }) => {
     axios.post(`${Config.URL}api/updateLikeCounter`, {
       article_id: articleInfo.article_id,
     }).then((response) => {
-      console.log("testing new count 1", response)
+      console.log("Testing respose data", response)
       if(response.data != 0) {
         console.log("testing new count", response.data)
         setlikeCount(response.data)
