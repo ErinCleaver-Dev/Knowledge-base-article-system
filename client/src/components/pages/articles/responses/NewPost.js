@@ -207,7 +207,7 @@ const NewPost = (props) => {
           <SendIcon className="icon" />
         </FormattedButton>
       </LeaveCommentGroup>
-      {error != "" ? <ErrorMessage>{error}</ErrorMessage> : console.log(error)}
+      {error != "" ? <ErrorMessage>{error}</ErrorMessage> : null}
     </>
   );
 };

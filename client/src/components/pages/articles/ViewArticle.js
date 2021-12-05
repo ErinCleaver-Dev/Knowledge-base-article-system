@@ -246,9 +246,9 @@ const Display = styled("div")({
 
 const ViewArticle = (props) => {
   const [render, setRender] = useState(false);
-  console.log(render);
+  //console.log(render);
   const _id = props.match.params.id;
-  console.log(props.history);
+  //console.log(props.history);
   const [postContent, setPostContent] = useState("");
   const [article, setArticle] = useState([]);
   const [articleInfo, setArticleInfo] = useState({
@@ -258,9 +258,9 @@ const ViewArticle = (props) => {
   const [saved, setSaved] = useState(false);
 
   const location = useLocation();
-  console.log(location);
-  console.log(postContent);
-  console.log("render");
+  // console.log(location);
+  // console.log(postContent);
+  // console.log("render");
 
   const [user, setUser] = useContext(UserContext);
   useEffect(async () => {
@@ -271,8 +271,8 @@ const ViewArticle = (props) => {
       .then((response) => {
         setArticle(response.data);
         setPostContent(draftToHtml(JSON.parse(response.data.post_content)));
-        console.log(response.data.post_content);
-        console.log("test1");
+        // console.log(response.data.post_content);
+        // console.log("test1");
       });
 
     if (localStorage.getItem("userSecret")) {
@@ -282,34 +282,37 @@ const ViewArticle = (props) => {
           articleId: _id,
         })
         .catch((e) => console.log(e));
-      console.log("test2");
+      //console.log("test2");
     }
 
     //save article functionality
-    await axios
-      .get(
-        `${Config.URL}api/getSavedArticles?userId=${localStorage.getItem(
-          "userSecret"
-        )}`
-      )
-      .then((response) => {
-        let articleResults = response.data.getSavedArticles;
-        //console.log(articleResults)
-        let saved = false;
-        console.log("test3");
-        articleResults.map((article) => {
-          if (article.article._id === _id) {
-            saved = true;
+    if (localStorage.getItem("userSecret")) {
+      await axios
+        .get(
+          `${Config.URL}api/getSavedArticles?userId=${localStorage.getItem(
+            "userSecret"
+          )}`
+        )
+        .then((response) => {
+          let articleResults = response.data.getSavedArticles;
+          //console.log(articleResults)
+          let saved = false;
+          //console.log("test3");
+          articleResults.map((article) => {
+            if (article.article._id === _id) {
+              saved = true;
+            }
+          });
+          if (saved) {
+            setSaved(saved);
           }
+        })
+        .catch((e) => {
+          //console.log(e)
         });
-        if (saved) {
-          setSaved(saved);
-        }
-      })
-      .catch((e) => {
-        //console.log(e)
-      });
-    console.log("test4");
+    }
+
+    // console.log("test4");
     //scroll to certain comment
     if (location.hash) {
       let item = document.getElementById(location.hash.replace("#", ""));
@@ -449,7 +452,11 @@ const ViewArticle = (props) => {
           </>
         ) : null}
 
-        <Likes likes={article.likes} article_id={_id} />
+        <Likes
+          likes={Number(article.likes)}
+          article_id={_id}
+          setRender={setRender}
+        />
       </ButtonBox>
       <Responses article_id={_id} />
     </ArticleInfoContext.Provider>
