@@ -11,7 +11,7 @@ const fs = require('fs')
 const path = require('path')
 
 function setupExpress(app) {
-    app.use(cors({origin: "/ej-kba\.vercel.app.+/"}))
+    app.use(cors({origin: "/ej-kba\.vercel.app/.+/"}))
     app.use(express.urlencoded({ extended: false }))
     app.use(express.static('public'))
     app.use(express.json())
