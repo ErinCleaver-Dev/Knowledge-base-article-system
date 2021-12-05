@@ -1,6 +1,5 @@
 require("dotenv").config({
 });
-//update to vercel not recognized.
 const express = require('express');
 const app = express();
 
